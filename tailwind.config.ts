@@ -2,9 +2,7 @@ import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
-  content: [
-    "./src/**/*.{ts,tsx}",
-  ],
+  content: ["./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -44,14 +42,20 @@ const config = {
             transform: "translateX(100%)",
           },
         },
+        move: {
+          "0%": { transform: "translateY(-200px)" },
+          "100%": { transform: "translateY(200px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        move: "move 5s linear infinite",
       },
       fontFamily: {
         inter: "var(--font-inter)",
         nunito: "var(--font-nunito)",
+        poppins: "var(--font-poppins)",
         body: [
           "Inter",
           "ui-sans-serif",
