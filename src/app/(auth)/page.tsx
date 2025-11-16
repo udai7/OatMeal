@@ -11,6 +11,9 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { DotScreenShader } from "@/components/ui/dot-shader-background";
 import { MinimalFooter } from "@/components/layout/MinimalFooter";
 import { GradientButton } from "@/components/ui/gradient-button";
+import { Spotlight } from "@/components/ui/spotlight-new";
+import PricingSection4 from "@/components/ui/pricing-section-4";
+import { Sparkles as SparklesComp } from "@/components/ui/sparkles";
 
 const page = () => {
   const user = useUser();
@@ -18,18 +21,40 @@ const page = () => {
   return (
     <div className="bg-black min-h-screen font-poppins">
       <Header />
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <DotScreenShader />
-        </div>
-        <div className="relative z-10 py-8 px-6 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12 md:px-10">
-          <h1 className="mt-4 lg:mt-8 mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-7xl mix-blend-exclusion">
-            Build Your Resume{" "}
-            <span className="text-primary-500 max-sm:block">With AI</span>
+      <section className="relative min-h-screen h-screen flex items-center justify-center overflow-hidden bg-black">
+        <Spotlight />
+        <div className="relative z-10 py-8 px-6 mx-auto max-w-5xl text-center lg:py-16 lg:px-12 md:px-10">
+          {/* Badge */}
+          <div className="inline-flex items-center px-4 py-2 mb-6 text-sm text-gray-300 bg-white/5 border border-white/10 rounded-full backdrop-blur-sm hover:border-primary-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 cursor-pointer group">
+            <span className="mr-2">🎉</span>
+            <span className="group-hover:text-white transition-colors">
+              Introducing AI-Powered Resume Builder
+            </span>
+          </div>
+
+          {/* Main Heading */}
+          <h1 className="mb-6 text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-black dark:text-white">
+            AI Resume Builder for <br />
+            <span className="block">Modern Professionals</span>
           </h1>
-          <p className="mb-8 text-lg font-light text-gray-300 lg:text-xl sm:px-16 xl:px-48 mix-blend-exclusion">
-            Effortlessly Craft a Professional Resume with Our AI-Powered Builder
+
+          {/* Subheading */}
+          <p className="mb-2 text-base md:text-lg max-w-3xl mx-auto text-gray-400">
+            150+ free and open-source resume templates and effects
           </p>
+          <p className="mb-2 text-base md:text-lg max-w-3xl mx-auto text-gray-400">
+            built with{" "}
+            <span className="font-semibold text-white">
+              React, TypeScript, Tailwind CSS,
+            </span>{" "}
+            and <span className="font-semibold text-white">AI</span>.
+          </p>
+          <p className="mb-10 text-base md:text-lg max-w-3xl mx-auto text-gray-400">
+            Perfect companion for{" "}
+            <span className="font-semibold text-white">job seekers</span>.
+          </p>
+
+          {/* Buttons */}
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
             <GradientButton variant="variant" asChild>
               <Link href={`${!user?.isSignedIn ? "/sign-up" : "/dashboard"}`}>
@@ -42,15 +67,30 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="py-8 px-6 mx-auto max-w-screen-xl text-center lg:py-8 lg:px-12 md:px-10">
-        <h2 className="font-bold text-3xl text-white" id="learn-more">
+      <section className="relative py-8 px-6 mx-auto max-w-screen-xl text-center lg:py-8 lg:px-12 md:px-10 overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute top-0 h-96 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)] pointer-events-none">
+          <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff2c_1px,transparent_1px),linear-gradient(to_bottom,#3a3a3a01_1px,transparent_1px)] bg-[size:70px_80px]"></div>
+          <SparklesComp
+            density={1800}
+            direction="bottom"
+            speed={1}
+            color="#FFFFFF"
+            className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(50%_50%,white,transparent_85%)]"
+          />
+        </div>
+
+        <h2
+          className="font-bold text-3xl text-white relative z-10"
+          id="learn-more"
+        >
           How it Works?
         </h2>
-        <h2 className="text-md text-gray-400 mb-8">
+        <h2 className="text-md text-gray-400 mb-8 relative z-10">
           Generate resume in just 3 steps
         </h2>
 
-        <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 place-items-center">
+        <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 place-items-center relative z-10">
           <CardSpotlight className="h-96 w-full max-w-sm text-left">
             <p className="text-xl font-bold relative z-20 mt-2 text-white">
               Create Your Template
@@ -107,15 +147,30 @@ const page = () => {
           </CardSpotlight>
         </div>
       </section>
-      <section className="py-8 px-6 mx-auto max-w-screen-xl lg:py-16 lg:px-12 md:px-10">
-        <h2 className="font-bold text-3xl text-center text-white">
+      <section className="relative py-8 px-6 mx-auto max-w-screen-xl lg:pb-4 lg:px-12 md:px-10 overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute top-0 h-96 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)] pointer-events-none">
+          <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff2c_1px,transparent_1px),linear-gradient(to_bottom,#3a3a3a01_1px,transparent_1px)] bg-[size:70px_80px]"></div>
+          <SparklesComp
+            density={1800}
+            direction="bottom"
+            speed={1}
+            color="#FFFFFF"
+            className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(50%_50%,white,transparent_85%)]"
+          />
+        </div>
+
+        <h2 className="font-bold text-3xl text-center text-white relative z-10">
           Powerful Features
         </h2>
-        <h2 className="text-md text-gray-400 text-center mb-8">
+        <h2 className="text-md text-gray-400 text-center mb-8 relative z-10">
           Everything you need to build a professional resume
         </h2>
-        <FeaturesSectionDemo />
+        <div className="relative z-10">
+          <FeaturesSectionDemo />
+        </div>
       </section>
+      <PricingSection4 />
       <MinimalFooter />
     </div>
   );
