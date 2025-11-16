@@ -40,10 +40,11 @@ export function TimelineContent({
 
   const variants = customVariants || defaultVariants;
 
+  const MotionComponent = motion(Component);
+
   return (
-    <motion.div
+    <MotionComponent
       ref={ref}
-      as={Component}
       custom={animationNum}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
@@ -51,6 +52,6 @@ export function TimelineContent({
       className={className}
     >
       {children}
-    </motion.div>
+    </MotionComponent>
   );
 }

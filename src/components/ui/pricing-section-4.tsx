@@ -14,7 +14,7 @@ const plans = [
   {
     name: "Starter",
     description:
-      "Perfect for individuals just getting started with professional resumes",
+      "Perfect for individuals just getting started with professional resumes for free",
     price: 0,
     yearlyPrice: 0,
     buttonText: "Get started",

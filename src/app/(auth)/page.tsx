@@ -14,6 +14,7 @@ import { GradientButton } from "@/components/ui/gradient-button";
 import { Spotlight } from "@/components/ui/spotlight-new";
 import PricingSection4 from "@/components/ui/pricing-section-4";
 import { Sparkles as SparklesComp } from "@/components/ui/sparkles";
+import FAQSection from "@/components/ui/faq-section";
 
 const page = () => {
   const user = useUser();
@@ -171,6 +172,7 @@ const page = () => {
         </div>
       </section>
       <PricingSection4 />
+      <FAQSection />
       <MinimalFooter />
     </div>
   );
