@@ -96,14 +96,14 @@ const ResumeCard = ({
         </div>
       </Link>
 
-      <div className="border p-3 flex justify-between bg-white rounded-b-lg shadow-lg">
-        <h2 className="text-sm font-medium text-slate-700 mr-4 block whitespace-nowrap overflow-hidden text-ellipsis">
+      <div className="border border-neutral-800 p-3 flex justify-between bg-neutral-900 rounded-b-lg shadow-lg">
+        <h2 className="text-sm font-medium text-white mr-4 block whitespace-nowrap overflow-hidden text-ellipsis">
           {myResume.title}
         </h2>
 
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <MoreVertical className="h-4 w-4 cursor-pointer" color="#000" />
+            <MoreVertical className="h-4 w-4 cursor-pointer" color="#ffffff" />
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>

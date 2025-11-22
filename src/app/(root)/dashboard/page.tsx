@@ -8,10 +8,10 @@ const Dashboard = () => {
     <PageWrapper>
       <Header />
       <div className="my-10 !mb-0 mx-10 md:mx-20 lg:mx-36">
-        <h2 className="text-center text-2xl font-bold">
+        <h2 className="text-center text-2xl font-bold text-white">
           Your Resume Dashboard
         </h2>
-        <p className="text-center text-gray-600">
+        <p className="text-center text-gray-400">
           Begin creating and managing your personalized resumes.
         </p>
       </div>

@@ -89,10 +89,10 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
   return (
     <>
       <div
-        className="relative aspect-[1/1.2] border border-dashed border-slate-300 flex items-center justify-center bg-slate-100 rounded-xl hover:scale-105 hover:shadow-md transition-all cursor-pointer"
+        className="relative aspect-[1/1.2] border border-dashed border-neutral-800 flex items-center justify-center bg-neutral-900/50 rounded-xl hover:scale-105 hover:shadow-md transition-all cursor-pointer hover:border-neutral-700 hover:bg-neutral-900"
         onClick={() => userId && setOpenDialog(true)}
       >
-        <PlusSquare className="text-slate-500" />
+        <PlusSquare className="text-gray-400" />
       </div>
 
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
@@ -122,9 +122,8 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
                       <Input
                         type="text"
                         placeholder="Example: Android Developer Resume"
-                        className={`no-focus ${
-                          form.formState.errors.name ? "error" : ""
-                        }`}
+                        className={`no-focus ${form.formState.errors.name ? "error" : ""
+                          }`}
                         autoComplete="off"
                         {...field}
                       />
