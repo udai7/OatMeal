@@ -7,6 +7,7 @@ import { useUser } from "@clerk/nextjs";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card } from "../ui/card";
+import { CardSpotlight } from "../ui/card-spotlight";
 
 const DashboardCards = () => {
   const user = useUser();
@@ -48,16 +49,16 @@ const DashboardCards = () => {
             />
           ))}
 
-        <Link href="/ats-test" className="block hover:scale-105 transition-transform">
-          <Card className="relative h-full rounded-lg overflow-hidden border-2 border-dashed border-neutral-800 bg-neutral-900/50 flex flex-col items-center justify-center p-6 hover:border-neutral-700 transition-colors">
-            <div className="h-14 w-14 rounded-full bg-neutral-800 flex items-center justify-center">
+        <Link href="/ats-test" className="block h-full">
+          <CardSpotlight className="h-full w-full flex flex-col items-center justify-center p-6 border-2 border-dashed border-neutral-800 bg-neutral-900/50 hover:border-neutral-700 transition-colors">
+            <div className="relative z-20 h-14 w-14 rounded-full bg-neutral-800 flex items-center justify-center">
               <img src="/icons/document-scan.svg" alt="ATS Test" className="h-8 w-8 invert" />
             </div>
-            <h3 className="mt-4 text-lg font-semibold text-center text-white">ATS Test</h3>
-            <p className="text-sm text-center text-gray-400 mt-2">
+            <h3 className="relative z-20 mt-4 text-lg font-semibold text-center text-white">ATS Test</h3>
+            <p className="relative z-20 text-sm text-center text-gray-400 mt-2">
               Check if your resume will pass through ATS systems
             </p>
-          </Card>
+          </CardSpotlight>
         </Link>
       </div>
     </>
