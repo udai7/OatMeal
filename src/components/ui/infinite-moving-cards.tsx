@@ -116,7 +116,7 @@ const FAQCard = ({
       <GlowingEffect
         spread={40}
         glow={isHovered}
-        disabled={false}
+        disabled={!isHovered}
         proximity={64}
         inactiveZone={0.01}
         variant="blue"
