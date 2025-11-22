@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 export const InfiniteMovingCards = ({
   items,
@@ -81,46 +82,74 @@ export const InfiniteMovingCards = ({
       <ul
         ref={scrollerRef}
         className={cn(
-          "flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4",
+          "flex w-max min-w-full shrink-0 flex-nowrap gap-4",
           start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
       >
         {items.map((item, idx) => (
-          <li
-            className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-zinc-700 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 px-8 py-6 md:w-[450px]"
-            key={`${item.name}-${idx}`}
-          >
-            <blockquote>
-              <div
-                aria-hidden="true"
-                className="user-select-none pointer-events-none absolute -top-0.5 -left-0.5 -z-1 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
-              ></div>
-              <span className="relative z-20 text-sm leading-[1.6] font-normal text-gray-100">
-                {item.quote}
-              </span>
-              <div className="relative z-20 mt-6 flex flex-row items-center gap-3">
-                {item.avatar && (
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm"
-                    style={{ backgroundColor: item.avatar }}
-                  >
-                    {item.name.charAt(0)}
-                  </div>
-                )}
-                <span className="flex flex-col gap-1">
-                  <span className="text-sm leading-[1.6] font-semibold text-white">
-                    {item.name}
-                  </span>
-                  <span className="text-sm leading-[1.6] font-normal text-gray-400">
-                    {item.title}
-                  </span>
-                </span>
-              </div>
-            </blockquote>
-          </li>
+          <FAQCard key={`${item.name}-${idx}`} item={item} />
         ))}
       </ul>
     </div>
+  );
+};
+
+const FAQCard = ({
+  item,
+}: {
+  item: {
+    quote: string;
+    name: string;
+    title: string;
+    avatar?: string;
+  };
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <li
+      className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-zinc-700 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 px-8 py-6 md:w-[450px]"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <GlowingEffect
+        spread={40}
+        glow={isHovered}
+        disabled={false}
+        proximity={64}
+        inactiveZone={0.01}
+        variant="blue"
+        borderWidth={2}
+        movementDuration={0.3}
+      />
+      <blockquote>
+        <div
+          aria-hidden="true"
+          className="user-select-none pointer-events-none absolute -top-0.5 -left-0.5 -z-1 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
+        ></div>
+        <div className="relative z-20 mb-6 flex flex-row items-center gap-3">
+          {item.avatar && (
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+              style={{ backgroundColor: item.avatar }}
+            >
+              {item.name.charAt(0)}
+            </div>
+          )}
+          <span className="flex flex-col gap-1">
+            <span className="text-sm leading-[1.6] font-bold text-white">
+              {item.name}
+            </span>
+            <span className="text-sm leading-[1.6] font-normal text-gray-400">
+              {item.title}
+            </span>
+          </span>
+        </div>
+        <span className="relative z-20 text-sm leading-[1.6] font-normal text-gray-100">
+          {item.quote}
+        </span>
+      </blockquote>
+    </li>
   );
 };

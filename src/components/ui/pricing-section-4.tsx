@@ -115,48 +115,15 @@ const PricingSwitch = ({ onSwitch }: { onSwitch: (value: string) => void }) => {
 
 export default function PricingSection4() {
   const [isYearly, setIsYearly] = useState(false);
-  const pricingRef = useRef<HTMLDivElement>(null);
-
-  const revealVariants = {
-    visible: (i: number) => ({
-      y: 0,
-      opacity: 1,
-      filter: "blur(0px)",
-      transition: {
-        delay: i * 0.4,
-        duration: 0.5,
-      },
-    }),
-    hidden: {
-      filter: "blur(10px)",
-      y: -20,
-      opacity: 0,
-    },
-  };
 
   const togglePricingPeriod = (value: string) =>
     setIsYearly(Number.parseInt(value) === 1);
 
   return (
-    <div
-      className="min-h-screen mx-auto relative bg-black overflow-x-hidden font-poppins"
-      ref={pricingRef}
-    >
-      <TimelineContent
-        animationNum={4}
-        timelineRef={pricingRef}
-        customVariants={revealVariants}
-        className="absolute top-0  h-96 w-screen overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)] "
-      >
-        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff2c_1px,transparent_1px),linear-gradient(to_bottom,#3a3a3a01_1px,transparent_1px)] bg-[size:70px_80px] "></div>
-        <SparklesComp
-          density={1800}
-          direction="bottom"
-          speed={1}
-          color="#FFFFFF"
-          className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(50%_50%,white,transparent_85%)]"
-        />
-      </TimelineContent>
+    <div className="min-h-screen mx-auto relative bg-black overflow-x-hidden font-poppins">
+      <div className="absolute top-0 h-96 w-screen overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)]">
+        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff2c_1px,transparent_1px),linear-gradient(to_bottom,#3a3a3a01_1px,transparent_1px)] bg-[size:70px_80px]"></div>
+      </div>
       <article className="text-center mb-6 pt-8 max-w-3xl mx-auto space-y-2 relative z-50 px-4">
         <h2 className="text-4xl font-medium text-white">
           Choose the Perfect Plan for Your Career
@@ -176,9 +143,8 @@ export default function PricingSection4() {
         {plans.map((plan, index) => (
           <div key={plan.name} className={plan.popular ? "-mt-8" : ""}>
             <div
-              className={`relative h-full rounded-2xl ${
-                plan.popular ? "border border-neutral-800 p-2" : ""
-              }`}
+              className={`relative h-full rounded-2xl ${plan.popular ? "border border-neutral-800 p-2" : ""
+                }`}
             >
               {plan.popular && (
                 <GlowingEffect
@@ -193,11 +159,10 @@ export default function PricingSection4() {
                 />
               )}
               <Card
-                className={`relative text-white border-neutral-800 flex flex-col ${
-                  plan.popular
+                className={`relative text-white border-neutral-800 flex flex-col ${plan.popular
                     ? "bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 z-20 min-h-[640px]"
                     : "bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 z-10 min-h-[580px]"
-                }`}
+                  }`}
               >
                 <CardHeader className="text-left ">
                   <div className="flex justify-between">

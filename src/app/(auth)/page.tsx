@@ -149,18 +149,9 @@ const page = () => {
         </div>
       </section>
       <section className="relative py-8 px-6 mx-auto max-w-screen-xl lg:pb-4 lg:px-12 md:px-10 overflow-hidden">
-        {/* Background Effects */}
         <div className="absolute top-0 h-96 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)] pointer-events-none">
           <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff2c_1px,transparent_1px),linear-gradient(to_bottom,#3a3a3a01_1px,transparent_1px)] bg-[size:70px_80px]"></div>
-          <SparklesComp
-            density={1800}
-            direction="bottom"
-            speed={1}
-            color="#FFFFFF"
-            className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(50%_50%,white,transparent_85%)]"
-          />
         </div>
-
         <h2 className="font-bold text-3xl text-center text-white relative z-10">
           Powerful Features
         </h2>
