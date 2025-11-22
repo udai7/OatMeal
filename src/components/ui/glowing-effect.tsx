@@ -44,7 +44,7 @@ const GlowingEffect = memo(
 
         animationFrameRef.current = requestAnimationFrame(() => {
           const element = containerRef.current;
-          if (!element) return;
+          if (!element || !glow) return;
 
           const { left, top, width, height } = element.getBoundingClientRect();
           const mouseX = e?.x ?? lastPosition.current.x;
@@ -80,7 +80,7 @@ const GlowingEffect = memo(
             parseFloat(element.style.getPropertyValue("--start")) || 0;
           let targetAngle =
             (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) /
-              Math.PI +
+            Math.PI +
             90;
 
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
@@ -95,7 +95,7 @@ const GlowingEffect = memo(
           });
         });
       },
-      [inactiveZone, proximity, movementDuration]
+      [inactiveZone, proximity, movementDuration, glow]
     );
 
     useEffect(() => {

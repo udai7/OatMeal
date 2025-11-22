@@ -8,7 +8,7 @@ const Header = () => {
   const user = useUser();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-white/20">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[radial-gradient(35%_80%_at_30%_0%,hsl(var(--foreground)/.1),transparent)] backdrop-blur-md border-b border-white/10">
       <nav className="px-6 py-3">
         <div className="flex items-center justify-between mx-auto max-w-screen-xl">
           {/* Logo and Navigation */}

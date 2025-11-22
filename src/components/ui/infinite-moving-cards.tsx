@@ -109,14 +109,14 @@ const FAQCard = ({
 
   return (
     <li
-      className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-zinc-700 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 px-8 py-6 md:w-[450px]"
+      className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-zinc-700 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 px-8 py-6 md:w-[450px] overflow-visible"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <GlowingEffect
         spread={40}
         glow={isHovered}
-        disabled={!isHovered}
+        disabled={false}
         proximity={64}
         inactiveZone={0.01}
         variant="blue"

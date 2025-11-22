@@ -175,7 +175,7 @@ const PricingCard = ({
           <GlowingEffect
             spread={40}
             glow={isHovered}
-            disabled={!isHovered}
+            disabled={false}
             proximity={64}
             inactiveZone={0.01}
             variant="blue"
