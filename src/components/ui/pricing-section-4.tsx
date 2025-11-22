@@ -159,54 +159,22 @@ export default function PricingSection4() {
       </TimelineContent>
       <article className="text-center mb-6 pt-8 max-w-3xl mx-auto space-y-2 relative z-50 px-4">
         <h2 className="text-4xl font-medium text-white">
-          <VerticalCutReveal
-            splitBy="words"
-            staggerDuration={0.15}
-            staggerFrom="first"
-            reverse={true}
-            containerClassName="justify-center "
-            transition={{
-              type: "spring",
-              stiffness: 250,
-              damping: 40,
-              delay: 0,
-            }}
-          >
-            Choose the Perfect Plan for Your Career
-          </VerticalCutReveal>
+          Choose the Perfect Plan for Your Career
         </h2>
 
-        <TimelineContent
-          as="p"
-          animationNum={0}
-          timelineRef={pricingRef}
-          customVariants={revealVariants}
-          className="text-gray-300"
-        >
+        <p className="text-gray-300">
           Trusted by thousands of job seekers. Start building your dream resume
           today.
-        </TimelineContent>
+        </p>
 
-        <TimelineContent
-          as="div"
-          animationNum={1}
-          timelineRef={pricingRef}
-          customVariants={revealVariants}
-        >
+        <div className="pt-4">
           <PricingSwitch onSwitch={togglePricingPeriod} />
-        </TimelineContent>
+        </div>
       </article>
 
       <div className="grid md:grid-cols-3 max-w-5xl gap-4 py-6 mx-auto px-4">
         {plans.map((plan, index) => (
-          <TimelineContent
-            key={plan.name}
-            as="div"
-            animationNum={2 + index}
-            timelineRef={pricingRef}
-            customVariants={revealVariants}
-            className={plan.popular ? "-mt-8" : ""}
-          >
+          <div key={plan.name} className={plan.popular ? "-mt-8" : ""}>
             <div
               className={`relative h-full rounded-2xl ${
                 plan.popular ? "border border-neutral-800 p-2" : ""
@@ -284,7 +252,7 @@ export default function PricingSection4() {
                 </CardContent>
               </Card>
             </div>
-          </TimelineContent>
+          </div>
         ))}
       </div>
     </div>
