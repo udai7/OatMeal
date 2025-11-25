@@ -30,36 +30,46 @@ const DashboardCards = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 mt-10 gap-8">
-        <AddResume userId={userId} />
+      <div className="relative mt-10 overflow-hidden">
+        <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-neutral-900 flex-nowrap">
+          <div className="flex-shrink-0 w-[240px]">
+            <AddResume userId={userId} />
+          </div>
 
-        {resumeList !== null
-          ? resumeList.map((resume: any) => (
-            <ResumeCard
-              key={resume.resumeId}
-              resume={JSON.stringify(resume)}
-              refreshResumes={loadResumeData}
-            />
-          ))
-          : [1, 2, 3].map((index) => (
-            <ResumeCard
-              key={index}
-              resume={null}
-              refreshResumes={loadResumeData}
-            />
-          ))}
+          {resumeList !== null
+            ? resumeList.map((resume: any) => (
+                <ResumeCard
+                  key={resume.resumeId}
+                  resume={JSON.stringify(resume)}
+                  refreshResumes={loadResumeData}
+                />
+              ))
+            : [1, 2, 3].map((index) => (
+                <ResumeCard
+                  key={index}
+                  resume={null}
+                  refreshResumes={loadResumeData}
+                />
+              ))}
 
-        <Link href="/ats-test" className="block h-full">
-          <CardSpotlight className="h-full w-full flex flex-col items-center justify-center p-6 border-2 border-dashed border-neutral-800 bg-neutral-900/50 hover:border-neutral-700 transition-colors">
-            <div className="relative z-20 h-14 w-14 rounded-full bg-neutral-800 flex items-center justify-center">
-              <img src="/icons/document-scan.svg" alt="ATS Test" className="h-8 w-8 invert" />
-            </div>
-            <h3 className="relative z-20 mt-4 text-lg font-semibold text-center text-white">ATS Test</h3>
-            <p className="relative z-20 text-sm text-center text-gray-400 mt-2">
-              Check if your resume will pass through ATS systems
-            </p>
-          </CardSpotlight>
-        </Link>
+          <Link href="/ats-test" className="flex-shrink-0 w-[240px]">
+            <CardSpotlight className="h-[340px] w-full flex flex-col items-center justify-center p-6 border-2 border-dashed border-neutral-800 bg-neutral-900/50 hover:border-neutral-700 transition-colors">
+              <div className="relative z-20 h-14 w-14 rounded-full bg-neutral-800 flex items-center justify-center">
+                <img
+                  src="/icons/document-scan.svg"
+                  alt="ATS Test"
+                  className="h-8 w-8 invert"
+                />
+              </div>
+              <h3 className="relative z-20 mt-4 text-lg font-semibold text-center text-white">
+                ATS Test
+              </h3>
+              <p className="relative z-20 text-sm text-center text-gray-400 mt-2">
+                Check if your resume will pass through ATS systems
+              </p>
+            </CardSpotlight>
+          </Link>
+        </div>
       </div>
     </>
   );

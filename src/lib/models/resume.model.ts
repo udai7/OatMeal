@@ -18,8 +18,8 @@ const resumeSchema = new mongoose.Schema({
   education: [{ type: mongoose.Schema.Types.ObjectId, ref: "Education" }],
   skills: [{ type: mongoose.Schema.Types.ObjectId, ref: "Skill" }],
   templateId: { type: String },
-  themeColor: { type: String, default: themeColors[0] },
-  fontFamily: { type: String, default: fontOptions[0] },
+  themeColor: { type: String, default: (themeColors && themeColors.length > 0) ? themeColors[0] : "#FF69B4" },
+  fontFamily: { type: String, default: (fontOptions && fontOptions.length > 0) ? fontOptions[0] : "Inter" },
 });
 
 const Resume = mongoose.models.Resume || mongoose.model("Resume", resumeSchema);

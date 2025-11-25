@@ -37,7 +37,7 @@ const ResumeCard = ({
 }) => {
   if (!resume) {
     return (
-      <div className="!bg-slate-200/30 relative aspect-[1/1.2] rounded-lg shadow-lg flex flex-col hover:scale-105 transition-all skeleton">
+      <div className="!bg-slate-200/30 relative w-[240px] h-[340px] rounded-lg shadow-lg flex flex-col hover:scale-105 transition-all skeleton">
         <div className="flex-1"></div>
         <div className="border-0 p-3 flex justify-between bg-white/40 rounded-b-lg">
           ‎{" "}
@@ -81,71 +81,63 @@ const ResumeCard = ({
 
   return (
     <>
-      <CardContainer className="inter-var" containerClassName="py-0">
-        <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-full h-auto rounded-xl p-6 border">
-          <CardItem
-            translateZ="50"
-            className="text-xl font-bold text-neutral-600 dark:text-white truncate w-full"
+      <div className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-[240px] h-[340px] rounded-xl p-6 border flex-shrink-0 flex flex-col">
+        <div className="text-xl font-bold text-neutral-600 dark:text-white truncate w-full">
+          {myResume.title}
+        </div>
+        <p className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300">
+          Last updated: {new Date().toLocaleDateString()}
+        </p>
+        <div className="w-full mt-4">
+          <Link href={"/my-resume/" + myResume.resumeId + "/view"}>
+            <div
+              className="bg-gradient-to-b from-pink-100 via-purple-200 to-blue-200 rounded-xl h-40 w-full flex items-center justify-center group-hover/card:shadow-xl"
+              style={{
+                borderColor: myResume?.themeColor,
+              }}
+            >
+              <img
+                src="/img/blank-cv.png"
+                width={80}
+                height={80}
+                alt="resume thumbnail"
+              />
+            </div>
+          </Link>
+        </div>
+        <div className="flex justify-between items-center mt-auto">
+          <Link
+            href={"/my-resume/" + myResume.resumeId + "/edit"}
+            className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white hover:bg-neutral-800 transition-colors inline-block"
           >
-            {myResume.title}
-          </CardItem>
-          <CardItem
-            as="p"
-            translateZ="60"
-            className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
-          >
-            Last updated: {new Date().toLocaleDateString()}
-          </CardItem>
-          <CardItem translateZ="100" className="w-full mt-4">
-            <Link href={"/my-resume/" + myResume.resumeId + "/view"}>
-              <div
-                className="bg-gradient-to-b from-pink-100 via-purple-200 to-blue-200 rounded-xl h-40 w-full flex items-center justify-center group-hover/card:shadow-xl"
-                style={{
-                  borderColor: myResume?.themeColor,
-                }}
+            Edit Resume →
+          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <MoreVertical className="h-4 w-4 cursor-pointer text-white" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={() =>
+                  router.push("/my-resume/" + myResume.resumeId + "/edit")
+                }
               >
-                <img src="/img/blank-cv.png" width={80} height={80} alt="resume thumbnail" />
-              </div>
-            </Link>
-          </CardItem>
-          <div className="flex justify-between items-center mt-10">
-            <CardItem translateZ={20}>
-              <Link
-                href={"/my-resume/" + myResume.resumeId + "/edit"}
-                className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white hover:bg-neutral-800 transition-colors inline-block"
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  router.push("/my-resume/" + myResume.resumeId + "/view")
+                }
               >
-                Edit Resume →
-              </Link>
-            </CardItem>
-            <CardItem translateZ={20}>
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <MoreVertical className="h-4 w-4 cursor-pointer text-white" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      router.push("/my-resume/" + myResume.resumeId + "/edit")
-                    }
-                  >
-                    Edit
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      router.push("/my-resume/" + myResume.resumeId + "/view")
-                    }
-                  >
-                    View
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setOpenAlert(true)}>
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </CardItem>
-          </div>
-        </CardBody>
-      </CardContainer>
+                View
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setOpenAlert(true)}>
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
 
       <AlertDialog open={openAlert}>
         <AlertDialogContent>

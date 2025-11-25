@@ -82,6 +82,7 @@ export async function fetchUserResumes(userId: string) {
 
     return JSON.stringify(resumes);
   } catch (error: any) {
+    console.error("Error fetching user resumes:", error);
     throw new Error(`Failed to fetch user resumes: ${error.message}`);
   }
 }
