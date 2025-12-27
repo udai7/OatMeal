@@ -3,12 +3,11 @@
 import Header from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
 import { FormProvider } from "@/lib/context/FormProvider";
-import { RWebShare } from "react-web-share";
 import React, { useEffect, useState } from "react";
 import ResumePreview from "@/components/layout/my-resume/ResumePreview";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import PageWrapper from "@/components/common/PageWrapper";
-import { DownloadIcon, Share2Icon } from "lucide-react";
+import { DownloadIcon, Edit } from "lucide-react";
 import { fetchResume } from "@/lib/actions/resume.actions";
 import html2pdf from "html2pdf.js";
 
@@ -22,6 +21,7 @@ const FinalResumeView: React.FC<FinalResumeViewProps> = ({
   isOwnerView,
 }) => {
   const [download, setDownload] = useState<boolean>(false);
+  const router = useRouter();
   const path = usePathname();
   const [formData, setFormData] = useState<any>({});
 
@@ -74,7 +74,7 @@ const FinalResumeView: React.FC<FinalResumeViewProps> = ({
         <FormProvider params={params}>
           <div id="no-print">
             <Header />
-            <div className="my-10 mx-10 md:mx-20 lg:mx-36">
+            <div className="mt-24 mb-10 mx-10 md:mx-20 lg:mx-36">
               {isOwnerView ? (
                 <>
                   <h2 className="text-center text-2xl font-bold">
@@ -103,20 +103,12 @@ const FinalResumeView: React.FC<FinalResumeViewProps> = ({
                 >
                   <DownloadIcon className="size-6" /> Download
                 </Button>
-                <RWebShare
-                  data={{
-                    text: "Check out my resume!",
-                    url: `${path}`,
-                    title: `${formData?.firstName ?? "User"} ${
-                      formData?.lastName ?? "Resume"
-                    }'s Resume`,
-                  }}
-                  onClick={() => console.log("Shared successfully!")}
+                <Button
+                  className="flex px-12 py-6 gap-2 rounded-full bg-slate-200 hover:bg-primary-700/20 focus:ring-4 focus:ring-primary-700/30 text-black"
+                  onClick={() => router.push(`/my-resume/${params.id}/edit`)}
                 >
-                  <Button className="flex px-12 py-6 gap-2 rounded-full bg-slate-200 hover:bg-primary-700/20 focus:ring-4 focus:ring-primary-700/30 text-black">
-                    <Share2Icon className="size-6" /> Share URL
-                  </Button>
-                </RWebShare>
+                  <Edit className="size-6" /> Edit
+                </Button>
               </div>
             </div>
           </div>

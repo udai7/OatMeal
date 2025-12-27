@@ -30,6 +30,11 @@ const resumeSchema = new mongoose.Schema({
   },
 });
 
+// Delete the model from the cache if it exists to ensure the new schema is used
+if (mongoose.models.Resume) {
+  delete mongoose.models.Resume;
+}
+
 const Resume = mongoose.models.Resume || mongoose.model("Resume", resumeSchema);
 
 export default Resume;

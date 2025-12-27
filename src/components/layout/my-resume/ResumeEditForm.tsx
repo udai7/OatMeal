@@ -58,24 +58,64 @@ const ResumeEditForm = ({
               size="sm"
               disabled={isLoading}
               onClick={async () => {
+                setIsLoading(true);
+                try {
+                  if (activeFormIndex === 1) {
+                    await updateResume({
+                      resumeId: params.id,
+                      updates: {
+                        firstName: formData?.firstName || "",
+                        lastName: formData?.lastName || "",
+                        jobTitle: formData?.jobTitle || "",
+                        address: formData?.address || "",
+                        phone: formData?.phone || "",
+                        email: formData?.email || "",
+                        portfolio: formData?.portfolio || "",
+                        linkedin: formData?.linkedin || "",
+                      },
+                    });
+                  } else if (activeFormIndex === 2) {
+                    await updateResume({
+                      resumeId: params.id,
+                      updates: { summary: formData?.summary },
+                    });
+                  } else if (activeFormIndex === 3) {
+                    await addExperienceToResume(
+                      params.id,
+                      formData?.experience
+                    );
+                  } else if (activeFormIndex === 4) {
+                    await addProjectsToResume(params.id, formData?.projects);
+                  } else if (activeFormIndex === 5) {
+                    await addEducationToResume(params.id, formData?.education);
+                  } else if (activeFormIndex === 6) {
+                    await addSkillToResume(params.id, formData?.skills);
+                  }
+                } catch (error) {
+                  console.error("Auto-save failed:", error);
+                }
+                setIsLoading(false);
+
                 if (activeFormIndex !== 6) {
                   setActiveFormIndex(activeFormIndex + 1);
                 } else {
                   setIsLoading(true);
 
                   const updates = {
-                    firstName: formData?.firstName,
-                    lastName: formData?.lastName,
-                    jobTitle: formData?.jobTitle,
-                    address: formData?.address,
-                    phone: formData?.phone,
-                    email: formData?.email,
-                    summary: formData?.summary,
-                    experience: formData?.experience,
-                    projects: formData?.projects,
-                    education: formData?.education,
-                    skills: formData?.skills,
-                    templateId: formData?.templateId,
+                    firstName: formData?.firstName || "",
+                    lastName: formData?.lastName || "",
+                    jobTitle: formData?.jobTitle || "",
+                    address: formData?.address || "",
+                    phone: formData?.phone || "",
+                    email: formData?.email || "",
+                    portfolio: formData?.portfolio || "",
+                    linkedin: formData?.linkedin || "",
+                    summary: formData?.summary || "",
+                    experience: formData?.experience || [],
+                    projects: formData?.projects || [],
+                    education: formData?.education || [],
+                    skills: formData?.skills || [],
+                    templateId: formData?.templateId || "",
                   };
 
                   const updateResult = await updateResume({
@@ -87,6 +127,8 @@ const ResumeEditForm = ({
                       address: updates.address,
                       phone: updates.phone,
                       email: updates.email,
+                      portfolio: updates.portfolio,
+                      linkedin: updates.linkedin,
                       summary: updates.summary,
                       templateId: updates.templateId,
                     },

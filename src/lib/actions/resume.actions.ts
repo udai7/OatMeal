@@ -115,6 +115,8 @@ export async function updateResume({
     address: string;
     phone: string;
     email: string;
+    portfolio: string;
+    linkedin: string;
     summary: string;
     themeColor: string;
     templateId: string;
@@ -231,10 +233,7 @@ export async function addEducationToResume(
   }
 }
 
-export async function addSkillToResume(
-  resumeId: string,
-  skillDataArray: any
-) {
+export async function addSkillToResume(resumeId: string, skillDataArray: any) {
   try {
     const resume = await Resume.findOne({ resumeId: resumeId });
 

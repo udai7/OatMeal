@@ -57,13 +57,15 @@ const ProjectsPreview = () => {
               {project.current
                 ? " - Present"
                 : project.endDate
-                  ? ` - ${formatDate(project.endDate)}`
-                  : ""}
+                ? ` - ${formatDate(project.endDate)}`
+                : ""}
             </span>
           </div>
 
           {project.description && (
-            <p className="text-xs text-justify my-2 text-black">{project.description}</p>
+            <p className="text-xs text-justify my-2 text-black">
+              {project.description}
+            </p>
           )}
 
           {project.link && (
@@ -72,9 +74,7 @@ const ProjectsPreview = () => {
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  color: formData?.themeColor || themeColors[0],
-                }}
+                className="text-blue-500"
               >
                 {project.link}
               </a>
@@ -86,4 +86,4 @@ const ProjectsPreview = () => {
   );
 };
 
-export default ProjectsPreview; 
+export default ProjectsPreview;

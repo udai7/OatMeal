@@ -29,7 +29,7 @@ function PersonalDetailsPreview() {
         {formData?.address}
       </h2>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-wrap gap-2">
         {formData?.phone && (
           <h2
             className="font-normal text-xs"
@@ -46,10 +46,7 @@ function PersonalDetailsPreview() {
             href={formData?.portfolio}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-normal text-xs cursor-pointer"
-            style={{
-              color: formData?.themeColor || themeColors[0],
-            }}
+            className="font-normal text-xs cursor-pointer text-blue-500 break-all"
           >
             {formData?.portfolio}
           </a>
@@ -60,10 +57,7 @@ function PersonalDetailsPreview() {
             href={formData?.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-normal text-xs cursor-pointer"
-            style={{
-              color: formData?.themeColor || themeColors[0],
-            }}
+            className="font-normal text-xs cursor-pointer text-blue-500 break-all"
           >
             {formData?.linkedin}
           </a>
