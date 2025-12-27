@@ -34,6 +34,7 @@ import {
   Check,
   Briefcase,
   Pencil,
+  Mail,
 } from "lucide-react";
 import { EvervaultCard, Icon } from "@/components/ui/evervault-card";
 import { toast } from "@/components/ui/use-toast";
@@ -192,10 +193,15 @@ const CoverLetterPage = () => {
       <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Cover Letter Generator
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
+              <Mail className="h-7 w-7 text-primary-500" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
+              Cover Letter Generator
+            </h2>
+          </div>
+          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
             Create personalized, professional cover letters tailored to your
             dream job using AI.
           </p>
@@ -206,9 +212,9 @@ const CoverLetterPage = () => {
           <div className="lg:col-span-5 space-y-6">
             <Card className="shadow-sm border border-gray-200 dark:border-gray-800">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <FileText className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-3 text-xl">
+                  <div className="p-2 bg-primary-700/20 border border-primary-700/30 rounded-lg">
+                    <FileText className="h-5 w-5 text-primary-500" />
                   </div>
                   Resume Selection
                 </CardTitle>
@@ -249,9 +255,9 @@ const CoverLetterPage = () => {
 
             <Card className="shadow-sm border border-gray-200 dark:border-gray-800">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <Briefcase className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-3 text-xl">
+                  <div className="p-2 bg-primary-700/20 border border-primary-700/30 rounded-lg">
+                    <Briefcase className="h-5 w-5 text-primary-500" />
                   </div>
                   Job Details
                 </CardTitle>

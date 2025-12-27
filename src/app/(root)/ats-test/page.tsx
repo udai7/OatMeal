@@ -28,7 +28,14 @@ import {
 } from "@/components/ui/card";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { Search, Sparkles, Check, AlertCircle } from "lucide-react";
+import {
+  Search,
+  Sparkles,
+  Check,
+  AlertCircle,
+  FileCheck2,
+  Briefcase,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { EvervaultCard, Icon } from "@/components/ui/evervault-card";
@@ -115,12 +122,17 @@ const ATSTest = () => {
       <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Resume Optimization Center
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Optimize your resume for Applicant Tracking Systems (ATS) to
-            increase your chances of getting hired.
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
+              <FileCheck2 className="h-7 w-7 text-primary-500" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
+              ATS Resume Checker
+            </h2>
+          </div>
+          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
+            Optimize your resume for Applicant Tracking Systems to increase your
+            chances of getting hired.
           </p>
         </div>
 
@@ -128,9 +140,9 @@ const ATSTest = () => {
           <div className="lg:col-span-5 space-y-6">
             <Card className="shadow-sm border border-gray-200 dark:border-gray-800">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <Search className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-3 text-xl">
+                  <div className="p-2 bg-primary-700/20 border border-primary-700/30 rounded-lg">
+                    <Search className="h-5 w-5 text-primary-500" />
                   </div>
                   Resume Selection
                 </CardTitle>
@@ -180,9 +192,9 @@ const ATSTest = () => {
 
             <Card className="shadow-sm border border-gray-200 dark:border-gray-800">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <Search className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-3 text-xl">
+                  <div className="p-2 bg-primary-700/20 border border-primary-700/30 rounded-lg">
+                    <Briefcase className="h-5 w-5 text-primary-500" />
                   </div>
                   Job Details
                 </CardTitle>

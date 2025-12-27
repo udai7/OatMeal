@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description:
     "Generate a polished, professional resume in just a few clicks with our AI-powered resume builder.",
   icons: {
-    icon: "/icons/favicon.ico",
+    icon: "/icons/cat-removebg-preview.png",
   },
 };
 
@@ -34,7 +34,7 @@ export default function RootLayout({
       appearance={{
         layout: {
           socialButtonsPlacement: "bottom",
-          logoImageUrl: "/icons/logo.svg",
+          logoImageUrl: "/icons/cat-removebg-preview.png",
         },
       }}
     >
