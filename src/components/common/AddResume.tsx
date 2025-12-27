@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2, PlusSquare } from "lucide-react";
+import { FileUpload } from "../ui/file-upload";
 import {
   Dialog,
   DialogContent,
@@ -88,14 +89,8 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
 
   return (
     <>
-      <div
-        className="group relative w-[240px] h-[340px] border border-dashed border-neutral-800 flex items-center justify-center bg-neutral-900/50 rounded-xl hover:scale-105 transition-all cursor-pointer hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:border-blue-500"
-        onClick={() => userId && setOpenDialog(true)}
-      >
-        <PlusSquare
-          className="text-gray-400 group-hover:text-blue-400 transition-colors"
-          size={32}
-        />
+      <div className="w-[240px] h-[340px] flex items-center justify-center">
+        <FileUpload onClick={() => userId && setOpenDialog(true)} />
       </div>
 
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
@@ -125,9 +120,8 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
                       <Input
                         type="text"
                         placeholder="Example: Android Developer Resume"
-                        className={`no-focus ${
-                          form.formState.errors.name ? "error" : ""
-                        }`}
+                        className={`no-focus ${form.formState.errors.name ? "error" : ""
+                          }`}
                         autoComplete="off"
                         {...field}
                       />

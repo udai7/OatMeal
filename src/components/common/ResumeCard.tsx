@@ -27,6 +27,16 @@ import { deleteResume } from "@/lib/actions/resume.actions";
 import { useToast } from "../ui/use-toast";
 import { usePathname } from "next/navigation";
 import { CardBody, CardContainer, CardItem } from "../ui/3d-card";
+import { motion } from "motion/react";
+
+const secondaryVariant = {
+  initial: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+  },
+};
 
 const ResumeCard = ({
   resume,
@@ -81,63 +91,74 @@ const ResumeCard = ({
 
   return (
     <>
-      <div className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-[240px] h-[340px] rounded-xl p-6 border flex-shrink-0 flex flex-col">
-        <div className="text-xl font-bold text-neutral-600 dark:text-white truncate w-full">
-          {myResume.title}
+      <motion.div
+        whileHover="animate"
+        className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-[240px] h-[340px] rounded-xl p-6 border flex-shrink-0 flex flex-col"
+      >
+        <div className="absolute -inset-[1px] z-0 pointer-events-none">
+          <motion.div
+            variants={secondaryVariant}
+            className="absolute opacity-0 border border-dashed border-sky-400 inset-0 z-30 bg-transparent rounded-xl"
+          ></motion.div>
         </div>
-        <p className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300">
-          Last updated: {new Date().toLocaleDateString()}
-        </p>
-        <div className="w-full mt-4">
-          <Link href={"/my-resume/" + myResume.resumeId + "/view"}>
-            <div
-              className="bg-gradient-to-b from-pink-100 via-purple-200 to-blue-200 rounded-xl h-40 w-full flex items-center justify-center group-hover/card:shadow-xl"
-              style={{
-                borderColor: myResume?.themeColor,
-              }}
+        <div className="relative z-10 flex flex-col h-full">
+          <div className="text-xl font-bold text-neutral-600 dark:text-white truncate w-full">
+            {myResume.title}
+          </div>
+          <p className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300">
+            Last updated: {new Date().toLocaleDateString()}
+          </p>
+          <div className="w-full mt-4">
+            <Link href={"/my-resume/" + myResume.resumeId + "/view"}>
+              <div
+                className="bg-gradient-to-b from-pink-100 via-purple-200 to-blue-200 rounded-xl h-40 w-full flex items-center justify-center group-hover/card:shadow-xl"
+                style={{
+                  borderColor: myResume?.themeColor,
+                }}
+              >
+                <img
+                  src="/img/blank-cv.png"
+                  width={80}
+                  height={80}
+                  alt="resume thumbnail"
+                />
+              </div>
+            </Link>
+          </div>
+          <div className="flex justify-between items-center mt-auto">
+            <Link
+              href={"/my-resume/" + myResume.resumeId + "/edit"}
+              className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white hover:bg-neutral-800 transition-colors inline-block"
             >
-              <img
-                src="/img/blank-cv.png"
-                width={80}
-                height={80}
-                alt="resume thumbnail"
-              />
-            </div>
-          </Link>
+              Edit Resume →
+            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <MoreVertical className="h-4 w-4 cursor-pointer text-white" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={() =>
+                    router.push("/my-resume/" + myResume.resumeId + "/edit")
+                  }
+                >
+                  Edit
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() =>
+                    router.push("/my-resume/" + myResume.resumeId + "/view")
+                  }
+                >
+                  View
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setOpenAlert(true)}>
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-        <div className="flex justify-between items-center mt-auto">
-          <Link
-            href={"/my-resume/" + myResume.resumeId + "/edit"}
-            className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white hover:bg-neutral-800 transition-colors inline-block"
-          >
-            Edit Resume →
-          </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <MoreVertical className="h-4 w-4 cursor-pointer text-white" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem
-                onClick={() =>
-                  router.push("/my-resume/" + myResume.resumeId + "/edit")
-                }
-              >
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() =>
-                  router.push("/my-resume/" + myResume.resumeId + "/view")
-                }
-              >
-                View
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setOpenAlert(true)}>
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+      </motion.div>
 
       <AlertDialog open={openAlert}>
         <AlertDialogContent>
