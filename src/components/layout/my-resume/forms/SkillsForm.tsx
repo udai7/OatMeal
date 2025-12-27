@@ -35,11 +35,11 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
         formData?.skills?.length > 0
           ? formData.skills
           : [
-            {
-              name: "",
-              rating: 1,
-            },
-          ],
+              {
+                name: "",
+                rating: 1,
+              },
+            ],
     },
   });
 
@@ -118,10 +118,11 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
           {fields.map((item, index) => (
             <div
               key={item.id}
-              className={`flex max-lg:flex-col ${form.formState.errors.skills?.[index]?.name
+              className={`flex max-lg:flex-col ${
+                form.formState.errors.skills?.[index]?.name
                   ? "lg:items-center"
                   : "lg:items-end"
-                } justify-between mb-2 border border-neutral-700 rounded-lg p-3 space-y-2 lg:space-x-12 bg-neutral-900/50`}
+              } justify-between mb-2 border border-neutral-700 rounded-lg p-3 space-y-2 lg:space-x-12 bg-neutral-900/50`}
             >
               <FormField
                 control={form.control}
@@ -133,10 +134,11 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.skills?.[index]?.name
+                        className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${
+                          form.formState.errors.skills?.[index]?.name
                             ? "border-red-500"
                             : ""
-                          }`}
+                        }`}
                         {...field}
                         onChange={(e) => {
                           field.onChange(e);

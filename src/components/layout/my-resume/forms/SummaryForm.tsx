@@ -130,8 +130,9 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
                   </div>
                   <FormControl>
                     <Textarea
-                      className={`no-focus min-h-[10em] bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.summary ? "border-red-500" : ""
-                        }`}
+                      className={`no-focus min-h-[10em] bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${
+                        form.formState.errors.summary ? "border-red-500" : ""
+                      }`}
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
@@ -173,8 +174,11 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
                   target: { name: "summary", value: item?.summary },
                 })
               }
-              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 bg-neutral-900 border border-neutral-800 ${isAiLoading ? "cursor-not-allowed" : "cursor-pointer hover:bg-neutral-800"
-                }`}
+              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 bg-neutral-900 border border-neutral-800 ${
+                isAiLoading
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer hover:bg-neutral-800"
+              }`}
               aria-disabled={isAiLoading}
             >
               <h2 className="font-semibold my-1 text-primary">

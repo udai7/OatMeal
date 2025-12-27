@@ -42,25 +42,31 @@ function PersonalDetailsPreview() {
         )}
 
         {formData?.portfolio && (
-          <h2
-            className="font-normal text-xs"
+          <a
+            href={formData?.portfolio}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-normal text-xs cursor-pointer"
             style={{
               color: formData?.themeColor || themeColors[0],
             }}
           >
             {formData?.portfolio}
-          </h2>
+          </a>
         )}
 
         {formData?.linkedin && (
-          <h2
-            className="font-normal text-xs"
+          <a
+            href={formData?.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-normal text-xs cursor-pointer"
             style={{
               color: formData?.themeColor || themeColors[0],
             }}
           >
             {formData?.linkedin}
-          </h2>
+          </a>
         )}
 
         {formData?.email && (

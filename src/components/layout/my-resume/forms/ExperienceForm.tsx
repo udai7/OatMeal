@@ -42,16 +42,16 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
         formData?.experience?.length > 0
           ? formData.experience
           : [
-            {
-              title: "",
-              companyName: "",
-              city: "",
-              state: "",
-              startDate: "",
-              endDate: "",
-              workSummary: "",
-            },
-          ],
+              {
+                title: "",
+                companyName: "",
+                city: "",
+                state: "",
+                startDate: "",
+                endDate: "",
+                workSummary: "",
+              },
+            ],
     },
   });
 
@@ -234,12 +234,13 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
                               type={config.type}
                               {...field}
                               value={field.value as string}
-                              className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.experience?.[index]?.[
+                              className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${
+                                form.formState.errors.experience?.[index]?.[
                                   config.name
                                 ]
                                   ? "border-red-500"
                                   : ""
-                                }`}
+                              }`}
                               onChange={(e) => {
                                 field.onChange(e);
                                 handleChange(index, e);
@@ -310,14 +311,19 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
                   },
                 });
               }}
-              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 bg-neutral-900 border border-neutral-800 ${isAiLoading ? "cursor-not-allowed" : "cursor-pointer hover:bg-neutral-800"
-                }`}
+              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 bg-neutral-900 border border-neutral-800 ${
+                isAiLoading
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer hover:bg-neutral-800"
+              }`}
               aria-disabled={isAiLoading}
             >
               <h2 className="font-semibold my-1 text-primary">
                 Level: {item?.activity_level}
               </h2>
-              <p className="text-justify text-neutral-300">{item?.description}</p>
+              <p className="text-justify text-neutral-300">
+                {item?.description}
+              </p>
             </div>
           ))}
         </div>

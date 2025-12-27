@@ -105,10 +105,11 @@ const PersonalDetailsForm = ({ params }: { params: { id: string } }) => {
                     <FormControl>
                       <Input
                         type={field.type}
-                        className={`no-focus border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-500 ${form.formState.errors[field.name]
+                        className={`no-focus border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-500 ${
+                          form.formState.errors[field.name]
                             ? "border-red-500"
                             : ""
-                          }`}
+                        }`}
                         autoComplete="off"
                         {...formField}
                         onChange={(e) => {
