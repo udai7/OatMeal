@@ -27,6 +27,20 @@ export const phone = z
 
 export const email = z.string().email({ message: "Invalid email address" });
 
+export const portfolio = z
+  .string()
+  .trim()
+  .url({ message: "Invalid URL" })
+  .optional()
+  .or(z.literal(""));
+
+export const linkedin = z
+  .string()
+  .trim()
+  .url({ message: "Invalid URL" })
+  .optional()
+  .or(z.literal(""));
+
 export const summary = z
   .string()
   .min(10, { message: "Summary must be at least 10 characters long" })
@@ -91,6 +105,8 @@ export const PersonalDetailValidationSchema = z.object({
   address,
   phone,
   email,
+  portfolio,
+  linkedin,
 });
 
 export const SummaryValidationSchema = z.object({

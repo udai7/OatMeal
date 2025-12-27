@@ -12,6 +12,8 @@ const resumeSchema = new mongoose.Schema({
   address: { type: String },
   phone: { type: String },
   email: { type: String },
+  portfolio: { type: String },
+  linkedin: { type: String },
   summary: { type: String },
   experience: [{ type: mongoose.Schema.Types.ObjectId, ref: "Experience" }],
   projects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Project" }],

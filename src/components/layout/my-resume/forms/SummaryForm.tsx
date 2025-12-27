@@ -130,7 +130,7 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
                   </div>
                   <FormControl>
                     <Textarea
-                      className={`no-focus min-h-[10em] bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.summary ? "error" : ""
+                      className={`no-focus min-h-[10em] bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.summary ? "border-red-500" : ""
                         }`}
                       {...field}
                       onChange={(e) => {

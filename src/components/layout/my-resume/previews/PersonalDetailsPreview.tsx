@@ -30,23 +30,49 @@ function PersonalDetailsPreview() {
       </h2>
 
       <div className="flex justify-between">
-        <h2
-          className="font-normal text-xs"
-          style={{
-            color: formData?.themeColor || themeColors[0],
-          }}
-        >
-          {formData?.phone}
-        </h2>
+        {formData?.phone && (
+          <h2
+            className="font-normal text-xs"
+            style={{
+              color: formData?.themeColor || themeColors[0],
+            }}
+          >
+            {formData?.phone}
+          </h2>
+        )}
 
-        <h2
-          className="font-normal text-xs"
-          style={{
-            color: formData?.themeColor || themeColors[0],
-          }}
-        >
-          {formData?.email}
-        </h2>
+        {formData?.portfolio && (
+          <h2
+            className="font-normal text-xs"
+            style={{
+              color: formData?.themeColor || themeColors[0],
+            }}
+          >
+            {formData?.portfolio}
+          </h2>
+        )}
+
+        {formData?.linkedin && (
+          <h2
+            className="font-normal text-xs"
+            style={{
+              color: formData?.themeColor || themeColors[0],
+            }}
+          >
+            {formData?.linkedin}
+          </h2>
+        )}
+
+        {formData?.email && (
+          <h2
+            className="font-normal text-xs"
+            style={{
+              color: formData?.themeColor || themeColors[0],
+            }}
+          >
+            {formData?.email}
+          </h2>
+        )}
       </div>
 
       <hr

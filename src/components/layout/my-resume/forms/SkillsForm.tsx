@@ -134,7 +134,7 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
                     <FormControl>
                       <Input
                         className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.skills?.[index]?.name
-                            ? "error"
+                            ? "border-red-500"
                             : ""
                           }`}
                         {...field}

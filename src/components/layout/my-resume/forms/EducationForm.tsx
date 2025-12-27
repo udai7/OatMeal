@@ -233,7 +233,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                               className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.education?.[index]?.[
                                   config.name
                                 ]
-                                  ? "error"
+                                  ? "border-red-500"
                                   : ""
                                 }`}
                               rows={6}
@@ -246,7 +246,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                               className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.education?.[index]?.[
                                   config.name
                                 ]
-                                  ? "error"
+                                  ? "border-red-500"
                                   : ""
                                 }`}
                               onChange={(e) => {

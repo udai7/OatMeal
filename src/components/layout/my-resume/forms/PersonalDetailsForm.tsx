@@ -36,6 +36,8 @@ const PersonalDetailsForm = ({ params }: { params: { id: string } }) => {
       address: "",
       phone: "",
       email: "",
+      portfolio: "",
+      linkedin: "",
     },
   });
 
@@ -48,6 +50,8 @@ const PersonalDetailsForm = ({ params }: { params: { id: string } }) => {
         address: formData?.address || "",
         phone: formData?.phone || "",
         email: formData?.email || "",
+        portfolio: formData?.portfolio || "",
+        linkedin: formData?.linkedin || "",
       });
     }
   }, [formData, form]);
@@ -101,9 +105,9 @@ const PersonalDetailsForm = ({ params }: { params: { id: string } }) => {
                     <FormControl>
                       <Input
                         type={field.type}
-                        className={`no-focus ${form.formState.errors[field.name]
-                            ? "error"
-                            : "border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-500"
+                        className={`no-focus border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-500 ${form.formState.errors[field.name]
+                            ? "border-red-500"
+                            : ""
                           }`}
                         autoComplete="off"
                         {...formField}
