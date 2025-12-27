@@ -51,7 +51,7 @@ const DashboardCards = () => {
 
   return (
     <>
-      <div className="relative mt-10">
+      <div className="relative mt-10 w-full max-w-[1400px]">
         <div className="flex gap-4 items-start">
           <div className="flex-shrink-0 w-[240px]">
             <AddResume userId={userId} />
