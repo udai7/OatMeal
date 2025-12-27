@@ -35,11 +35,11 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
         formData?.skills?.length > 0
           ? formData.skills
           : [
-              {
-                name: "",
-                rating: 1,
-              },
-            ],
+            {
+              name: "",
+              rating: 1,
+            },
+          ],
     },
   });
 
@@ -105,11 +105,11 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <div className="p-5 shadow-lg rounded-lg border-t-primary-700 border-t-4 bg-white">
-      <h2 className="text-lg font-semibold leading-none tracking-tight">
+    <div className="p-5 shadow-lg rounded-lg border-t-primary-700 border-t-4 bg-neutral-900 border border-neutral-800">
+      <h2 className="text-lg font-semibold leading-none tracking-tight text-white">
         Skill Sets
       </h2>
-      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+      <p className="mt-1 text-sm text-neutral-400">
         Add your top professional key skills
       </p>
 
@@ -118,27 +118,25 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
           {fields.map((item, index) => (
             <div
               key={item.id}
-              className={`flex max-lg:flex-col ${
-                form.formState.errors.skills?.[index]?.name
+              className={`flex max-lg:flex-col ${form.formState.errors.skills?.[index]?.name
                   ? "lg:items-center"
                   : "lg:items-end"
-              } justify-between mb-2 border rounded-lg p-3 space-y-2 lg:space-x-12`}
+                } justify-between mb-2 border border-neutral-700 rounded-lg p-3 space-y-2 lg:space-x-12 bg-neutral-900/50`}
             >
               <FormField
                 control={form.control}
                 name={`skills.${index}.name`}
                 render={({ field }) => (
                   <FormItem className="space-y-2 w-full">
-                    <FormLabel className="text-slate-700 font-semibold text-md">
+                    <FormLabel className="text-neutral-300 font-semibold text-md">
                       Name:
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className={`no-focus ${
-                          form.formState.errors.skills?.[index]?.name
+                        className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.skills?.[index]?.name
                             ? "error"
                             : ""
-                        }`}
+                          }`}
                         {...field}
                         onChange={(e) => {
                           field.onChange(e);
@@ -173,7 +171,7 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
               <Button
                 variant="outline"
                 onClick={() => append({ name: "", rating: 1 })}
-                className="text-primary"
+                className="text-primary bg-transparent hover:bg-neutral-800 border-primary"
                 type="button"
               >
                 <Plus className="size-4 mr-2" /> Add More
@@ -181,7 +179,7 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
               <Button
                 variant="outline"
                 onClick={() => remove(fields.length - 1)}
-                className="text-primary"
+                className="text-primary bg-transparent hover:bg-neutral-800 border-primary"
                 type="button"
               >
                 <Minus className="size-4 mr-2" /> Remove

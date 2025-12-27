@@ -93,11 +93,11 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
 
   return (
     <div>
-      <div className="p-5 shadow-lg rounded-lg border-t-primary-700 border-t-4 bg-white">
-        <h2 className="text-lg font-semibold leading-none tracking-tight">
+      <div className="p-5 shadow-lg rounded-lg border-t-primary-700 border-t-4 bg-neutral-900 border border-neutral-800">
+        <h2 className="text-lg font-semibold leading-none tracking-tight text-white">
           Summary
         </h2>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        <p className="mt-1 text-sm text-neutral-400">
           Add summary about your job
         </p>
 
@@ -109,7 +109,7 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
               render={({ field }) => (
                 <FormItem>
                   <div className="flex justify-between items-end">
-                    <FormLabel className="text-slate-700 font-semibold text-md">
+                    <FormLabel className="text-neutral-300 font-semibold text-md">
                       Summary:
                     </FormLabel>
                     <Button
@@ -117,7 +117,7 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
                       onClick={generateSummaryFromAI}
                       type="button"
                       size="sm"
-                      className="border-primary text-primary flex gap-2"
+                      className="border-primary text-primary flex gap-2 bg-transparent hover:bg-neutral-800"
                       disabled={isAiLoading}
                     >
                       {isAiLoading ? (
@@ -130,9 +130,8 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
                   </div>
                   <FormControl>
                     <Textarea
-                      className={`no-focus min-h-[10em] ${
-                        form.formState.errors.summary ? "error" : ""
-                      }`}
+                      className={`no-focus min-h-[10em] bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.summary ? "error" : ""
+                        }`}
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
@@ -165,7 +164,7 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
 
       {aiGeneratedSummaryList.length > 0 && (
         <div className="my-5" ref={listRef}>
-          <h2 className="font-bold text-lg">Suggestions</h2>
+          <h2 className="font-bold text-lg text-white">Suggestions</h2>
           {aiGeneratedSummaryList?.map((item: any, index: number) => (
             <div
               key={index}
@@ -174,15 +173,14 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
                   target: { name: "summary", value: item?.summary },
                 })
               }
-              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 ${
-                isAiLoading ? "cursor-not-allowed" : "cursor-pointer"
-              }`}
+              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 bg-neutral-900 border border-neutral-800 ${isAiLoading ? "cursor-not-allowed" : "cursor-pointer hover:bg-neutral-800"
+                }`}
               aria-disabled={isAiLoading}
             >
-              <h2 className="font-semibold my-1 text-primary text-gray-800">
+              <h2 className="font-semibold my-1 text-primary">
                 Level: {item?.experience_level}
               </h2>
-              <p className="text-justify text-gray-600">{item?.summary}</p>
+              <p className="text-justify text-neutral-300">{item?.summary}</p>
             </div>
           ))}
         </div>

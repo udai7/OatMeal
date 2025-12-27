@@ -42,15 +42,15 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
         formData?.education?.length > 0
           ? formData.education
           : [
-              {
-                universityName: "",
-                degree: "",
-                major: "",
-                startDate: "",
-                endDate: "",
-                description: "",
-              },
-            ],
+            {
+              universityName: "",
+              degree: "",
+              major: "",
+              startDate: "",
+              endDate: "",
+              description: "",
+            },
+          ],
     },
   });
 
@@ -171,11 +171,11 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
 
   return (
     <div>
-      <div className="p-5 shadow-lg rounded-lg border-t-primary-700 border-t-4 bg-white">
-        <h2 className="text-lg font-semibold leading-none tracking-tight">
+      <div className="p-5 shadow-lg rounded-lg border-t-primary-700 border-t-4 bg-neutral-900 border border-neutral-800">
+        <h2 className="text-lg font-semibold leading-none tracking-tight text-white">
           Education
         </h2>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        <p className="mt-1 text-sm text-neutral-400">
           Add your educational details
         </p>
 
@@ -184,7 +184,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
             {fields.map((item, index) => (
               <div
                 key={item.id}
-                className="grid grid-cols-2 gap-3 border p-3 my-5 rounded-lg"
+                className="grid grid-cols-2 gap-3 border border-neutral-700 p-3 my-5 rounded-lg"
               >
                 {educationFields.map((config) => (
                   <FormField
@@ -195,7 +195,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                       <FormItem className={config.colSpan || ""}>
                         {config.type === "textarea" ? (
                           <div className="flex justify-between items-end">
-                            <FormLabel className="text-slate-700 font-semibold text-md">
+                            <FormLabel className="text-neutral-300 font-semibold text-md">
                               {config.label}:
                             </FormLabel>
                             <Button
@@ -205,7 +205,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                               }
                               type="button"
                               size="sm"
-                              className="border-primary text-primary flex gap-2"
+                              className="border-primary text-primary flex gap-2 bg-transparent hover:bg-neutral-800"
                               disabled={isAiLoading}
                             >
                               {isAiLoading && currentAiIndex === index ? (
@@ -217,7 +217,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                             </Button>
                           </div>
                         ) : (
-                          <FormLabel className="text-slate-700 font-semibold text-md">
+                          <FormLabel className="text-neutral-300 font-semibold text-md">
                             {config.label}:
                           </FormLabel>
                         )}
@@ -230,13 +230,12 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                                 handleChange(index, e);
                               }}
                               defaultValue={(field.value as string) || ""}
-                              className={`no-focus ${
-                                form.formState.errors.education?.[index]?.[
+                              className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.education?.[index]?.[
                                   config.name
                                 ]
                                   ? "error"
                                   : ""
-                              }`}
+                                }`}
                               rows={6}
                             />
                           ) : (
@@ -244,13 +243,12 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                               type={config.type}
                               {...field}
                               value={field.value as string}
-                              className={`no-focus ${
-                                form.formState.errors.education?.[index]?.[
+                              className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.education?.[index]?.[
                                   config.name
                                 ]
                                   ? "error"
                                   : ""
-                              }`}
+                                }`}
                               onChange={(e) => {
                                 field.onChange(e);
                                 handleChange(index, e);
@@ -270,7 +268,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                 <Button
                   variant="outline"
                   onClick={AddNewEducation}
-                  className="text-primary"
+                  className="text-primary bg-transparent hover:bg-neutral-800 border-primary"
                   type="button"
                 >
                   <Plus className="size-4 mr-2" /> Add More
@@ -278,7 +276,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                 <Button
                   variant="outline"
                   onClick={() => RemoveEducation(fields.length - 1)}
-                  className="text-primary"
+                  className="text-primary bg-transparent hover:bg-neutral-800 border-primary"
                   type="button"
                 >
                   <Minus className="size-4 mr-2" /> Remove
@@ -304,7 +302,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
 
       {aiGeneratedDescriptionList.length > 0 && (
         <div className="my-5" ref={listRef}>
-          <h2 className="font-bold text-lg">Suggestions</h2>
+          <h2 className="font-bold text-lg text-white">Suggestions</h2>
           {aiGeneratedDescriptionList?.map((item: any, index: number) => (
             <div
               key={index}
@@ -321,15 +319,14 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                   },
                 });
               }}
-              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 ${
-                isAiLoading ? "cursor-not-allowed" : "cursor-pointer"
-              }`}
+              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 bg-neutral-900 border border-neutral-800 ${isAiLoading ? "cursor-not-allowed" : "cursor-pointer hover:bg-neutral-800"
+                }`}
               aria-disabled={isAiLoading}
             >
-              <h2 className="font-semibold my-1 text-primary text-gray-800">
+              <h2 className="font-semibold my-1 text-primary">
                 Level: {item?.activity_level}
               </h2>
-              <p className="text-justify text-gray-600">{item?.description}</p>
+              <p className="text-justify text-neutral-300">{item?.description}</p>
             </div>
           ))}
         </div>

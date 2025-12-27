@@ -55,14 +55,12 @@ const ThemeOptions = ({ params }: { params: { id: string } }) => {
       toast({
         title: "Information saved.",
         description: "Theme color updated successfully.",
-        className: "bg-white",
       });
     } else {
       toast({
         title: "Uh Oh! Something went wrong.",
         description: result?.error,
         variant: "destructive",
-        className: "bg-white",
       });
     }
   };
@@ -88,14 +86,12 @@ const ThemeOptions = ({ params }: { params: { id: string } }) => {
       toast({
         title: "Information saved.",
         description: "Font updated successfully.",
-        className: "bg-white",
       });
     } else {
       toast({
         title: "Uh Oh! Something went wrong.",
         description: result?.error,
         variant: "destructive",
-        className: "bg-white",
       });
     }
   };
@@ -108,10 +104,10 @@ const ThemeOptions = ({ params }: { params: { id: string } }) => {
           <LayoutGrid /> Theme & Font
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
+      <PopoverContent className="w-80 bg-neutral-900 border-neutral-800 text-white">
         <div className="space-y-4">
           <div>
-            <h2 className="mb-3 text-sm font-bold">Select Theme Color</h2>
+            <h2 className="mb-3 text-sm font-bold text-white">Select Theme Color</h2>
             <div className="grid grid-cols-5 gap-3">
               {themeColors.map((item, index) => (
                 <div
@@ -129,16 +125,16 @@ const ThemeOptions = ({ params }: { params: { id: string } }) => {
               ))}
             </div>
           </div>
-          
+
           <div>
-            <h2 className="mb-3 text-sm font-bold">Select Font</h2>
+            <h2 className="mb-3 text-sm font-bold text-white">Select Font</h2>
             <Select value={selectedFont} onValueChange={onFontSelect}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full bg-neutral-800 border-neutral-700 text-white">
                 <SelectValue placeholder="Select font" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-neutral-800 border-neutral-700 text-white">
                 {fontOptions.map((font, index) => (
-                  <SelectItem key={index} value={font}>
+                  <SelectItem key={index} value={font} className="focus:bg-neutral-700 focus:text-white">
                     <span style={{ fontFamily: font }}>{font.split(',')[0]}</span>
                   </SelectItem>
                 ))}

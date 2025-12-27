@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card } from "../ui/card";
 import { CardSpotlight } from "../ui/card-spotlight";
+import { motion } from "motion/react";
 import {
   Pagination,
   PaginationContent,
@@ -123,21 +124,33 @@ const DashboardCards = () => {
           </div>
 
           <Link href="/ats-test" className="flex-shrink-0 w-[240px]">
-            <CardSpotlight className="h-[340px] w-full flex flex-col items-center justify-center p-6 border-2 border-dashed border-neutral-800 bg-neutral-900/50 hover:border-neutral-700 transition-colors">
-              <div className="relative z-20 h-14 w-14 rounded-full bg-neutral-800 flex items-center justify-center">
+            <motion.div
+              whileHover="animate"
+              className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-full h-[340px] rounded-xl p-6 border flex flex-col items-center justify-center"
+            >
+              <div className="absolute -inset-[1px] z-0 pointer-events-none">
+                <motion.div
+                  variants={{
+                    initial: { opacity: 0 },
+                    animate: { opacity: 1 },
+                  }}
+                  className="absolute opacity-0 border border-dashed border-sky-400 inset-0 z-30 bg-transparent rounded-xl"
+                ></motion.div>
+              </div>
+              <div className="relative z-20 h-14 w-14 rounded-full bg-neutral-800 flex items-center justify-center mb-4">
                 <img
                   src="/icons/document-scan.svg"
                   alt="ATS Test"
                   className="h-8 w-8 invert"
                 />
               </div>
-              <h3 className="relative z-20 mt-4 text-lg font-semibold text-center text-white">
+              <h3 className="relative z-20 text-lg font-semibold text-center text-white">
                 ATS Test
               </h3>
               <p className="relative z-20 text-sm text-center text-gray-400 mt-2">
                 Check if your resume will pass through ATS systems
               </p>
-            </CardSpotlight>
+            </motion.div>
           </Link>
         </div>
       </div>

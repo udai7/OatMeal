@@ -6,7 +6,7 @@ import React from "react";
 import DashboardCards from "@/components/layout/DashboardCards";
 import { MinimalFooter } from "@/components/layout/MinimalFooter";
 
-import AtsCheckCard from "@/components/dashboard/AtsCheckCard";
+import CoverLetterGenerator from "@/components/dashboard/CoverLetterGenerator";
 
 const Dashboard = () => {
   return (
@@ -23,7 +23,7 @@ const Dashboard = () => {
           </section>
 
           <section className="w-full max-w-[1400px]">
-            <AtsCheckCard />
+            <CoverLetterGenerator />
           </section>
         </div>
       </div>

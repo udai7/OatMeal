@@ -12,40 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useFormContext } from "@/lib/context/FormProvider";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { X, Plus, Trash, RefreshCcw } from "lucide-react";
+import { Plus, Trash, RefreshCcw } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/components/ui/use-toast";
 import { addProjectsToResume } from "@/lib/actions/resume.actions";
-
-const ProjectSchema = z.object({
-  name: z.string().min(1, "Project name is required"),
-  description: z.string().optional(),
-  link: z.string().optional(),
-  technologies: z.string().optional(),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
-  current: z.boolean().default(false),
-});
 
 const ProjectsForm = ({ params }: { params: { id: string } }) => {
   const { formData, setFormData } = useFormContext();
@@ -53,7 +25,6 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
   const [isDateSupported, setIsDateSupported] = useState(true);
   const [isGenerating, setIsGenerating] = useState<Record<number, boolean>>({});
   const [isSaving, setIsSaving] = useState(false);
-  const themeColor = formData?.themeColor || "primary";
 
   useEffect(() => {
     try {
@@ -121,16 +92,16 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
       ...formData,
       projects: updatedProjects
     });
-    
+
     // Autosave after a delay
     autoSaveProjects(updatedProjects);
   };
-  
+
   // Debounce function for autosave
   let saveTimeout: any = null;
   const autoSaveProjects = (projectsToSave: any[]) => {
     if (saveTimeout) clearTimeout(saveTimeout);
-    
+
     saveTimeout = setTimeout(async () => {
       if (!isSaving && params.id) {
         setIsSaving(true);
@@ -157,8 +128,8 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
       return;
     }
 
-    setIsGenerating({...isGenerating, [index]: true});
-    
+    setIsGenerating({ ...isGenerating, [index]: true });
+
     try {
       const response = await fetch('/api/generate-project-details', {
         method: 'POST',
@@ -176,14 +147,14 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
 
       // Update the project fields
       const updatedProjects = [...projects];
-      updatedProjects[index] = { 
-        ...updatedProjects[index], 
+      updatedProjects[index] = {
+        ...updatedProjects[index],
         description: result.data.description,
-        technologies: result.data.technologies 
+        technologies: result.data.technologies
       };
       setProjects(updatedProjects);
       updateFormData(updatedProjects);
-      
+
       toast({
         title: "Project Details Generated",
         description: "Description and technologies have been filled automatically",
@@ -197,21 +168,18 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
         variant: "destructive",
       });
     } finally {
-      setIsGenerating({...isGenerating, [index]: false});
+      setIsGenerating({ ...isGenerating, [index]: false });
     }
   };
 
   return (
     <div className="mb-20">
-      <Card className="bg-white shadow border-none">
-        <CardHeader className={`bg-${themeColor}-50 rounded-t-lg`}>
+      <Card className="bg-neutral-900 shadow-lg border border-neutral-800">
+        <CardHeader className="bg-neutral-900 rounded-t-lg border-b border-neutral-800">
           <div className="flex flex-col gap-2">
-            <div className={`bg-${themeColor}-700 text-white w-6 h-6 rounded-md flex items-center justify-center`}>
-              4
-            </div>
             <div>
-              <CardTitle className={`text-${themeColor}-700 font-semibold`}>Projects</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-white font-semibold">Projects</CardTitle>
+              <CardDescription className="text-neutral-400">
                 Add your projects to showcase your skills and achievements
               </CardDescription>
             </div>
@@ -221,7 +189,7 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
           {projects.map((project, index) => (
             <div
               key={index}
-              className="border rounded-lg p-5 mb-5 relative bg-gray-50/50"
+              className="border border-neutral-700 rounded-lg p-5 mb-5 relative bg-neutral-900/50"
             >
               <div className="absolute right-3 top-3">
                 {projects.length > 1 && (
@@ -229,7 +197,7 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
                     variant="ghost"
                     size="icon"
                     onClick={() => removeProject(index)}
-                    className="size-8 rounded-full text-gray-500 hover:text-red-500"
+                    className="size-8 rounded-full text-neutral-500 hover:text-red-500 hover:bg-neutral-800"
                   >
                     <Trash size={16} />
                   </Button>
@@ -237,7 +205,7 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
               </div>
 
               <div className="mb-5">
-                <Label htmlFor={`project-${index}-name`} className={`mb-2 block font-medium text-${themeColor}-700`}>
+                <Label htmlFor={`project-${index}-name`} className="mb-2 block font-medium text-neutral-300">
                   Project Name*
                 </Label>
                 <Input
@@ -247,7 +215,7 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
                   onChange={(e) =>
                     updateProjectField(index, "name", e.target.value)
                   }
-                  className={`border-gray-300 focus:border-${themeColor}-500 focus:ring-${themeColor}-500`}
+                  className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 focus:ring-primary-500"
                 />
               </div>
 
@@ -255,7 +223,7 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
                 <div>
                   <Label
                     htmlFor={`project-${index}-date-start`}
-                    className="mb-2 block font-medium text-gray-700"
+                    className="mb-2 block font-medium text-neutral-300"
                   >
                     Start Date
                   </Label>
@@ -267,14 +235,14 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
                     onChange={(e) =>
                       updateProjectField(index, "startDate", e.target.value)
                     }
-                    className={`border-gray-300 focus:border-${themeColor}-500 focus:ring-${themeColor}-500`}
+                    className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 focus:ring-primary-500"
                   />
                 </div>
 
                 <div>
                   <Label
                     htmlFor={`project-${index}-date-end`}
-                    className="mb-2 block font-medium text-gray-700"
+                    className="mb-2 block font-medium text-neutral-300"
                   >
                     End Date
                   </Label>
@@ -287,7 +255,7 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
                       updateProjectField(index, "endDate", e.target.value)
                     }
                     disabled={project.current}
-                    className={`border-gray-300 focus:border-${themeColor}-500 focus:ring-${themeColor}-500`}
+                    className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 focus:ring-primary-500 disabled:opacity-50"
                   />
                 </div>
               </div>
@@ -300,11 +268,11 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
                     onCheckedChange={(checked: boolean) =>
                       updateProjectField(index, "current", checked)
                     }
-                    className={`text-${themeColor}-600 border-gray-300 focus:ring-${themeColor}-500`}
+                    className="border-neutral-600 data-[state=checked]:bg-primary-600 data-[state=checked]:border-primary-600"
                   />
                   <label
                     htmlFor={`project-${index}-current`}
-                    className="text-sm font-medium text-gray-700 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-sm font-medium text-neutral-300 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
                     This is an ongoing project
                   </label>
@@ -312,7 +280,7 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
               </div>
 
               <div className="mb-5">
-                <Label htmlFor={`project-${index}-link`} className="mb-2 block font-medium text-gray-700">
+                <Label htmlFor={`project-${index}-link`} className="mb-2 block font-medium text-neutral-300">
                   Project Link
                 </Label>
                 <div className="flex gap-2">
@@ -323,15 +291,15 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
                     onChange={(e) =>
                       updateProjectField(index, "link", e.target.value)
                     }
-                    className={`flex-1 border-gray-300 focus:border-${themeColor}-500 focus:ring-${themeColor}-500`}
+                    className="flex-1 bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 focus:ring-primary-500"
                   />
                   {project.link && project.link.includes('github.com') && (
-                    <Button 
-                      type="button" 
+                    <Button
+                      type="button"
                       size="sm"
                       onClick={() => generateProjectDetails(index, project.link)}
                       disabled={isGenerating[index]}
-                      className={`whitespace-nowrap bg-${themeColor}-600 hover:bg-${themeColor}-700 text-white`}
+                      className="whitespace-nowrap bg-primary-600 hover:bg-primary-700 text-white"
                     >
                       {isGenerating[index] ? (
                         <>
@@ -344,7 +312,7 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
                     </Button>
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-neutral-500 mt-1">
                   Add GitHub link and click "Generate Details" to auto-fill description and technologies
                 </p>
               </div>
@@ -352,7 +320,7 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
               <div className="mb-5">
                 <Label
                   htmlFor={`project-${index}-technologies`}
-                  className="mb-2 block font-medium text-gray-700"
+                  className="mb-2 block font-medium text-neutral-300"
                 >
                   Technologies Used
                 </Label>
@@ -363,21 +331,21 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
                   onChange={(e) =>
                     updateProjectField(index, "technologies", e.target.value)
                   }
-                  className={`border-gray-300 focus:border-${themeColor}-500 focus:ring-${themeColor}-500`}
+                  className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 focus:ring-primary-500"
                 />
               </div>
 
               <div className="mb-5">
                 <Label
                   htmlFor={`project-${index}-description`}
-                  className="mb-2 block font-medium text-gray-700"
+                  className="mb-2 block font-medium text-neutral-300"
                 >
                   Description
                 </Label>
                 <Textarea
                   id={`project-${index}-description`}
                   placeholder="Describe your project and your role"
-                  className={`h-24 border-gray-300 focus:border-${themeColor}-500 focus:ring-${themeColor}-500`}
+                  className="h-24 bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 focus:ring-primary-500"
                   value={project.description}
                   onChange={(e) =>
                     updateProjectField(index, "description", e.target.value)
@@ -390,14 +358,14 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
           <Button
             type="button"
             variant="outline"
-            className={`w-full mt-4 border-${themeColor}-200 text-${themeColor}-700 hover:bg-${themeColor}-50`}
+            className="w-full mt-4 border-primary-700 text-primary-400 hover:bg-primary-900/20 bg-transparent"
             onClick={addProject}
           >
             <Plus size={16} className="mr-2" /> Add Another Project
           </Button>
-          
+
           {isSaving && (
-            <p className="text-xs text-muted-foreground text-center mt-2">
+            <p className="text-xs text-neutral-500 text-center mt-2">
               Saving your changes...
             </p>
           )}
@@ -407,4 +375,4 @@ const ProjectsForm = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default ProjectsForm; 
+export default ProjectsForm;

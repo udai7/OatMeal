@@ -77,11 +77,11 @@ const PersonalDetailsForm = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <div className="p-5 shadow-lg rounded-lg border-t-primary-700 border-t-4 bg-white">
-      <h2 className="text-lg font-semibold leading-none tracking-tight">
+    <div className="p-5 shadow-lg rounded-lg border-t-primary-700 border-t-4 bg-neutral-900 border border-neutral-800">
+      <h2 className="text-lg font-semibold leading-none tracking-tight text-white">
         Personal Details
       </h2>
-      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+      <p className="mt-1 text-sm text-neutral-400">
         Get started with the basic information
       </p>
 
@@ -95,17 +95,16 @@ const PersonalDetailsForm = ({ params }: { params: { id: string } }) => {
                 name={field.name}
                 render={({ field: formField }) => (
                   <FormItem className={field.fullWidth ? "col-span-2" : ""}>
-                    <FormLabel className="text-slate-700 font-semibold text-md">
+                    <FormLabel className="text-neutral-300 font-semibold text-md">
                       {field.label}:
                     </FormLabel>
                     <FormControl>
                       <Input
                         type={field.type}
-                        className={`no-focus ${
-                          form.formState.errors[field.name]
+                        className={`no-focus ${form.formState.errors[field.name]
                             ? "error"
-                            : "border-gray-300 bg-white"
-                        }`}
+                            : "border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-500"
+                          }`}
                         autoComplete="off"
                         {...formField}
                         onChange={(e) => {
