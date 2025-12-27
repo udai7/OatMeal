@@ -119,8 +119,11 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
                       <Input
                         type="text"
                         placeholder="Example: Android Developer Resume"
-                        className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.name ? "error" : ""
-                          }`}
+                        className={`no-focus bg-neutral-800 text-white placeholder:text-neutral-500 ${
+                          form.formState.errors.name
+                            ? "border-red-500"
+                            : "border-neutral-700"
+                        }`}
                         autoComplete="off"
                         {...field}
                       />
