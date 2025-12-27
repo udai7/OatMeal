@@ -21,7 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Loader2, MoreVertical } from "lucide-react";
+import { FileText, Loader2, MoreVertical } from "lucide-react";
 import { useRouter } from "next-nprogress-bar";
 import { deleteResume } from "@/lib/actions/resume.actions";
 import { useToast } from "../ui/use-toast";
@@ -102,12 +102,19 @@ const ResumeCard = ({
           ></motion.div>
         </div>
         <div className="relative z-10 flex flex-col h-full">
-          <div className="text-xl font-bold text-neutral-600 dark:text-white truncate w-full">
-            {myResume.title}
+          <div className="flex items-start gap-3 mb-1">
+            <div className="p-2 bg-primary-700/20 border border-primary-700/30 rounded-lg shrink-0">
+              <FileText className="h-4 w-4 text-primary-500" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-lg font-bold text-neutral-600 dark:text-white truncate">
+                {myResume.title}
+              </div>
+              <p className="text-neutral-500 text-xs dark:text-neutral-400">
+                Last updated: {new Date().toLocaleDateString()}
+              </p>
+            </div>
           </div>
-          <p className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300">
-            Last updated: {new Date().toLocaleDateString()}
-          </p>
           <div className="w-full mt-4">
             <Link href={"/my-resume/" + myResume.resumeId + "/view"}>
               <div
@@ -163,7 +170,9 @@ const ResumeCard = ({
       <AlertDialog open={openAlert}>
         <AlertDialogContent className="bg-black border-neutral-800 text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-white">Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle className="text-white">
+              Are you absolutely sure?
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-neutral-400">
               This action cannot be undone. This will permanently delete your
               account and remove your data from our server.

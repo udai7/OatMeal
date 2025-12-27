@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { motion } from "motion/react";
 import { IconPlus } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
+import { FilePlus2 } from "lucide-react";
 
 const mainVariant = {
   initial: {
@@ -75,6 +76,9 @@ export const FileUpload = ({
           <GridPattern />
         </div>
         <div className="flex flex-col items-start justify-start h-full">
+          <div className="relative z-20 p-2.5 bg-primary-700/20 border border-primary-700/30 rounded-xl mb-3">
+            <FilePlus2 className="h-5 w-5 text-primary-500" />
+          </div>
           <p className="relative z-20 font-sans font-bold text-neutral-600 dark:text-white text-xl">
             Create Resume
           </p>

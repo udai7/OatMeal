@@ -62,11 +62,11 @@ const ResumePreview = ({ download = false }) => {
   }
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center p-4 bg-neutral-800/50 rounded-xl border border-neutral-700">
       <div
         className={`${
           download ? "p-12" : "p-12"
-        } shadow-lg border-t-[20px] bg-white w-[210mm] min-h-[297mm] print:shadow-none`}
+        } shadow-2xl border-t-[20px] bg-white w-[210mm] min-h-[297mm] print:shadow-none ring-1 ring-neutral-300`}
         style={{
           borderColor: formData?.themeColor || themeColors[0],
           fontFamily: formData?.fontFamily || "Helvetica, Arial, sans-serif",

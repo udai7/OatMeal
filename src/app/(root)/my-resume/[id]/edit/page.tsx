@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { checkResumeOwnership } from "@/lib/actions/resume.actions";
 import { redirect } from "next/navigation";
 import ResumeEditor from "@/components/layout/my-resume/ResumeEditor";
+import { FileEdit } from "lucide-react";
 
 const EditResume = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
@@ -17,9 +18,16 @@ const EditResume = async ({ params }: { params: { id: string } }) => {
   return (
     <PageWrapper>
       <Header />
-      <div className="mt-20 mb-10 mx-10 md:mx-20 lg:mx-36">
-        <h2 className="text-center text-2xl font-bold">Edit Your Resume</h2>
-        <p className="text-center text-gray-600">
+      <div className="mt-20 mb-8 mx-10 md:mx-20 lg:mx-36">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <div className="p-2.5 bg-primary-700/20 border border-primary-700/30 rounded-xl">
+            <FileEdit className="h-6 w-6 text-primary-500" />
+          </div>
+          <h2 className="text-center text-2xl font-bold text-white">
+            Edit Your Resume
+          </h2>
+        </div>
+        <p className="text-center text-neutral-400">
           Please provide the necessary information for your resume.
         </p>
       </div>

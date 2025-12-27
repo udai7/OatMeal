@@ -45,9 +45,9 @@ const DashboardCards = () => {
     : 0;
   const currentResumes = resumeList
     ? resumeList.slice(
-      (currentPage - 1) * itemsPerPage,
-      (currentPage - 1) * itemsPerPage + 4
-    )
+        (currentPage - 1) * itemsPerPage,
+        (currentPage - 1) * itemsPerPage + 4
+      )
     : [];
 
   return (
@@ -64,19 +64,19 @@ const DashboardCards = () => {
               <div className="flex gap-4">
                 {resumeList !== null
                   ? currentResumes.map((resume: any) => (
-                    <ResumeCard
-                      key={resume.resumeId}
-                      resume={JSON.stringify(resume)}
-                      refreshResumes={loadResumeData}
-                    />
-                  ))
+                      <ResumeCard
+                        key={resume.resumeId}
+                        resume={JSON.stringify(resume)}
+                        refreshResumes={loadResumeData}
+                      />
+                    ))
                   : [1, 2, 3].map((index) => (
-                    <ResumeCard
-                      key={index}
-                      resume={null}
-                      refreshResumes={loadResumeData}
-                    />
-                  ))}
+                      <ResumeCard
+                        key={index}
+                        resume={null}
+                        refreshResumes={loadResumeData}
+                      />
+                    ))}
               </div>
             </div>
 
@@ -137,12 +137,21 @@ const DashboardCards = () => {
                   className="absolute opacity-0 border border-dashed border-sky-400 inset-0 z-30 bg-transparent rounded-xl"
                 ></motion.div>
               </div>
-              <div className="relative z-20 h-14 w-14 rounded-full bg-neutral-800 flex items-center justify-center mb-4">
-                <img
-                  src="/icons/document-scan.svg"
-                  alt="ATS Test"
-                  className="h-8 w-8 invert"
-                />
+              <div className="relative z-20 p-4 bg-primary-700/20 border border-primary-700/30 rounded-xl mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-7 w-7 text-primary-500"
+                >
+                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                  <path d="m9 15 2 2 4-4" />
+                </svg>
               </div>
               <h3 className="relative z-20 text-lg font-semibold text-center text-white">
                 ATS Test

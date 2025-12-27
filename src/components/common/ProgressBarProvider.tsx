@@ -11,9 +11,9 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
   return (
     <>
       <ProgressBar
-        height="4px"
-        color="#2e90fa"
-        options={{ showSpinner: false }}
+        height="2px"
+        color="#ffffff"
+        options={{ showSpinner: false, trickleSpeed: 150 }}
         shallowRouting
       />
       {children}

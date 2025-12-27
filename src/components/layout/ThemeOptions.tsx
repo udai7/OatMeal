@@ -101,43 +101,59 @@ const ThemeOptions = ({ params }: { params: { id: string } }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button size="sm" className="btn-gradient flex gap-2">
-          {" "}
-          <LayoutGrid /> Theme & Font
+        <Button
+          size="sm"
+          className="flex gap-2 bg-primary-700 hover:bg-primary-800 text-white"
+        >
+          <LayoutGrid className="h-4 w-4" /> Theme
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 bg-neutral-900 border-neutral-800 text-white">
+      <PopoverContent
+        className="w-64 bg-black border-neutral-800 text-white p-4"
+        align="start"
+      >
         <div className="space-y-4">
           <div>
-            <h2 className="mb-3 text-sm font-bold text-white">Select Theme Color</h2>
-            <div className="grid grid-cols-5 gap-3">
+            <h2 className="mb-2 text-sm font-medium text-white">Theme Color</h2>
+            <div className="grid grid-cols-5 gap-2">
               {themeColors.map((item, index) => (
-                <div
+                <button
                   key={index}
                   onClick={() => onColorSelect(item)}
-                  className="flex justify-center items-center h-8 w-8 rounded-lg cursor-pointer hover:scale-110 transition-all duration-300"
+                  className="flex justify-center items-center h-8 w-8 rounded-md cursor-pointer hover:scale-110 transition-transform duration-150 ring-2 ring-transparent hover:ring-white/30"
                   style={{
                     background: item,
                   }}
                 >
                   {selectedColor == item && (
-                    <Check color="#ffffff" strokeWidth={3} width={20} height={20} />
+                    <Check
+                      color="#ffffff"
+                      strokeWidth={3}
+                      width={16}
+                      height={16}
+                    />
                   )}
-                </div>
+                </button>
               ))}
             </div>
           </div>
 
-          <div>
-            <h2 className="mb-3 text-sm font-bold text-white">Select Font</h2>
+          <div className="border-t border-neutral-800 pt-4">
+            <h2 className="mb-2 text-sm font-medium text-white">Font Family</h2>
             <Select value={selectedFont} onValueChange={onFontSelect}>
-              <SelectTrigger className="w-full bg-neutral-800 border-neutral-700 text-white">
+              <SelectTrigger className="w-full bg-neutral-900 border-neutral-700 text-white h-9">
                 <SelectValue placeholder="Select font" />
               </SelectTrigger>
-              <SelectContent className="bg-neutral-800 border-neutral-700 text-white">
+              <SelectContent className="bg-neutral-900 border-neutral-700 text-white">
                 {fontOptions.map((font, index) => (
-                  <SelectItem key={index} value={font} className="focus:bg-neutral-700 focus:text-white">
-                    <span style={{ fontFamily: font }}>{font.split(',')[0]}</span>
+                  <SelectItem
+                    key={index}
+                    value={font}
+                    className="focus:bg-neutral-800 focus:text-white"
+                  >
+                    <span style={{ fontFamily: font }}>
+                      {font.split(",")[0]}
+                    </span>
                   </SelectItem>
                 ))}
               </SelectContent>
