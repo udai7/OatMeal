@@ -22,7 +22,7 @@ const Dashboard = () => {
             <DashboardCards />
           </section>
 
-          <section>
+          <section className="w-full max-w-[1400px]">
             <AtsCheckCard />
           </section>
         </div>

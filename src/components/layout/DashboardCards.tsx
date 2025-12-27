@@ -37,13 +37,15 @@ const DashboardCards = () => {
   }, [user?.isLoaded]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; // Show 4 items, but the container width will clip the 4th one to show "3.5"
+  const itemsPerPage = 3; // Show 3 items fully, and the 4th one partially
 
-  const totalPages = resumeList ? Math.ceil(resumeList.length / itemsPerPage) : 0;
+  const totalPages = resumeList
+    ? Math.ceil(resumeList.length / itemsPerPage)
+    : 0;
   const currentResumes = resumeList
     ? resumeList.slice(
       (currentPage - 1) * itemsPerPage,
-      currentPage * itemsPerPage
+      (currentPage - 1) * itemsPerPage + 4
     )
     : [];
 
@@ -57,7 +59,7 @@ const DashboardCards = () => {
 
           <div className="flex flex-col gap-4">
             {/* Width calculation: 3.5 cards * 240px + 3 gaps * 16px = 840 + 48 = 888px */}
-            <div className="w-[888px] overflow-hidden">
+            <div className="w-[888px] overflow-hidden relative [mask-image:linear-gradient(to_right,black_90%,transparent)]">
               <div className="flex gap-4">
                 {resumeList !== null
                   ? currentResumes.map((resume: any) => (
