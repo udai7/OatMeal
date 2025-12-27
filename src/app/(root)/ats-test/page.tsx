@@ -9,21 +9,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { fetchUserResumes } from "@/lib/actions/resume.actions";
 import { useUser } from "@clerk/nextjs";
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { analyzeATS } from "@/lib/actions/ats.actions";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import { Search, Sparkles, Check, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { EvervaultCard, Icon } from "@/components/ui/evervault-card";
 
 const ATSTest = () => {
   const user = useUser();
@@ -36,7 +44,7 @@ const ATSTest = () => {
   const [result, setResult] = useState<any>(null);
   const [uploadedResume, setUploadedResume] = useState<File | null>(null);
   const [resumeText, setResumeText] = useState<string>("");
-  
+
   const loadResumeData = async () => {
     try {
       const resumeData = await fetchUserResumes(userId || "");
@@ -55,7 +63,7 @@ const ATSTest = () => {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setUploadedResume(e.target.files[0]);
-      
+
       // Reading the file content
       const reader = new FileReader();
       reader.onload = async (event) => {
@@ -74,12 +82,14 @@ const ATSTest = () => {
     }
 
     setIsLoading(true);
-    
+
     try {
       let resumeData;
-      
+
       if (selectedResume) {
-        const selectedResumeObj = resumeList.find(resume => resume.resumeId === selectedResume);
+        const selectedResumeObj = resumeList.find(
+          (resume) => resume.resumeId === selectedResume
+        );
         resumeData = selectedResumeObj;
       } else if (resumeText) {
         resumeData = { content: resumeText };
@@ -88,9 +98,9 @@ const ATSTest = () => {
       const analysisResult = await analyzeATS({
         resumeData,
         jobLink,
-        jobDescription
+        jobDescription,
       });
-      
+
       setResult(analysisResult);
     } catch (error) {
       console.error("Error analyzing resume:", error);
@@ -103,37 +113,48 @@ const ATSTest = () => {
   return (
     <PageWrapper>
       <Header />
-      <div className="my-10 !mb-0 mx-10 md:mx-20 lg:mx-36">
-        <h2 className="text-center text-2xl font-bold">
-          Resume Optimization Center
-        </h2>
-        <p className="text-center text-gray-600">
-          Test your resume against ATS systems
-        </p>
-      </div>
-      
-      <div className="p-6 md:px-12 lg:px-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <Card className="shadow-md border-primary/20 hover:border-primary/40 transition-colors">
-              <CardHeader className="bg-muted/50 border-b border-border/70">
-                <CardTitle className="flex items-center gap-2">
-                  <Search className="h-5 w-5 text-primary" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Resume Optimization Center
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Optimize your resume for Applicant Tracking Systems (ATS) to
+            increase your chances of getting hired.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-5 space-y-6">
+            <Card className="shadow-sm border border-gray-200 dark:border-gray-800">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Search className="h-5 w-5 text-primary" />
+                  </div>
                   Resume Selection
                 </CardTitle>
-                <CardDescription>Choose an existing resume or upload a new one</CardDescription>
+                <CardDescription>
+                  Choose an existing resume or upload a new one
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 pt-6">
+              <CardContent className="space-y-4">
                 {resumeList.length > 0 && (
                   <div className="space-y-2">
                     <Label htmlFor="resume-select">Select your resume</Label>
-                    <Select value={selectedResume} onValueChange={setSelectedResume}>
+                    <Select
+                      value={selectedResume}
+                      onValueChange={setSelectedResume}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a resume" />
                       </SelectTrigger>
                       <SelectContent>
                         {resumeList.map((resume) => (
-                          <SelectItem key={resume.resumeId} value={resume.resumeId}>
+                          <SelectItem
+                            key={resume.resumeId}
+                            value={resume.resumeId}
+                          >
                             {resume.title || "Untitled Resume"}
                           </SelectItem>
                         ))}
@@ -141,43 +162,51 @@ const ATSTest = () => {
                     </Select>
                   </div>
                 )}
-                
+
                 <div className="space-y-2">
-                  <Label htmlFor="resume-upload">Or upload a resume (PDF or TXT)</Label>
-                  <Input 
-                    id="resume-upload" 
-                    type="file" 
-                    accept=".pdf,.txt" 
+                  <Label htmlFor="resume-upload">
+                    Or upload a resume (PDF or TXT)
+                  </Label>
+                  <Input
+                    id="resume-upload"
+                    type="file"
+                    accept=".pdf,.txt"
                     onChange={handleFileUpload}
                     disabled={!!selectedResume}
                   />
                 </div>
               </CardContent>
             </Card>
-            
-            <Card className="shadow-md border-primary/20 hover:border-primary/40 transition-colors">
-              <CardHeader className="bg-muted/50 border-b border-border/70">
-                <CardTitle className="flex items-center gap-2">
-                  <Search className="h-5 w-5 text-primary" />
+
+            <Card className="shadow-sm border border-gray-200 dark:border-gray-800">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Search className="h-5 w-5 text-primary" />
+                  </div>
                   Job Details
                 </CardTitle>
-                <CardDescription>Provide job link or description</CardDescription>
+                <CardDescription>
+                  Provide job link or description
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 pt-6">
+              <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="job-link">Job Link (LinkedIn)</Label>
-                  <Input 
-                    id="job-link" 
-                    placeholder="https://www.linkedin.com/jobs/view/..." 
+                  <Input
+                    id="job-link"
+                    placeholder="https://www.linkedin.com/jobs/view/..."
                     value={jobLink}
                     onChange={(e) => setJobLink(e.target.value)}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
-                  <Label htmlFor="job-description">Or paste job description</Label>
-                  <Textarea 
-                    id="job-description" 
+                  <Label htmlFor="job-description">
+                    Or paste job description
+                  </Label>
+                  <Textarea
+                    id="job-description"
                     placeholder="Paste the full job description here..."
                     className="min-h-[200px]"
                     value={jobDescription}
@@ -185,9 +214,9 @@ const ATSTest = () => {
                   />
                 </div>
               </CardContent>
-              <CardFooter className="bg-muted/30 border-t border-border/70 p-4">
-                <Button 
-                  className="w-full" 
+              <CardFooter className="pt-2 pb-6 px-6">
+                <Button
+                  className="w-full h-12 text-lg font-bold shadow-xl shadow-primary/20 bg-primary-700 hover:bg-primary-800 text-white transition-all hover:scale-[1.02]"
                   onClick={handleSubmit}
                   disabled={isLoading}
                 >
@@ -206,140 +235,182 @@ const ATSTest = () => {
               </CardFooter>
             </Card>
           </div>
-          
-          <div>
+
+          <div className="lg:col-span-7 h-full">
             {isLoading ? (
-              <Card className="h-full flex flex-col items-center justify-center shadow-md">
-                <CardContent className="pt-6 text-center">
-                  <div className="bg-primary/10 p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
-                    <Sparkles className="h-10 w-10 text-primary animate-pulse" />
+              <Card className="h-full flex flex-col items-center justify-center shadow-sm border border-gray-200 dark:border-gray-800 min-h-[500px]">
+                <CardContent className="pt-6 text-center max-w-md mx-auto">
+                  <div className="relative mb-8">
+                    <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping opacity-75"></div>
+                    <div className="bg-primary/10 p-6 rounded-full w-24 h-24 flex items-center justify-center relative z-10">
+                      <Sparkles className="h-10 w-10 text-primary animate-pulse" />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold mb-4">Analyzing your resume...</h3>
-                  <Progress value={50} className="w-2/3 mx-auto h-2" />
-                  <p className="text-sm text-gray-500 mt-4">
-                    This may take a minute. We're comparing your resume against the job requirements.
+                  <h3 className="text-2xl font-bold mb-4">
+                    Analyzing your resume...
+                  </h3>
+                  <Progress value={50} className="w-full h-2 mb-4" />
+                  <p className="text-gray-500 animate-pulse">
+                    Comparing your resume against the job requirements...
                   </p>
                 </CardContent>
               </Card>
             ) : result ? (
-              <Card className="h-full shadow-md border-primary/20">
-                <CardHeader className="bg-muted/50 border-b border-border/70">
+              <Card className="shadow-sm border border-gray-200 dark:border-gray-800 flex flex-col h-[840px]">
+                <CardHeader className="border-b border-gray-100 dark:border-gray-800 pb-4 shrink-0">
                   <div className="flex justify-between items-center">
                     <div>
-                      <CardTitle className="flex items-center gap-2">
-                        <Check className="h-5 w-5 text-primary" />
-                        ATS Analysis Results
+                      <CardTitle className="flex items-center gap-2 text-xl">
+                        <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                          <Check className="h-5 w-5 text-green-600 dark:text-green-400" />
+                        </div>
+                        Analysis Results
                       </CardTitle>
-                      <CardDescription>How well your resume matches the job requirements</CardDescription>
+                      <CardDescription>
+                        Here's how your resume performed
+                      </CardDescription>
                     </div>
-                    <Badge variant={result.match_percentage > 70 ? "default" : result.match_percentage > 40 ? "secondary" : "destructive"}>
-                      {result.match_percentage > 70 ? "Good Match" : result.match_percentage > 40 ? "Average Match" : "Poor Match"}
+                    <Badge
+                      className={cn(
+                        "px-4 py-1.5 text-sm font-medium rounded-full",
+                        result.match_percentage > 70
+                          ? "bg-green-100 text-green-800 hover:bg-green-200"
+                          : result.match_percentage > 40
+                          ? "bg-amber-100 text-amber-800 hover:bg-amber-200"
+                          : "bg-red-100 text-red-800 hover:bg-red-200"
+                      )}
+                      variant="outline"
+                    >
+                      {result.match_percentage > 70
+                        ? "Good Match"
+                        : result.match_percentage > 40
+                        ? "Average Match"
+                        : "Poor Match"}
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="flex flex-col items-center mb-6">
-                    <div style={{ width: 200, height: 200 }}>
+                <CardContent className="pt-6 flex-grow overflow-y-auto no-scrollbar">
+                  {/* Score and Assessment Row */}
+                  <div className="flex items-center gap-6 mb-6 p-4 bg-gray-50 dark:bg-gray-800/30 rounded-xl">
+                    <div className="w-24 h-24 shrink-0">
                       <CircularProgressbar
                         value={result.match_percentage}
                         text={`${result.match_percentage}%`}
                         styles={buildStyles({
-                          textSize: '16px',
-                          pathColor: result.match_percentage > 70 ? '#22c55e' : result.match_percentage > 40 ? '#f59e0b' : '#ef4444',
-                          textColor: '#1f2937',
-                          trailColor: '#e5e7eb',
-                          pathTransition: 'stroke-dashoffset 0.5s ease 0s',
+                          textSize: "24px",
+                          pathColor:
+                            result.match_percentage > 70
+                              ? "#22c55e"
+                              : result.match_percentage > 40
+                              ? "#f59e0b"
+                              : "#ef4444",
+                          textColor: "currentColor",
+                          trailColor: "#374151",
+                          pathTransitionDuration: 0.5,
                         })}
+                        className="font-bold text-gray-900 dark:text-white"
                       />
                     </div>
-                    <h3 className="text-xl font-bold mt-4">{result.overall_assessment}</h3>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <h4 className="font-medium mb-2 flex items-center gap-2">
-                        <Check className="h-4 w-4 text-green-600" />
-                        Key Skills Matched
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {result.matched_skills.map((skill: string, index: number) => (
-                          <Badge
-                            key={index}
-                            variant="secondary"
-                            className="bg-green-100 text-green-800 hover:bg-green-200"
-                          >
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <h4 className="font-medium mb-2 flex items-center gap-2">
-                        <AlertCircle className="h-4 w-4 text-red-600" />
-                        Missing Skills
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {result.missing_skills.map((skill: string, index: number) => (
-                          <Badge
-                            key={index}
-                            variant="outline"
-                            className="bg-red-50 text-red-800 border-red-200 hover:bg-red-100"
-                          >
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                        {result.overall_assessment}
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Based on keyword matching and skill alignment
+                      </p>
                     </div>
                   </div>
-                  
-                  <div className="mt-6">
-                    <h4 className="font-medium mb-3 flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-primary" />
+
+                  {/* Skills Section - Horizontal Layout */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-semibold flex items-center gap-2 text-green-600 dark:text-green-400">
+                        <Check className="h-4 w-4" />
+                        Matched ({result.matched_skills.length})
+                      </h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {result.matched_skills.map(
+                          (skill: string, index: number) => (
+                            <span
+                              key={index}
+                              className="px-2 py-1 text-xs bg-green-500/20 text-green-400 rounded-md border border-green-500/30"
+                            >
+                              {skill}
+                            </span>
+                          )
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-semibold flex items-center gap-2 text-red-600 dark:text-red-400">
+                        <AlertCircle className="h-4 w-4" />
+                        Missing ({result.missing_skills.length})
+                      </h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {result.missing_skills.map(
+                          (skill: string, index: number) => (
+                            <span
+                              key={index}
+                              className="px-2 py-1 text-xs bg-red-500/20 text-red-400 rounded-md border border-red-500/30"
+                            >
+                              {skill}
+                            </span>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Suggestions Section */}
+                  <div>
+                    <h4 className="text-sm font-semibold mb-3 flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                      <Sparkles className="h-4 w-4" />
                       Improvement Suggestions
                     </h4>
-                    <Card className="bg-muted/30 border-border/50">
-                      <CardContent className="pt-4">
-                        <ul className="space-y-3">
-                          {result.improvement_suggestions.map((suggestion: string, index: number) => (
-                            <li key={index} className="flex gap-2 text-gray-700">
-                              <span className="text-primary mt-0.5">•</span>
-                              <span>{suggestion}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
+                    <ul className="space-y-2">
+                      {result.improvement_suggestions.map(
+                        (suggestion: string, index: number) => (
+                          <li
+                            key={index}
+                            className="flex gap-2 text-sm text-gray-300 pl-2 border-l-2 border-blue-500/50"
+                          >
+                            <span>{suggestion}</span>
+                          </li>
+                        )
+                      )}
+                    </ul>
                   </div>
                 </CardContent>
-                <CardFooter className="bg-muted/30 border-t border-border/70 flex justify-end">
-                  <Button variant="outline" onClick={() => setResult(null)}>
+                <CardFooter className="border-t border-gray-100 dark:border-gray-800 p-4 flex justify-end shrink-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setResult(null)}
+                    className="hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
                     Test Another Resume
                   </Button>
                 </CardFooter>
               </Card>
             ) : (
-              <Card className="h-full flex flex-col items-center justify-center bg-muted/10 shadow-md">
-                <CardContent className="pt-6 text-center">
-                  <div className="bg-primary/10 rounded-full p-5 w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                    <Search className="h-10 w-10 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold">Ready to test your resume</h3>
-                  <p className="text-sm text-gray-500 mt-2 max-w-md mx-auto">
-                    Select or upload your resume and provide job details to see how well your resume matches the job requirements
-                  </p>
-                  <div className="mt-8 flex items-center justify-center gap-2 text-sm text-gray-600">
-                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                    <span>AI-powered analysis</span>
-                    <span className="mx-2 text-gray-300">•</span>
-                    <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                    <span>Instant results</span>
-                    <span className="mx-2 text-gray-300">•</span>
-                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                    <span>Improvement tips</span>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="border border-black/[0.2] dark:border-white/[0.2] flex flex-col items-start w-full mx-auto p-4 relative h-full min-h-[500px]">
+                <Icon className="absolute h-6 w-6 -top-3 -left-3 dark:text-white text-black" />
+                <Icon className="absolute h-6 w-6 -bottom-3 -left-3 dark:text-white text-black" />
+                <Icon className="absolute h-6 w-6 -top-3 -right-3 dark:text-white text-black" />
+                <Icon className="absolute h-6 w-6 -bottom-3 -right-3 dark:text-white text-black" />
+
+                <EvervaultCard text="ATS" />
+
+                <h2 className="dark:text-white text-black mt-4 text-sm font-light">
+                  Hover over this card to reveal the hidden patterns in your
+                  resume. Our AI analyzes your resume against job descriptions
+                  to ensure you pass the ATS.
+                </h2>
+                <p className="text-sm border font-light dark:border-white/[0.2] border-black/[0.2] rounded-full mt-4 text-black dark:text-white px-2 py-0.5">
+                  AI-Powered Analysis
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -348,4 +419,4 @@ const ATSTest = () => {
   );
 };
 
-export default ATSTest; 
+export default ATSTest;

@@ -3,10 +3,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { fetchResume } from "./resume.actions";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-2.0-flash",
+  model: "gemini-2.5-flash",
 });
 
 const generationConfig = {
@@ -53,7 +53,8 @@ export async function analyzeATS({
     if (jobLink && !jobDescription) {
       // For this version, we'll ask the user to paste the job description
       // Future enhancement: Implement job scraping from LinkedIn
-      fullJobDescription = "Job link provided but no description. Please paste the job description for better results.";
+      fullJobDescription =
+        "Job link provided but no description. Please paste the job description for better results.";
     }
 
     // Format the resume data into a string
@@ -64,7 +65,7 @@ export async function analyzeATS({
     } else {
       // Structured resume data from the system
       const resume = fullResumeData;
-      
+
       resumeContent = `
 Name: ${resume.firstName || ""} ${resume.lastName || ""}
 Job Title: ${resume.jobTitle || ""}
@@ -74,19 +75,38 @@ Address: ${resume.address || ""}
 Summary: ${resume.summary || ""}
 
 Experience:
-${resume.experience?.map((exp: any) => `
-- ${exp.position} at ${exp.company} (${exp.startDate} - ${exp.endDate || "Present"})
+${
+  resume.experience
+    ?.map(
+      (exp: any) => `
+- ${exp.position} at ${exp.company} (${exp.startDate} - ${
+        exp.endDate || "Present"
+      })
   ${exp.description || ""}
-`).join("") || "No experience listed"}
+`
+    )
+    .join("") || "No experience listed"
+}
 
 Education:
-${resume.education?.map((edu: any) => `
-- ${edu.degree} at ${edu.institution} (${edu.startDate} - ${edu.endDate || "Present"})
+${
+  resume.education
+    ?.map(
+      (edu: any) => `
+- ${edu.degree} at ${edu.institution} (${edu.startDate} - ${
+        edu.endDate || "Present"
+      })
   ${edu.description || ""}
-`).join("") || "No education listed"}
+`
+    )
+    .join("") || "No education listed"
+}
 
 Skills:
-${resume.skills?.map((skill: any) => `- ${skill.name}`).join("\n") || "No skills listed"}
+${
+  resume.skills?.map((skill: any) => `- ${skill.name}`).join("\n") ||
+  "No skills listed"
+}
       `;
     }
 
@@ -124,12 +144,23 @@ Keep your response STRICTLY in valid JSON format with no additional text.
 
     // Get the analysis from Gemini
     const analysisResult = await askGemini(prompt);
-    
+
     // Parse and return the JSON result
     return JSON.parse(analysisResult);
-
   } catch (error: any) {
     console.error(`ATS analysis error: ${error.message}`);
+
+    // Check if it's a rate limit error
+    if (
+      error.message?.includes("429") ||
+      error.message?.includes("quota") ||
+      error.message?.includes("Too Many Requests")
+    ) {
+      throw new Error(
+        "API rate limit exceeded. Please wait a moment and try again."
+      );
+    }
+
     throw new Error(`Failed to analyze resume: ${error.message}`);
   }
-} 
+}
