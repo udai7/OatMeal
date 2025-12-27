@@ -57,6 +57,7 @@ export const descriptionSchema = z
   .max(1500, { message: " must not exceed 1500 characters" })
   .refine(
     (value) => {
+      if (!value) return false;
       const plainText = stripHtml(value);
       return plainText.length > 0;
     },

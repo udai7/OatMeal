@@ -71,7 +71,7 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
       toast({
         title: "Resume created!",
         description: "Now you can add your details to the resume.",
-        className: "bg-green-50 border-green-200",
+        className: "bg-black text-white border-neutral-800",
       });
 
       router.push(`/my-resume/${resume.resumeId}/edit`);
@@ -82,7 +82,6 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
         title: "Uh Oh! Something went wrong.",
         description: result?.error,
         variant: "destructive",
-        className: "bg-white",
       });
     }
   };
@@ -94,10 +93,10 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
       </div>
 
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent>
+        <DialogContent className="bg-neutral-900 border-neutral-800 text-white">
           <DialogHeader>
-            <DialogTitle>Create New Resume</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-white">Create New Resume</DialogTitle>
+            <DialogDescription className="text-neutral-400">
               Enter a title for your new resume
             </DialogDescription>
           </DialogHeader>
@@ -112,7 +111,7 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      <p className="mt-2 mb-3 text-slate-700 font-semibold">
+                      <p className="mt-2 mb-3 text-neutral-300 font-semibold">
                         Resume Title:
                       </p>
                     </FormLabel>
@@ -120,7 +119,7 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
                       <Input
                         type="text"
                         placeholder="Example: Android Developer Resume"
-                        className={`no-focus ${form.formState.errors.name ? "error" : ""
+                        className={`no-focus bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 ${form.formState.errors.name ? "error" : ""
                           }`}
                         autoComplete="off"
                         {...field}
@@ -138,7 +137,7 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
                     setOpenDialog(false);
                     form.reset({ name: "" });
                   }}
-                  className="btn-ghost"
+                  className="btn-ghost text-neutral-300 hover:bg-neutral-800 hover:text-white"
                   disabled={isLoading}
                 >
                   Cancel
@@ -146,6 +145,7 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
                 <Button
                   type="submit"
                   disabled={isLoading || !form.formState.isValid}
+                  className="bg-primary-700 hover:bg-primary-800 text-white"
                 >
                   {isLoading ? (
                     <>

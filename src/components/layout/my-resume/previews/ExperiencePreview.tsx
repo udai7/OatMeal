@@ -31,7 +31,7 @@ const ExperiencePreview = () => {
           >
             {experience?.title}
           </h2>
-          <h2 className="text-xs flex justify-between">
+          <h2 className="text-xs flex justify-between text-black">
             {experience?.companyName}
             {experience?.companyName && experience?.city && ", "}
             {experience?.city}
@@ -49,7 +49,7 @@ const ExperiencePreview = () => {
           </h2>
           {experience?.workSummary && (
             <div
-              className="text-xs text-justify my-2 form-preview"
+              className="text-xs text-justify my-2 form-preview text-black"
               dangerouslySetInnerHTML={{
                 __html: experience?.workSummary,
               }}

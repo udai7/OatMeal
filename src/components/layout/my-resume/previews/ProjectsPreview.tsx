@@ -10,7 +10,7 @@ const ProjectsPreview = () => {
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
-    
+
     try {
       const date = new Date(dateString);
       return format(date, "MMM yyyy");
@@ -25,7 +25,7 @@ const ProjectsPreview = () => {
 
   return (
     <div className="mb-4">
-      <h2 
+      <h2
         className="text-center font-bold text-sm mb-2"
         style={{
           color: formData?.themeColor || themeColors[0],
@@ -40,7 +40,7 @@ const ProjectsPreview = () => {
       />
       {formData.projects.map((project: any, index: number) => (
         <div key={index} className="my-5">
-          <h3 
+          <h3
             className="text-sm font-bold"
             style={{
               color: formData?.themeColor || themeColors[0],
@@ -48,7 +48,7 @@ const ProjectsPreview = () => {
           >
             {project.name}
           </h3>
-          <div className="text-xs flex justify-between">
+          <div className="text-xs flex justify-between text-black">
             {project.technologies && (
               <span className="italic">{project.technologies}</span>
             )}
@@ -57,20 +57,20 @@ const ProjectsPreview = () => {
               {project.current
                 ? " - Present"
                 : project.endDate
-                ? ` - ${formatDate(project.endDate)}`
-                : ""}
+                  ? ` - ${formatDate(project.endDate)}`
+                  : ""}
             </span>
           </div>
 
           {project.description && (
-            <p className="text-xs text-justify my-2">{project.description}</p>
+            <p className="text-xs text-justify my-2 text-black">{project.description}</p>
           )}
 
           {project.link && (
             <p className="text-xs break-all">
-              <a 
-                href={project.link} 
-                target="_blank" 
+              <a
+                href={project.link}
+                target="_blank"
                 rel="noopener noreferrer"
                 style={{
                   color: formData?.themeColor || themeColors[0],

@@ -31,7 +31,7 @@ const EducationalPreview = () => {
           >
             {education.universityName}
           </h2>
-          <h2 className="text-xs flex justify-between">
+          <h2 className="text-xs flex justify-between text-black">
             {education?.degree}
             {education?.degree && education?.major && " in "}
             {education?.major}
@@ -46,7 +46,7 @@ const EducationalPreview = () => {
             </span>
           </h2>
           {education?.description && (
-            <p className="text-xs my-2 text-justify">{education?.description}</p>
+            <p className="text-xs my-2 text-justify text-black">{education?.description}</p>
           )}
         </div>
       ))}

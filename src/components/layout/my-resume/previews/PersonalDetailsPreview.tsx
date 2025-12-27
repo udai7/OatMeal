@@ -4,7 +4,7 @@ import React from "react";
 
 function PersonalDetailsPreview() {
   const { formData } = useFormContext();
-  
+
   return (
     <div>
       <h2
@@ -16,7 +16,7 @@ function PersonalDetailsPreview() {
         {formData?.firstName} {formData?.lastName}
       </h2>
 
-      <h2 className="text-center text-sm font-medium">
+      <h2 className="text-center text-sm font-medium text-black">
         {formData?.jobTitle}
       </h2>
 
@@ -48,7 +48,7 @@ function PersonalDetailsPreview() {
           {formData?.email}
         </h2>
       </div>
-      
+
       <hr
         className="border-[1.5px] my-2 mb-5"
         style={{

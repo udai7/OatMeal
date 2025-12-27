@@ -6,6 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const themeColors = [
+  "#000000", // Black
   "#FF69B4", // HotPink
   "#33FF57", // LimeGreen
   "#3357FF", // Blue
@@ -22,3 +23,8 @@ export const fontOptions = [
   "Lato",
   "Montserrat",
 ];
+
+export const stripHtml = (html: string) => {
+  if (!html) return "";
+  return html.replace(/<[^>]*>?/gm, "");
+};

@@ -75,7 +75,7 @@ const ResumeCard = ({
       toast({
         title: "Information saved.",
         description: "Resume deleted successfully.",
-        className: "bg-white",
+        className: "bg-black text-white border-neutral-800",
       });
 
       refreshResumes();
@@ -84,7 +84,7 @@ const ResumeCard = ({
         title: "Uh Oh! Something went wrong.",
         description: result?.error,
         variant: "destructive",
-        className: "bg-white",
+        className: "bg-black text-white border-neutral-800",
       });
     }
   };
@@ -161,10 +161,10 @@ const ResumeCard = ({
       </motion.div>
 
       <AlertDialog open={openAlert}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-black border-neutral-800 text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-white">Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription className="text-neutral-400">
               This action cannot be undone. This will permanently delete your
               account and remove your data from our server.
             </AlertDialogDescription>
@@ -173,11 +173,15 @@ const ResumeCard = ({
             <AlertDialogCancel
               onClick={() => setOpenAlert(false)}
               disabled={isLoading}
-              className="no-focus"
+              className="no-focus bg-transparent text-neutral-300 hover:bg-neutral-800 hover:text-white border-neutral-700"
             >
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction onClick={onDelete} disabled={isLoading}>
+            <AlertDialogAction
+              onClick={onDelete}
+              disabled={isLoading}
+              className="bg-red-600 hover:bg-red-700 text-white border-none"
+            >
               {isLoading ? (
                 <>
                   <Loader2 size={20} className="animate-spin" /> &nbsp; Deleting

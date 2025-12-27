@@ -52,109 +52,111 @@ const ResumeEditForm = ({
               <ArrowLeft /> Prev
             </Button>
           )}
-          <Button
-            className="flex gap-2 bg-primary-700 hover:bg-primary-800 text-white"
-            size="sm"
-            disabled={isLoading}
-            onClick={async () => {
-              if (activeFormIndex !== 7) {
-                setActiveFormIndex(activeFormIndex + 1);
-              } else {
-                setIsLoading(true);
-
-                const updates = {
-                  firstName: formData?.firstName,
-                  lastName: formData?.lastName,
-                  jobTitle: formData?.jobTitle,
-                  address: formData?.address,
-                  phone: formData?.phone,
-                  email: formData?.email,
-                  summary: formData?.summary,
-                  experience: formData?.experience,
-                  projects: formData?.projects,
-                  education: formData?.education,
-                  skills: formData?.skills,
-                  templateId: formData?.templateId,
-                };
-
-                const updateResult = await updateResume({
-                  resumeId: params.id,
-                  updates: {
-                    firstName: updates.firstName,
-                    lastName: updates.lastName,
-                    jobTitle: updates.jobTitle,
-                    address: updates.address,
-                    phone: updates.phone,
-                    email: updates.email,
-                    summary: updates.summary,
-                    templateId: updates.templateId,
-                  },
-                });
-
-                const experienceResult = await addExperienceToResume(
-                  params.id,
-                  updates.experience
-                );
-
-                const projectsResult = await addProjectsToResume(
-                  params.id,
-                  updates.projects
-                );
-
-                const educationResult = await addEducationToResume(
-                  params.id,
-                  updates.education
-                );
-
-                const skillsResult = await addSkillToResume(
-                  params.id,
-                  updates.skills
-                );
-
-                setIsLoading(false);
-
-                if (
-                  updateResult.success &&
-                  experienceResult.success &&
-                  projectsResult.success &&
-                  educationResult.success &&
-                  skillsResult.success
-                ) {
-                  router.push("/my-resume/" + params.id + "/view");
+          {activeFormIndex !== 7 && (
+            <Button
+              className="flex gap-2 bg-primary-700 hover:bg-primary-800 text-white"
+              size="sm"
+              disabled={isLoading}
+              onClick={async () => {
+                if (activeFormIndex !== 6) {
+                  setActiveFormIndex(activeFormIndex + 1);
                 } else {
-                  toast({
-                    title: "Uh Oh! Something went wrong.",
-                    description:
-                      updateResult?.error ||
-                      experienceResult?.error ||
-                      projectsResult?.error ||
-                      educationResult?.error ||
-                      skillsResult?.error,
-                    variant: "destructive",
-                    className: "bg-white",
+                  setIsLoading(true);
+
+                  const updates = {
+                    firstName: formData?.firstName,
+                    lastName: formData?.lastName,
+                    jobTitle: formData?.jobTitle,
+                    address: formData?.address,
+                    phone: formData?.phone,
+                    email: formData?.email,
+                    summary: formData?.summary,
+                    experience: formData?.experience,
+                    projects: formData?.projects,
+                    education: formData?.education,
+                    skills: formData?.skills,
+                    templateId: formData?.templateId,
+                  };
+
+                  const updateResult = await updateResume({
+                    resumeId: params.id,
+                    updates: {
+                      firstName: updates.firstName,
+                      lastName: updates.lastName,
+                      jobTitle: updates.jobTitle,
+                      address: updates.address,
+                      phone: updates.phone,
+                      email: updates.email,
+                      summary: updates.summary,
+                      templateId: updates.templateId,
+                    },
                   });
+
+                  const experienceResult = await addExperienceToResume(
+                    params.id,
+                    updates.experience
+                  );
+
+                  const projectsResult = await addProjectsToResume(
+                    params.id,
+                    updates.projects
+                  );
+
+                  const educationResult = await addEducationToResume(
+                    params.id,
+                    updates.education
+                  );
+
+                  const skillsResult = await addSkillToResume(
+                    params.id,
+                    updates.skills
+                  );
+
+                  setIsLoading(false);
+
+                  if (
+                    updateResult.success &&
+                    experienceResult.success &&
+                    projectsResult.success &&
+                    educationResult.success &&
+                    skillsResult.success
+                  ) {
+                    router.push("/my-resume/" + params.id + "/view");
+                  } else {
+                    toast({
+                      title: "Uh Oh! Something went wrong.",
+                      description:
+                        updateResult?.error ||
+                        experienceResult?.error ||
+                        projectsResult?.error ||
+                        educationResult?.error ||
+                        skillsResult?.error,
+                      variant: "destructive",
+                      className: "bg-neutral-900 text-white border-neutral-800",
+                    });
+                  }
                 }
-              }
-            }}
-          >
-            {activeFormIndex === 7 ? (
-              <>
-                {isLoading ? (
-                  <>
-                    Finishing <Loader2 className="size-5 animate-spin" />
-                  </>
-                ) : (
-                  <>
-                    Finish <CheckCircle2 className="size-5" />
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                Next <ArrowRight />
-              </>
-            )}
-          </Button>
+              }}
+            >
+              {activeFormIndex === 6 ? (
+                <>
+                  {isLoading ? (
+                    <>
+                      Finishing <Loader2 className="size-5 animate-spin" />
+                    </>
+                  ) : (
+                    <>
+                      Finish <CheckCircle2 className="size-5" />
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  Next <ArrowRight />
+                </>
+              )}
+            </Button>
+          )}
         </div>
       </div>
       {activeFormIndex === 1 ? (

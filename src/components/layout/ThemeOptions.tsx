@@ -55,6 +55,7 @@ const ThemeOptions = ({ params }: { params: { id: string } }) => {
       toast({
         title: "Information saved.",
         description: "Theme color updated successfully.",
+        className: "bg-neutral-900 text-white border-neutral-800",
       });
     } else {
       toast({
@@ -86,6 +87,7 @@ const ThemeOptions = ({ params }: { params: { id: string } }) => {
       toast({
         title: "Information saved.",
         description: "Font updated successfully.",
+        className: "bg-neutral-900 text-white border-neutral-800",
       });
     } else {
       toast({

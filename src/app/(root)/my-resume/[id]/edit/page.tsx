@@ -17,7 +17,7 @@ const EditResume = async ({ params }: { params: { id: string } }) => {
   return (
     <PageWrapper>
       <Header />
-      <div className="my-10 mx-10 md:mx-20 lg:mx-36">
+      <div className="mt-20 mb-10 mx-10 md:mx-20 lg:mx-36">
         <h2 className="text-center text-2xl font-bold">Edit Your Resume</h2>
         <p className="text-center text-gray-600">
           Please provide the necessary information for your resume.

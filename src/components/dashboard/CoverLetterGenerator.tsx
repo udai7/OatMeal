@@ -43,6 +43,7 @@ const CoverLetterGenerator = () => {
                 title: "No resume selected",
                 description: "Please select a resume to generate a cover letter.",
                 variant: "destructive",
+                className: "bg-neutral-900 text-white border-neutral-800",
             });
             return;
         }
@@ -51,6 +52,7 @@ const CoverLetterGenerator = () => {
                 title: "No prompt provided",
                 description: "Please enter a job description or prompt.",
                 variant: "destructive",
+                className: "bg-neutral-900 text-white border-neutral-800",
             });
             return;
         }
@@ -62,6 +64,7 @@ const CoverLetterGenerator = () => {
             toast({
                 title: "Feature coming soon!",
                 description: "We will be using Gemini 2.5 Flash for this.",
+                className: "bg-neutral-900 text-white border-neutral-800",
             });
         }, 1000);
     };
