@@ -9,15 +9,15 @@ export default function FAQSection() {
   const secondRow = faqs.slice(faqs.length / 2);
 
   return (
-    <section className="relative py-16 px-6 mx-auto max-w-screen-xl overflow-hidden bg-black font-poppins">
+    <section className="relative py-12 sm:py-16 px-4 sm:px-6 mx-auto max-w-screen-xl overflow-hidden bg-black font-poppins">
       <div className="absolute top-0 h-96 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)] pointer-events-none">
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff2c_1px,transparent_1px),linear-gradient(to_bottom,#3a3a3a01_1px,transparent_1px)] bg-[size:70px_80px]"></div>
       </div>
-      <div className="relative z-10 text-center mb-12">
-        <h2 className="font-bold text-4xl text-white mb-4">
+      <div className="relative z-10 text-center mb-8 sm:mb-12">
+        <h2 className="font-bold text-3xl sm:text-4xl text-white mb-4">
           Frequently Asked Questions
         </h2>
-        <p className="text-gray-400 text-lg">
+        <p className="text-gray-400 text-base sm:text-lg">
           What our users are saying about their experience
         </p>
       </div>
@@ -40,7 +40,7 @@ const faqs = [
   },
   {
     quote:
-      "Can I customize the templates to match my style? Absolutely! We offer unlimited customization options including colors, fonts, layouts, and sections.",
+      "Can I customize the colors and fonts? Absolutely! We offer color customization and font options to match your personal style.",
     name: "Michael Chen",
     title: "Product Manager",
     avatar: "#ec4899",
@@ -61,14 +61,14 @@ const faqs = [
   },
   {
     quote:
-      "Can I download my resume in different formats? Yes! Export your resume as PDF, Word, or get a shareable link. All formats are optimized for ATS systems.",
+      "Can I download my resume as PDF? Yes! Export your professional resume as a high-quality PDF ready for job applications.",
     name: "Jessica Taylor",
     title: "UX Designer",
     avatar: "#8b5cf6",
   },
   {
     quote:
-      "What makes your AI different from others? Our AI is trained on millions of successful resumes and provides context-aware suggestions specific to your industry.",
+      "What makes your AI different from others? Our AI helps generate professional summaries, experience descriptions, and cover letters tailored to your industry.",
     name: "Robert Kim",
     title: "Financial Analyst",
     avatar: "#ef4444",

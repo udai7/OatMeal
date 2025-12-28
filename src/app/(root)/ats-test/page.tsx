@@ -158,23 +158,23 @@ const ATSTest = () => {
   return (
     <PageWrapper>
       <Header />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
-              <FileCheck2 className="h-7 w-7 text-primary-500" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-12">
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
+            <div className="p-2 sm:p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
+              <FileCheck2 className="h-5 w-5 sm:h-7 sm:w-7 text-primary-500" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
               ATS Resume Checker
             </h2>
           </div>
-          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-neutral-400 max-w-2xl mx-auto px-4">
             Optimize your resume for Applicant Tracking Systems to increase your
             chances of getting hired.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           <div className="lg:col-span-5 space-y-6">
             <Card className="shadow-sm border border-gray-200 dark:border-gray-800">
               <CardHeader className="pb-4">
@@ -296,11 +296,11 @@ const ATSTest = () => {
                 </CardContent>
               </Card>
             ) : result ? (
-              <Card className="shadow-sm border border-gray-200 dark:border-gray-800 flex flex-col h-[840px]">
+              <Card className="shadow-sm border border-gray-200 dark:border-gray-800 flex flex-col h-auto lg:h-[840px]">
                 <CardHeader className="border-b border-gray-100 dark:border-gray-800 pb-4 shrink-0">
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                     <div>
-                      <CardTitle className="flex items-center gap-2 text-xl">
+                      <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                         <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
                           <Check className="h-5 w-5 text-green-600 dark:text-green-400" />
                         </div>
@@ -331,8 +331,8 @@ const ATSTest = () => {
                 </CardHeader>
                 <CardContent className="pt-6 flex-grow overflow-y-auto no-scrollbar">
                   {/* Score and Assessment Row */}
-                  <div className="flex items-center gap-6 mb-6 p-4 bg-gray-50 dark:bg-gray-800/30 rounded-xl">
-                    <div className="w-24 h-24 shrink-0">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6 p-4 bg-gray-50 dark:bg-gray-800/30 rounded-xl">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0">
                       <CircularProgressbar
                         value={result.match_percentage}
                         text={`${result.match_percentage}%`}
@@ -362,7 +362,7 @@ const ATSTest = () => {
                   </div>
 
                   {/* Skills Section - Horizontal Layout */}
-                  <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     <div className="space-y-2">
                       <h4 className="text-sm font-semibold flex items-center gap-2 text-green-600 dark:text-green-400">
                         <Check className="h-4 w-4" />

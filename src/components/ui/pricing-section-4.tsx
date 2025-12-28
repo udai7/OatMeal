@@ -131,16 +131,16 @@ export default function PricingSection4() {
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff2c_1px,transparent_1px),linear-gradient(to_bottom,#3a3a3a01_1px,transparent_1px)] bg-[size:70px_80px]"></div>
       </div>
       <article className="text-center mb-6 pt-8 max-w-3xl mx-auto space-y-2 relative z-50 px-4">
-        <h2 className="text-4xl font-medium text-white">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-white">
           Choose the Perfect Plan for Your Career
         </h2>
 
-        <p className="text-gray-300">
+        <p className="text-sm sm:text-base text-gray-300">
           Trusted by thousands of job seekers. Start building your dream resume
           today.
         </p>
 
-        <p className="text-blue-400 font-semibold text-lg">
+        <p className="text-blue-400 font-semibold text-base sm:text-lg">
           🎉 All premium features are temporarily free! 🎉
         </p>
 
@@ -149,7 +149,7 @@ export default function PricingSection4() {
         </div>
       </article>
 
-      <div className="grid md:grid-cols-3 max-w-5xl gap-4 py-6 mx-auto px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-5xl gap-6 sm:gap-4 py-6 mx-auto px-4">
         {plans.map((plan, index) => (
           <PricingCard key={plan.name} plan={plan} isYearly={isYearly} />
         ))}
@@ -169,7 +169,7 @@ const PricingCard = ({
 
   return (
     <div
-      className={plan.popular ? "-mt-8" : ""}
+      className={plan.popular ? "md:-mt-8" : ""}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

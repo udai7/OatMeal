@@ -47,7 +47,7 @@ const ResumeCard = ({
 }) => {
   if (!resume) {
     return (
-      <div className="!bg-slate-200/30 relative w-[240px] h-[340px] rounded-lg shadow-lg flex flex-col hover:scale-105 transition-all skeleton">
+      <div className="!bg-slate-200/30 relative w-full h-[280px] sm:h-[300px] lg:w-[240px] lg:h-[340px] rounded-lg shadow-lg flex flex-col hover:scale-105 transition-all skeleton">
         <div className="flex-1"></div>
         <div className="border-0 p-3 flex justify-between bg-white/40 rounded-b-lg">
           ‎{" "}
@@ -93,14 +93,8 @@ const ResumeCard = ({
     <>
       <motion.div
         whileHover="animate"
-        className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-[240px] h-[340px] rounded-xl p-6 border flex-shrink-0 flex flex-col"
+        className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-full h-[280px] sm:h-[300px] lg:w-[240px] lg:h-[340px] rounded-xl p-4 sm:p-6 border flex-shrink-0 flex flex-col overflow-hidden"
       >
-        <div className="absolute -inset-[1px] z-0 pointer-events-none">
-          <motion.div
-            variants={secondaryVariant}
-            className="absolute opacity-0 border border-dashed border-sky-400 inset-0 z-30 bg-transparent rounded-xl"
-          ></motion.div>
-        </div>
         <div className="relative z-10 flex flex-col h-full">
           <div className="flex items-start gap-3 mb-1">
             <div className="p-2 bg-primary-700/20 border border-primary-700/30 rounded-lg shrink-0">
@@ -115,19 +109,20 @@ const ResumeCard = ({
               </p>
             </div>
           </div>
-          <div className="w-full mt-4">
+          <div className="w-full mt-3 sm:mt-4 flex-1">
             <Link href={"/my-resume/" + myResume.resumeId + "/view"}>
               <div
-                className="bg-gradient-to-b from-pink-100 via-purple-200 to-blue-200 rounded-xl h-40 w-full flex items-center justify-center group-hover/card:shadow-xl"
+                className="bg-gradient-to-b from-pink-100 via-purple-200 to-blue-200 rounded-xl h-28 sm:h-32 lg:h-40 w-full flex items-center justify-center group-hover/card:shadow-xl"
                 style={{
                   borderColor: myResume?.themeColor,
                 }}
               >
                 <img
                   src="/img/blank-cv.png"
-                  width={80}
-                  height={80}
+                  width={60}
+                  height={60}
                   alt="resume thumbnail"
+                  className="w-[50px] sm:w-[60px] lg:w-[80px] h-auto"
                 />
               </div>
             </Link>

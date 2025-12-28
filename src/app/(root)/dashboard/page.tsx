@@ -25,15 +25,22 @@ const Dashboard = () => {
       <Header />
       {/* Premium Features Banner */}
       <div
-        className={`fixed top-[60px] left-0 right-0 z-40 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 py-2 transition-all duration-300 ${
+        className={`fixed top-[60px] left-0 right-0 z-40 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 py-2 transition-all duration-300 overflow-hidden ${
           showBanner
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-full"
         }`}
       >
-        <p className="text-center text-sm font-semibold text-white">
+        {/* Desktop - static */}
+        <p className="hidden sm:block text-center text-sm font-semibold text-white">
           🎉 All premium features are temporarily free! 🎉
         </p>
+        {/* Mobile - marquee */}
+        <div className="sm:hidden overflow-hidden whitespace-nowrap">
+          <p className="inline-block animate-marquee text-sm font-semibold text-white">
+            🎉 All premium features are temporarily free! 🎉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🎉 All premium features are temporarily free! 🎉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </p>
+        </div>
       </div>
       <div
         className={`${

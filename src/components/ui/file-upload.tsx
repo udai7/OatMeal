@@ -63,7 +63,7 @@ export const FileUpload = ({
       <motion.div
         onClick={handleClick}
         whileHover="animate"
-        className="p-6 group/file block rounded-xl cursor-pointer w-full h-full relative overflow-hidden bg-gray-50 dark:bg-neutral-900 border border-black/[0.1] dark:border-white/[0.2]"
+        className="p-4 sm:p-6 group/file block rounded-xl cursor-pointer w-full h-full relative overflow-hidden bg-gray-50 dark:bg-neutral-900 border border-black/[0.1] dark:border-white/[0.2]"
       >
         <input
           ref={fileInputRef}
@@ -76,13 +76,13 @@ export const FileUpload = ({
           <GridPattern />
         </div>
         <div className="flex flex-col items-start justify-start h-full">
-          <div className="relative z-20 p-2.5 bg-primary-700/20 border border-primary-700/30 rounded-xl mb-3">
-            <FilePlus2 className="h-5 w-5 text-primary-500" />
+          <div className="relative z-20 p-2 sm:p-2.5 bg-primary-700/20 border border-primary-700/30 rounded-xl mb-2 sm:mb-3">
+            <FilePlus2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary-500" />
           </div>
-          <p className="relative z-20 font-sans font-bold text-neutral-600 dark:text-white text-xl">
+          <p className="relative z-20 font-sans font-bold text-neutral-600 dark:text-white text-base sm:text-xl">
             Create Resume
           </p>
-          <p className="relative z-20 font-sans font-normal text-neutral-500 dark:text-neutral-300 text-sm mt-2">
+          <p className="relative z-20 font-sans font-normal text-neutral-500 dark:text-neutral-300 text-xs sm:text-sm mt-1 sm:mt-2">
             Click here to create a new resume
           </p>
           <div className="relative w-full mt-auto mb-auto max-w-xl mx-auto">

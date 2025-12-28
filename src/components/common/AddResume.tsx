@@ -88,7 +88,7 @@ const AddResume = ({ userId }: { userId: string | undefined }) => {
 
   return (
     <>
-      <div className="w-[240px] h-[340px] flex items-center justify-center">
+      <div className="w-full h-[280px] sm:h-[300px] lg:w-[240px] lg:h-[340px] flex items-center justify-center">
         <FileUpload onClick={() => userId && setOpenDialog(true)} />
       </div>
 

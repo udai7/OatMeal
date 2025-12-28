@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 export const InfiniteMovingCards = ({
   items,
@@ -105,33 +104,13 @@ const FAQCard = ({
     avatar?: string;
   };
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
-    <li
-      className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-zinc-700 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 px-8 py-6 md:w-[450px] overflow-visible"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <GlowingEffect
-        spread={40}
-        glow={isHovered}
-        disabled={false}
-        proximity={64}
-        inactiveZone={0.01}
-        variant="blue"
-        borderWidth={2}
-        movementDuration={0.3}
-      />
+    <li className="relative w-[280px] sm:w-[350px] md:w-[450px] max-w-full shrink-0 rounded-2xl border border-zinc-700 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 px-6 sm:px-8 py-6 overflow-visible transition-all duration-300 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] group">
       <blockquote>
-        <div
-          aria-hidden="true"
-          className="user-select-none pointer-events-none absolute -top-0.5 -left-0.5 -z-1 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
-        ></div>
         <div className="relative z-20 mb-6 flex flex-row items-center gap-3">
           {item.avatar && (
             <div
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm transition-transform duration-300 group-hover:scale-110"
               style={{ backgroundColor: item.avatar }}
             >
               {item.name.charAt(0)}

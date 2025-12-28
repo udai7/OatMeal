@@ -24,9 +24,9 @@ const page = () => {
       <Header />
       <section className="relative min-h-screen h-screen flex items-center justify-center overflow-hidden bg-black">
         <Spotlight />
-        <div className="relative z-10 py-8 px-6 mx-auto max-w-5xl text-center lg:py-16 lg:px-12 md:px-10">
+        <div className="relative z-10 py-8 px-4 sm:px-6 mx-auto max-w-5xl text-center lg:py-16 lg:px-12 md:px-10">
           {/* Badge */}
-          <div className="inline-flex items-center px-4 py-2 mb-6 text-sm text-gray-300 bg-white/5 border border-white/10 rounded-full backdrop-blur-sm hover:border-primary-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 cursor-pointer group">
+          <div className="inline-flex items-center px-3 sm:px-4 py-2 mb-6 text-xs sm:text-sm text-gray-300 bg-white/5 border border-white/10 rounded-full backdrop-blur-sm hover:border-primary-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 cursor-pointer group">
             <span className="mr-2">🎉</span>
             <span className="group-hover:text-white transition-colors">
               Introducing AI-Powered Resume Builder
@@ -34,23 +34,23 @@ const page = () => {
           </div>
 
           {/* Main Heading */}
-          <h1 className="mb-6 text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-black dark:text-white">
+          <h1 className="mb-6 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-black dark:text-white">
             AI Resume Builder for <br />
             <span className="block">Modern Professionals</span>
           </h1>
 
           {/* Subheading */}
-          <p className="mb-2 text-base md:text-lg max-w-3xl mx-auto text-gray-400">
+          <p className="mb-2 text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-gray-400">
             150+ free and open-source resume templates and effects
           </p>
-          <p className="mb-2 text-base md:text-lg max-w-3xl mx-auto text-gray-400">
+          <p className="mb-2 text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-gray-400">
             built with{" "}
             <span className="font-semibold text-white">
               React, TypeScript, Tailwind CSS,
             </span>{" "}
             and <span className="font-semibold text-white">AI</span>.
           </p>
-          <p className="mb-10 text-base md:text-lg max-w-3xl mx-auto text-gray-400">
+          <p className="mb-8 sm:mb-10 text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-gray-400">
             Perfect companion for{" "}
             <span className="font-semibold text-white">job seekers</span>.
           </p>
@@ -68,7 +68,7 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="relative py-8 px-6 mx-auto max-w-screen-xl text-center lg:py-8 lg:px-12 md:px-10 overflow-hidden">
+      <section className="relative py-8 px-4 sm:px-6 mx-auto max-w-screen-xl text-center lg:py-8 lg:px-12 md:px-10 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute top-0 h-96 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)] pointer-events-none">
           <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff2c_1px,transparent_1px),linear-gradient(to_bottom,#3a3a3a01_1px,transparent_1px)] bg-[size:70px_80px]"></div>
@@ -82,18 +82,18 @@ const page = () => {
         </div>
 
         <h2
-          className="font-bold text-3xl text-white relative z-10"
+          className="font-bold text-2xl sm:text-3xl text-white relative z-10"
           id="learn-more"
         >
           How it Works?
         </h2>
-        <h2 className="text-md text-gray-400 mb-8 relative z-10">
+        <h2 className="text-sm sm:text-md text-gray-400 mb-6 sm:mb-8 relative z-10">
           Generate resume in just 3 steps
         </h2>
 
-        <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 place-items-center relative z-10">
-          <CardSpotlight className="h-96 w-full max-w-sm text-left">
-            <p className="text-xl font-bold relative z-20 mt-2 text-white">
+        <div className="mt-6 sm:mt-8 grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3 place-items-center relative z-10 px-2 sm:px-0">
+          <CardSpotlight className="h-auto min-h-[320px] sm:h-96 w-full max-w-sm text-left">
+            <p className="text-lg sm:text-xl font-bold relative z-20 mt-2 text-white">
               Create Your Resume
             </p>
             <div className="text-neutral-200 mt-4 relative z-20">
@@ -110,8 +110,8 @@ const page = () => {
             </p>
           </CardSpotlight>
 
-          <CardSpotlight className="h-96 w-full max-w-sm text-left">
-            <p className="text-xl font-bold relative z-20 mt-2 text-white">
+          <CardSpotlight className="h-auto min-h-[320px] sm:h-96 w-full max-w-sm text-left">
+            <p className="text-lg sm:text-xl font-bold relative z-20 mt-2 text-white">
               Update Your Information
             </p>
             <div className="text-neutral-200 mt-4 relative z-20">
@@ -129,8 +129,8 @@ const page = () => {
             </p>
           </CardSpotlight>
 
-          <CardSpotlight className="h-96 w-full max-w-sm text-left">
-            <p className="text-xl font-bold relative z-20 mt-2 text-white">
+          <CardSpotlight className="h-auto min-h-[320px] sm:h-96 w-full max-w-sm text-left">
+            <p className="text-lg sm:text-xl font-bold relative z-20 mt-2 text-white">
               Download & Apply
             </p>
             <div className="text-neutral-200 mt-4 relative z-20">
@@ -148,14 +148,14 @@ const page = () => {
           </CardSpotlight>
         </div>
       </section>
-      <section className="relative py-8 px-6 mx-auto max-w-screen-xl lg:pb-4 lg:px-12 md:px-10 overflow-hidden">
+      <section className="relative py-8 px-4 sm:px-6 mx-auto max-w-screen-xl lg:pb-4 lg:px-12 md:px-10 overflow-hidden">
         <div className="absolute top-0 h-96 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)] pointer-events-none">
           <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff2c_1px,transparent_1px),linear-gradient(to_bottom,#3a3a3a01_1px,transparent_1px)] bg-[size:70px_80px]"></div>
         </div>
-        <h2 className="font-bold text-3xl text-center text-white relative z-10">
+        <h2 className="font-bold text-2xl sm:text-3xl text-center text-white relative z-10">
           Powerful Features
         </h2>
-        <h2 className="text-md text-gray-400 text-center mb-8 relative z-10">
+        <h2 className="text-sm sm:text-md text-gray-400 text-center mb-6 sm:mb-8 relative z-10">
           Everything you need to build a professional resume
         </h2>
         <div className="relative z-10">
@@ -163,7 +163,10 @@ const page = () => {
         </div>
       </section>
       <PricingSection4 />
-      <FAQSection />
+      {/* FAQ hidden on mobile */}
+      <div className="hidden md:block">
+        <FAQSection />
+      </div>
       <MinimalFooter />
     </div>
   );

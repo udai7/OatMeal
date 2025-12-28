@@ -209,23 +209,23 @@ const CoverLetterPage = () => {
   return (
     <PageWrapper>
       <Header />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
-              <Mail className="h-7 w-7 text-primary-500" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-12">
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
+            <div className="p-2 sm:p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
+              <Mail className="h-5 w-5 sm:h-7 sm:w-7 text-primary-500" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
               Cover Letter Generator
             </h2>
           </div>
-          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-neutral-400 max-w-2xl mx-auto px-4">
             Create personalized, professional cover letters tailored to your
             dream job using AI.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           {/* Left Panel - Inputs */}
           <div className="lg:col-span-5 space-y-6">
             <Card className="shadow-sm border border-gray-200 dark:border-gray-800">
@@ -284,7 +284,7 @@ const CoverLetterPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="company-name">Company Name</Label>
                     <Input
@@ -335,9 +335,9 @@ const CoverLetterPage = () => {
                   />
                 </div>
               </CardContent>
-              <CardFooter className="pt-2 pb-6 px-6">
+              <CardFooter className="pt-2 pb-4 sm:pb-6 px-4 sm:px-6">
                 <Button
-                  className="w-full h-12 text-lg font-bold shadow-xl shadow-primary/20 bg-primary-700 hover:bg-primary-800 text-white transition-all hover:scale-[1.02]"
+                  className="w-full h-10 sm:h-12 text-sm sm:text-lg font-bold shadow-xl shadow-primary/20 bg-primary-700 hover:bg-primary-800 text-white transition-all hover:scale-[1.02]"
                   onClick={handleGenerate}
                   disabled={isLoading}
                 >
@@ -378,11 +378,11 @@ const CoverLetterPage = () => {
                 </CardContent>
               </Card>
             ) : coverLetter ? (
-              <Card className="shadow-sm border border-gray-200 dark:border-gray-800 flex flex-col h-[840px]">
+              <Card className="shadow-sm border border-gray-200 dark:border-gray-800 flex flex-col h-auto lg:h-[840px]">
                 <CardHeader className="border-b border-gray-100 dark:border-gray-800 pb-4 shrink-0">
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                     <div>
-                      <CardTitle className="flex items-center gap-2 text-xl">
+                      <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                         <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
                           <Check className="h-5 w-5 text-green-600 dark:text-green-400" />
                         </div>
@@ -394,7 +394,7 @@ const CoverLetterPage = () => {
                           : "Edit and download when ready"}
                       </CardDescription>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <Button
                         variant="outline"
                         size="sm"
@@ -418,7 +418,8 @@ const CoverLetterPage = () => {
                         className="bg-primary-700 hover:bg-primary-800"
                       >
                         <Download className="h-4 w-4 mr-1" />
-                        Download PDF
+                        <span className="hidden sm:inline">Download PDF</span>
+                        <span className="sm:hidden">PDF</span>
                       </Button>
                     </div>
                   </div>

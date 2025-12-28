@@ -52,8 +52,72 @@ const DashboardCards = () => {
 
   return (
     <>
-      <div className="relative mt-10 w-full max-w-[1400px]">
-        <div className="flex gap-4 items-start">
+      <div className="relative mt-6 sm:mt-10 w-full max-w-[1400px]">
+        {/* Mobile Layout */}
+        <div className="flex flex-col gap-4 lg:hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <AddResume userId={userId} />
+            <Link href="/ats-test" className="w-full">
+              <motion.div
+                whileHover="animate"
+                className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-full h-[280px] sm:h-[300px] rounded-xl p-4 sm:p-6 border flex flex-col items-center justify-center"
+              >
+                <div className="absolute -inset-[1px] z-0 pointer-events-none">
+                  <motion.div
+                    variants={{
+                      initial: { opacity: 0 },
+                      animate: { opacity: 1 },
+                    }}
+                    className="absolute opacity-0 border border-dashed border-sky-400 inset-0 z-30 bg-transparent rounded-xl"
+                  ></motion.div>
+                </div>
+                <div className="relative z-20 p-3 sm:p-4 bg-primary-700/20 border border-primary-700/30 rounded-xl mb-3 sm:mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5 sm:h-7 sm:w-7 text-primary-500"
+                  >
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                    <path d="m9 15 2 2 4-4" />
+                  </svg>
+                </div>
+                <h3 className="relative z-20 text-base sm:text-lg font-semibold text-center text-white">
+                  ATS Test
+                </h3>
+                <p className="relative z-20 text-xs sm:text-sm text-center text-gray-400 mt-1 sm:mt-2">
+                  Check if your resume will pass through ATS systems
+                </p>
+              </motion.div>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {resumeList !== null
+              ? resumeList.map((resume: any) => (
+                  <ResumeCard
+                    key={resume.resumeId}
+                    resume={JSON.stringify(resume)}
+                    refreshResumes={loadResumeData}
+                  />
+                ))
+              : [1, 2].map((index) => (
+                  <ResumeCard
+                    key={index}
+                    resume={null}
+                    refreshResumes={loadResumeData}
+                  />
+                ))}
+          </div>
+        </div>
+
+        {/* Desktop Layout */}
+        <div className="hidden lg:flex gap-4 items-start">
           <div className="flex-shrink-0 w-[240px]">
             <AddResume userId={userId} />
           </div>
