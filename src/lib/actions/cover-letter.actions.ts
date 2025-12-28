@@ -3,7 +3,7 @@
 import { fetchResume } from "./resume.actions";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = "openai/gpt-oss-120b";
+const MODEL = "google/gemma-3-27b-it:free";
 
 async function askOpenRouter(prompt: string): Promise<string> {
   if (!OPENROUTER_API_KEY) {
