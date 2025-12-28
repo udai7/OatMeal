@@ -11,32 +11,37 @@ async function askOpenRouter(prompt: string): Promise<string> {
   }
 
   try {
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost:3000", 
-        "X-Title": "OatMeal",
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        messages: [
-          { role: "user", content: prompt }
-        ],
-      })
-    });
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "http://localhost:3000",
+          "X-Title": "OatMeal",
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: [{ role: "user", content: prompt }],
+        }),
+      }
+    );
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`OpenRouter API error: ${response.status} - ${errorText}`);
+      throw new Error(
+        `OpenRouter API error: ${response.status} - ${errorText}`
+      );
     }
 
     const data = await response.json();
     return data.choices[0].message.content;
   } catch (error: any) {
     console.error("OpenRouter generation error:", error);
-    throw new Error("AI_ERROR:Unable to generate content. Please try again later.");
+    throw new Error(
+      "AI_ERROR:Unable to generate content. Please try again later."
+    );
   }
 }
 
