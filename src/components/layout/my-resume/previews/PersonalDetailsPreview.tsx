@@ -46,9 +46,9 @@ function PersonalDetailsPreview() {
             href={formData?.portfolio}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-normal text-xs cursor-pointer text-blue-500 break-all"
+            className="font-normal text-xs cursor-pointer text-blue-600 hover:text-blue-800 hover:underline"
           >
-            {formData?.portfolio}
+            Portfolio
           </a>
         )}
 
@@ -57,9 +57,9 @@ function PersonalDetailsPreview() {
             href={formData?.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-normal text-xs cursor-pointer text-blue-500 break-all"
+            className="font-normal text-xs cursor-pointer text-blue-600 hover:text-blue-800 hover:underline"
           >
-            {formData?.linkedin}
+            LinkedIn
           </a>
         )}
 

@@ -45,7 +45,6 @@ const ATSTest = () => {
   const userId = user?.user?.id;
   const [resumeList, setResumeList] = useState<any[]>([]);
   const [selectedResume, setSelectedResume] = useState<string>("");
-  const [jobLink, setJobLink] = useState<string>("");
   const [jobDescription, setJobDescription] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [result, setResult] = useState<any>(null);
@@ -83,8 +82,15 @@ const ATSTest = () => {
   };
 
   const handleSubmit = async () => {
-    if ((!selectedResume && !uploadedResume) || (!jobLink && !jobDescription)) {
-      alert("Please provide both a resume and job details");
+    if (!selectedResume && !uploadedResume) {
+      alert("Please provide a resume");
+      return;
+    }
+
+    if (!jobDescription || jobDescription.trim().length < 50) {
+      alert(
+        "Please paste the job description (at least 50 characters). LinkedIn and other job sites block automated access, so you need to copy and paste it manually."
+      );
       return;
     }
 
@@ -104,14 +110,15 @@ const ATSTest = () => {
 
       const analysisResult = await analyzeATS({
         resumeData,
-        jobLink,
         jobDescription,
       });
 
       setResult(analysisResult);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error analyzing resume:", error);
-      alert("An error occurred during analysis. Please try again.");
+      alert(
+        error.message || "An error occurred during analysis. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -199,27 +206,17 @@ const ATSTest = () => {
                   Job Details
                 </CardTitle>
                 <CardDescription>
-                  Provide job link or description
+                  Paste the job description to analyze
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="job-link">Job Link (LinkedIn)</Label>
-                  <Input
-                    id="job-link"
-                    placeholder="https://www.linkedin.com/jobs/view/..."
-                    value={jobLink}
-                    onChange={(e) => setJobLink(e.target.value)}
-                  />
-                </div>
-
-                <div className="space-y-2">
                   <Label htmlFor="job-description">
-                    Or paste job description
+                    Job Description <span className="text-red-500">*</span>
                   </Label>
                   <Textarea
                     id="job-description"
-                    placeholder="Paste the full job description here..."
+                    placeholder="Copy and paste the full job description from LinkedIn, Indeed, or any job posting..."
                     className="min-h-[200px]"
                     value={jobDescription}
                     onChange={(e) => setJobDescription(e.target.value)}

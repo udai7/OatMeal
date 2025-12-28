@@ -293,11 +293,15 @@ const CoverLetterPage = () => {
                   </Label>
                   <Textarea
                     id="job-description"
-                    placeholder="Paste the full job description here..."
+                    placeholder="Copy and paste the full job description from the job posting page (LinkedIn, Indeed, etc.)..."
                     className="min-h-[150px]"
                     value={jobDescription}
                     onChange={(e) => setJobDescription(e.target.value)}
                   />
+                  <p className="text-xs text-neutral-500">
+                    Note: Job sites block automated access. Please copy and
+                    paste the description manually.
+                  </p>
                 </div>
 
                 <div className="space-y-2">

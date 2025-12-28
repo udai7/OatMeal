@@ -29,13 +29,11 @@ async function askGemini(prompt: string) {
 
 interface ATSAnalysisParams {
   resumeData: any;
-  jobLink?: string;
   jobDescription?: string;
 }
 
 export async function analyzeATS({
   resumeData,
-  jobLink,
   jobDescription,
 }: ATSAnalysisParams) {
   try {
@@ -50,11 +48,12 @@ export async function analyzeATS({
 
     // Extract job details from LinkedIn URL if provided
     let fullJobDescription = jobDescription || "";
-    if (jobLink && !jobDescription) {
-      // For this version, we'll ask the user to paste the job description
-      // Future enhancement: Implement job scraping from LinkedIn
-      fullJobDescription =
-        "Job link provided but no description. Please paste the job description for better results.";
+
+    // Validation is done on the client side, but we keep a fallback check here
+    if (!fullJobDescription || fullJobDescription.trim().length < 50) {
+      throw new Error(
+        "Please provide a complete job description (at least 50 characters) for accurate analysis."
+      );
     }
 
     // Format the resume data into a string
@@ -159,6 +158,14 @@ Keep your response STRICTLY in valid JSON format with no additional text.
       throw new Error(
         "API rate limit exceeded. Please wait a moment and try again."
       );
+    }
+
+    // Check if it's a validation error (job description missing)
+    if (
+      error.message?.includes("LinkedIn") ||
+      error.message?.includes("job description")
+    ) {
+      throw error; // Pass through validation errors as-is
     }
 
     throw new Error(`Failed to analyze resume: ${error.message}`);
