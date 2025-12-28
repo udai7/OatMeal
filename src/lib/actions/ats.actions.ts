@@ -3,7 +3,7 @@
 import { fetchResume } from "./resume.actions";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = "meta-llama/llama-3.3-70b-instruct:free";
+const MODEL = "openai/gpt-oss-120b";
 
 async function askOpenRouter(prompt: string): Promise<string> {
   if (!OPENROUTER_API_KEY) {
@@ -11,37 +11,32 @@ async function askOpenRouter(prompt: string): Promise<string> {
   }
 
   try {
-    const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": "http://localhost:3000",
-          "X-Title": "OatMeal",
-        },
-        body: JSON.stringify({
-          model: MODEL,
-          messages: [{ role: "user", content: prompt }],
-        }),
-      }
-    );
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:3000", 
+        "X-Title": "OatMeal",
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        messages: [
+          { role: "user", content: prompt }
+        ],
+      })
+    });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(
-        `OpenRouter API error: ${response.status} - ${errorText}`
-      );
+      throw new Error(`OpenRouter API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
     return data.choices[0].message.content;
   } catch (error: any) {
     console.error("OpenRouter generation error:", error);
-    throw new Error(
-      `AI_ERROR: ${error.message || "Unable to generate content"}`
-    );
+    throw new Error("AI_ERROR:Unable to generate content. Please try again later.");
   }
 }
 
@@ -163,12 +158,9 @@ Keep your response STRICTLY in valid JSON format with no additional text.
 
     // Get the analysis from OpenRouter
     const analysisResult = await askOpenRouter(prompt);
-
+    
     // Clean up result if it contains markdown code blocks
-    const cleanResult = analysisResult
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
-      .trim();
+    const cleanResult = analysisResult.replace(/```json/g, "").replace(/```/g, "").trim();
 
     // Parse and return the JSON result
     return JSON.parse(cleanResult);
