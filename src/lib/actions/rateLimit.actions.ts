@@ -5,7 +5,7 @@ import RateLimit from "../models/rateLimit.model";
 
 // Rate limits per feature (per 24 hours)
 const RATE_LIMITS = {
-  resume_ai: 5,
+  resume_ai: 10,
   cover_letter: 1,
   ats_check: 1,
 };
@@ -35,7 +35,7 @@ export async function checkRateLimit(
   userId: string,
   feature: Feature
 ): Promise<RateLimitResult> {
-  if (!userId) {
+  if (!userId || userId === "undefined" || userId === "null") {
     return {
       allowed: false,
       remaining: 0,
@@ -75,7 +75,7 @@ async function checkRateLimitInternal(
   const defaultResetAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
   // Find rate limit record
-  let rateLimit = await RateLimit.findOne({ userId, feature }).lean();
+  let rateLimit: any = await RateLimit.findOne({ userId, feature }).lean();
 
   if (!rateLimit) {
     // If no record exists, the user hasn't used the feature yet
@@ -87,8 +87,13 @@ async function checkRateLimitInternal(
     };
   }
 
-  // Check if reset time has passed (with null safety)
-  if (rateLimit && now >= new Date(rateLimit.resetAt)) {
+  // Check if reset time has passed (with null safety and invalid date check)
+  const resetDate = rateLimit?.resetAt
+    ? new Date(rateLimit.resetAt)
+    : new Date(0);
+  const isExpired = isNaN(resetDate.getTime()) || now >= resetDate;
+
+  if (rateLimit && isExpired) {
     // Reset the counter using atomic update
     const updated = await RateLimit.findOneAndUpdate(
       { userId, feature },
@@ -119,7 +124,7 @@ export async function incrementRateLimit(
   userId: string,
   feature: Feature
 ): Promise<RateLimitResult> {
-  if (!userId) {
+  if (!userId || userId === "undefined" || userId === "null") {
     return {
       allowed: false,
       remaining: 0,
@@ -136,7 +141,7 @@ export async function incrementRateLimit(
     const resetAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
     // First, check if record exists and if it needs reset
-    let rateLimit = await RateLimit.findOne({ userId, feature }).lean();
+    let rateLimit: any = await RateLimit.findOne({ userId, feature }).lean();
 
     if (!rateLimit) {
       // Create new record with count 1 (this is the first use)
