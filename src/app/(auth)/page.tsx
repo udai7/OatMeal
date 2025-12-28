@@ -94,14 +94,14 @@ const page = () => {
         <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 place-items-center relative z-10">
           <CardSpotlight className="h-96 w-full max-w-sm text-left">
             <p className="text-xl font-bold relative z-20 mt-2 text-white">
-              Create Your Template
+              Create Your Resume
             </p>
             <div className="text-neutral-200 mt-4 relative z-20">
               Follow these steps to create your resume:
               <ul className="list-none mt-2">
                 <Step title="Select your color scheme" />
-                <Step title="Choose template style" />
-                <Step title="Customize layout options" />
+                <Step title="Choose your preferred font" />
+                <Step title="Start with your details" />
               </ul>
             </div>
             <p className="text-neutral-300 mt-4 relative z-20 text-sm">
@@ -131,19 +131,19 @@ const page = () => {
 
           <CardSpotlight className="h-96 w-full max-w-sm text-left">
             <p className="text-xl font-bold relative z-20 mt-2 text-white">
-              Share Your Resume
+              Download & Apply
             </p>
             <div className="text-neutral-200 mt-4 relative z-20">
-              Share your resume with employers:
+              Finalize and use your resume:
               <ul className="list-none mt-2">
-                <Step title="Save your resume securely" />
-                <Step title="Generate shareable link" />
-                <Step title="Download in preferred format" />
+                <Step title="Check ATS compatibility" />
+                <Step title="Generate cover letter" />
+                <Step title="Download as PDF" />
                 <Step title="Update anytime" />
               </ul>
             </div>
             <p className="text-neutral-300 mt-4 relative z-20 text-sm">
-              Easily share your resume and make updates whenever needed.
+              Easily download your resume and make updates whenever needed.
             </p>
           </CardSpotlight>
         </div>

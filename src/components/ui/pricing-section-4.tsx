@@ -14,14 +14,16 @@ const plans = [
   {
     name: "Starter",
     description:
-      "Perfect for individuals just getting started with professional resumes for free",
+      "Perfect for individuals just getting started with professional resumes",
     price: 0,
     yearlyPrice: 0,
+    originalPrice: 0,
+    originalYearlyPrice: 0,
     buttonText: "Get started",
     buttonVariant: "outline" as const,
     includes: [
       "Free includes:",
-      "5 Resume Templates",
+      "Resume Builder",
       "Basic AI Suggestions",
       "PDF Export",
       "ATS Scanner",
@@ -31,16 +33,18 @@ const plans = [
     name: "Professional",
     description:
       "Best for job seekers who want advanced features and unlimited access",
-    price: 12,
-    yearlyPrice: 99,
+    price: 0,
+    yearlyPrice: 0,
+    originalPrice: 12,
+    originalYearlyPrice: 99,
     buttonText: "Get started",
     buttonVariant: "default" as const,
     popular: true,
     includes: [
       "Everything in Starter, plus:",
-      "Unlimited Resume Templates",
+      "Unlimited Resumes",
       "Advanced AI Writing",
-      "Custom Branding",
+      "Color Customization",
       "Priority Support",
       "Cover Letter Builder",
     ],
@@ -49,14 +53,16 @@ const plans = [
     name: "Enterprise",
     description:
       "For teams and organizations that need bulk access and custom solutions",
-    price: 48,
-    yearlyPrice: 399,
+    price: 0,
+    yearlyPrice: 0,
+    originalPrice: 48,
+    originalYearlyPrice: 399,
     buttonText: "Contact Sales",
     buttonVariant: "outline" as const,
     includes: [
       "Everything in Professional, plus:",
       "Team Management",
-      "Custom Templates",
+      "Custom Branding",
       "API Access",
       "Dedicated Support",
       "White Label Options",
@@ -134,6 +140,10 @@ export default function PricingSection4() {
           today.
         </p>
 
+        <p className="text-blue-400 font-semibold text-lg">
+          🎉 All premium features are temporarily free! 🎉
+        </p>
+
         <div className="pt-4">
           <PricingSwitch onSwitch={togglePricingPeriod} />
         </div>
@@ -193,7 +203,12 @@ const PricingCard = ({
             <div className="flex justify-between">
               <h3 className="text-3xl mb-2">{plan.name}</h3>
             </div>
-            <div className="flex items-baseline">
+            <div className="flex items-baseline gap-2">
+              {plan.originalPrice > 0 && (
+                <span className="text-xl text-gray-500 line-through">
+                  ${isYearly ? plan.originalYearlyPrice : plan.originalPrice}
+                </span>
+              )}
               <span className="text-4xl font-semibold ">
                 $
                 <NumberFlow

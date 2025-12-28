@@ -5,7 +5,7 @@ import {
   IconFileText,
   IconRobot,
   IconDownload,
-  IconShare,
+  IconFileCheck,
   IconDeviceFloppy,
   IconRefresh,
 } from "@tabler/icons-react";
@@ -19,9 +19,9 @@ export default function FeaturesSectionDemo() {
       icon: <IconRobot />,
     },
     {
-      title: "Beautiful Templates",
+      title: "Color Customization",
       description:
-        "Choose from professionally designed templates with customizable color schemes.",
+        "Personalize your resume with custom color schemes and font choices.",
       icon: <IconPalette />,
     },
     {
@@ -31,9 +31,9 @@ export default function FeaturesSectionDemo() {
       icon: <IconSparkles />,
     },
     {
-      title: "Multiple Formats",
+      title: "PDF Download",
       description:
-        "Download your resume in various formats including PDF and share instantly.",
+        "Download your resume as a professional PDF ready for applications.",
       icon: <IconDownload />,
     },
     {
@@ -42,10 +42,10 @@ export default function FeaturesSectionDemo() {
       icon: <IconFileText />,
     },
     {
-      title: "Shareable Links",
+      title: "ATS Checker",
       description:
-        "Generate shareable links to send your resume directly to employers.",
-      icon: <IconShare />,
+        "Check your resume's compatibility with Applicant Tracking Systems.",
+      icon: <IconFileCheck />,
     },
     {
       title: "Auto-Save",
@@ -54,8 +54,8 @@ export default function FeaturesSectionDemo() {
       icon: <IconDeviceFloppy />,
     },
     {
-      title: "Always Updated",
-      description: "Edit and update your resume anytime, anywhere with ease.",
+      title: "Cover Letter Generator",
+      description: "Generate tailored cover letters using AI based on job descriptions.",
       icon: <IconRefresh />,
     },
   ];
