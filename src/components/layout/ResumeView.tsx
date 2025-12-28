@@ -43,7 +43,7 @@ const FinalResumeView: React.FC<FinalResumeViewProps> = ({
   const handleDownloadPDF = () => {
     const element = document.getElementById("print-area");
     const opt = {
-      margin: [0.5, 0.5, 0.5, 0.5], // Add small margins for better printing
+      margin: 0,
       filename: `${sanitize(
         `${formData?.firstName ?? "User"}_${formData?.lastName ?? ""}_${
           formData?.jobTitle ?? ""

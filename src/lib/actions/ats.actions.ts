@@ -1,31 +1,48 @@
 "use server";
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { fetchResume } from "./resume.actions";
-import { checkRateLimit, incrementRateLimit } from "./rateLimit.actions";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const MODEL = "meta-llama/llama-3.3-70b-instruct:free";
 
-const model = genAI.getGenerativeModel({
-  model: "gemini-2.5-flash",
-});
+async function askOpenRouter(prompt: string): Promise<string> {
+  if (!OPENROUTER_API_KEY) {
+    throw new Error("OPENROUTER_API_KEY is not defined");
+  }
 
-const generationConfig = {
-  temperature: 0.7,
-  topP: 0.8,
-  topK: 40,
-  maxOutputTokens: 8192,
-  responseMimeType: "application/json",
-};
+  try {
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "http://localhost:3000",
+          "X-Title": "OatMeal",
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: [{ role: "user", content: prompt }],
+        }),
+      }
+    );
 
-async function askGemini(prompt: string) {
-  const chatSession = model.startChat({
-    generationConfig,
-    history: [],
-  });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `OpenRouter API error: ${response.status} - ${errorText}`
+      );
+    }
 
-  const result = await chatSession.sendMessage(prompt);
-  return result.response.text();
+    const data = await response.json();
+    return data.choices[0].message.content;
+  } catch (error: any) {
+    console.error("OpenRouter generation error:", error);
+    throw new Error(
+      `AI_ERROR: ${error.message || "Unable to generate content"}`
+    );
+  }
 }
 
 interface ATSAnalysisParams {
@@ -40,14 +57,6 @@ export async function analyzeATS({
   userId,
 }: ATSAnalysisParams) {
   try {
-    // Check rate limit first
-    const rateLimitCheck = await checkRateLimit(userId, "ats_check");
-    if (!rateLimitCheck.allowed) {
-      throw new Error(
-        `RATE_LIMIT_EXCEEDED:You have exhausted your free daily quota for ATS checks. Resets at ${rateLimitCheck.resetAt.toLocaleString()}`
-      );
-    }
-
     // If we have a resumeId, fetch full resume data
     let fullResumeData = resumeData;
     if (resumeData.resumeId) {
@@ -152,32 +161,19 @@ Please format your response as a JSON object with the following structure:
 Keep your response STRICTLY in valid JSON format with no additional text.
 `;
 
-    // Get the analysis from Gemini
-    const analysisResult = await askGemini(prompt);
+    // Get the analysis from OpenRouter
+    const analysisResult = await askOpenRouter(prompt);
 
-    // Increment rate limit after successful analysis
-    await incrementRateLimit(userId, "ats_check");
+    // Clean up result if it contains markdown code blocks
+    const cleanResult = analysisResult
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
 
     // Parse and return the JSON result
-    return JSON.parse(analysisResult);
+    return JSON.parse(cleanResult);
   } catch (error: any) {
     console.error(`ATS analysis error: ${error.message}`);
-
-    // Check if it's a rate limit exceeded error (our custom error)
-    if (error.message?.startsWith("RATE_LIMIT_EXCEEDED:")) {
-      throw error; // Pass through rate limit errors as-is
-    }
-
-    // Check if it's a rate limit error from API
-    if (
-      error.message?.includes("429") ||
-      error.message?.includes("quota") ||
-      error.message?.includes("Too Many Requests")
-    ) {
-      throw new Error(
-        "API rate limit exceeded. Please wait a moment and try again."
-      );
-    }
 
     // Check if it's a validation error (job description missing)
     if (

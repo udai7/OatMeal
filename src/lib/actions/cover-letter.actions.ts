@@ -1,30 +1,48 @@
 "use server";
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { fetchResume } from "./resume.actions";
-import { checkRateLimit, incrementRateLimit } from "./rateLimit.actions";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const MODEL = "meta-llama/llama-3.3-70b-instruct:free";
 
-const model = genAI.getGenerativeModel({
-  model: "gemini-2.5-flash",
-});
+async function askOpenRouter(prompt: string): Promise<string> {
+  if (!OPENROUTER_API_KEY) {
+    throw new Error("OPENROUTER_API_KEY is not defined");
+  }
 
-const generationConfig = {
-  temperature: 0.8,
-  topP: 0.9,
-  topK: 40,
-  maxOutputTokens: 4096,
-};
+  try {
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "http://localhost:3000",
+          "X-Title": "OatMeal",
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: [{ role: "user", content: prompt }],
+        }),
+      }
+    );
 
-async function askGemini(prompt: string) {
-  const chatSession = model.startChat({
-    generationConfig,
-    history: [],
-  });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `OpenRouter API error: ${response.status} - ${errorText}`
+      );
+    }
 
-  const result = await chatSession.sendMessage(prompt);
-  return result.response.text();
+    const data = await response.json();
+    return data.choices[0].message.content;
+  } catch (error: any) {
+    console.error("OpenRouter generation error:", error);
+    throw new Error(
+      `AI_ERROR: ${error.message || "Unable to generate content"}`
+    );
+  }
 }
 
 interface CoverLetterParams {
@@ -45,14 +63,6 @@ export async function generateCoverLetter({
   userId,
 }: CoverLetterParams) {
   try {
-    // Check rate limit first
-    const rateLimitCheck = await checkRateLimit(userId, "cover_letter");
-    if (!rateLimitCheck.allowed) {
-      throw new Error(
-        `RATE_LIMIT_EXCEEDED:You have exhausted your free daily quota for cover letter generation. Resets at ${rateLimitCheck.resetAt.toLocaleString()}`
-      );
-    }
-
     // If we have a resumeId, fetch full resume data
     let fullResumeData = resumeData;
     if (resumeData.resumeId) {
@@ -161,11 +171,8 @@ INSTRUCTIONS:
 Write the cover letter now:
 `;
 
-    // Get the cover letter from Gemini
-    const coverLetter = await askGemini(prompt);
-
-    // Increment rate limit after successful generation
-    await incrementRateLimit(userId, "cover_letter");
+    // Get the cover letter from OpenRouter
+    const coverLetter = await askOpenRouter(prompt);
 
     return {
       success: true,
@@ -173,23 +180,6 @@ Write the cover letter now:
     };
   } catch (error: any) {
     console.error(`Cover letter generation error: ${error.message}`);
-
-    // Check if it's our custom rate limit error
-    if (error.message?.startsWith("RATE_LIMIT_EXCEEDED:")) {
-      throw error; // Pass through rate limit errors as-is
-    }
-
-    // Check if it's a rate limit error from API
-    if (
-      error.message?.includes("429") ||
-      error.message?.includes("quota") ||
-      error.message?.includes("Too Many Requests")
-    ) {
-      throw new Error(
-        "API rate limit exceeded. Please wait a moment and try again."
-      );
-    }
-
     throw new Error(`Failed to generate cover letter: ${error.message}`);
   }
 }
