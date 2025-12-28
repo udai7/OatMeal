@@ -15,7 +15,7 @@ const ResumePreview = ({ download = false }) => {
   const { formData, setActiveFormIndex } = useFormContext();
   const pathname = usePathname();
 
-  const isEditMode = pathname.endsWith("/edit");
+  const isEditMode = pathname.endsWith("/edit") && !download;
   const interactiveClass = isEditMode
     ? "cursor-pointer hover:bg-gray-100 px-2 py-[1px] rounded"
     : "";
@@ -62,11 +62,17 @@ const ResumePreview = ({ download = false }) => {
   }
 
   return (
-    <div className="flex items-center justify-center p-4 bg-neutral-800/50 rounded-xl border border-neutral-700">
+    <div
+      className={`flex items-center justify-center ${
+        download
+          ? ""
+          : "p-4 bg-neutral-800/50 rounded-xl border border-neutral-700"
+      }`}
+    >
       <div
-        className={`${
-          download ? "p-12" : "p-12"
-        } shadow-2xl border-t-[20px] bg-white w-[210mm] min-h-[297mm] print:shadow-none ring-1 ring-neutral-300`}
+        className={`${download ? "p-12" : "p-12"} ${
+          download ? "" : "shadow-2xl ring-1 ring-neutral-300"
+        } border-t-[20px] bg-white w-[210mm] min-h-[297mm] print:shadow-none print:ring-0`}
         style={{
           borderColor: formData?.themeColor || themeColors[0],
           fontFamily: formData?.fontFamily || "Helvetica, Arial, sans-serif",

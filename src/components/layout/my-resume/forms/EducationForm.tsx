@@ -159,6 +159,13 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
           variant: "destructive",
           className: "bg-white",
         });
+      } else if (error.message?.startsWith("AI_ERROR:")) {
+        toast({
+          title: "AI Service Error",
+          description: error.message.replace("AI_ERROR:", ""),
+          variant: "destructive",
+          className: "bg-white",
+        });
       } else {
         toast({
           title: "Error generating description",

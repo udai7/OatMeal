@@ -19,6 +19,18 @@ interface RateLimitResult {
   limit: number;
 }
 
+// Helper function to add timeout to promises
+function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  errorMessage: string
+): Promise<T> {
+  const timeout = new Promise<never>((_, reject) => {
+    setTimeout(() => reject(new Error(errorMessage)), ms);
+  });
+  return Promise.race([promise, timeout]);
+}
+
 export async function checkRateLimit(
   userId: string,
   feature: Feature
@@ -32,13 +44,37 @@ export async function checkRateLimit(
     };
   }
 
+  try {
+    // Add 5 second timeout for the entire operation
+    return await withTimeout(
+      checkRateLimitInternal(userId, feature),
+      5000,
+      "Rate limit check timed out. Please try again."
+    );
+  } catch (error: any) {
+    console.error("Rate limit check error:", error);
+    // On timeout or DB error, ALLOW the request (don't block users due to infrastructure issues)
+    // Return allowed: true so the user can proceed
+    return {
+      allowed: true,
+      remaining: RATE_LIMITS[feature],
+      resetAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      limit: RATE_LIMITS[feature],
+    };
+  }
+}
+
+async function checkRateLimitInternal(
+  userId: string,
+  feature: Feature
+): Promise<RateLimitResult> {
   await connectToDB();
 
   const now = new Date();
   const limit = RATE_LIMITS[feature];
 
-  // Find or create rate limit record
-  let rateLimit = await RateLimit.findOne({ userId, feature });
+  // Find or create rate limit record using findOneAndUpdate for atomicity
+  let rateLimit = await RateLimit.findOne({ userId, feature }).lean();
 
   if (!rateLimit) {
     // Create new rate limit record
@@ -52,11 +88,17 @@ export async function checkRateLimit(
   }
 
   // Check if reset time has passed
-  if (now >= rateLimit.resetAt) {
-    // Reset the counter
-    rateLimit.count = 0;
-    rateLimit.resetAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-    await rateLimit.save();
+  if (now >= new Date(rateLimit.resetAt)) {
+    // Reset the counter using atomic update
+    const updated = await RateLimit.findOneAndUpdate(
+      { userId, feature },
+      {
+        count: 0,
+        resetAt: new Date(now.getTime() + 24 * 60 * 60 * 1000),
+      },
+      { new: true }
+    ).lean();
+    rateLimit = updated || rateLimit;
   }
 
   const remaining = Math.max(0, limit - rateLimit.count);
@@ -65,7 +107,7 @@ export async function checkRateLimit(
   return {
     allowed,
     remaining,
-    resetAt: rateLimit.resetAt,
+    resetAt: new Date(rateLimit.resetAt),
     limit,
   };
 }
@@ -83,42 +125,62 @@ export async function incrementRateLimit(
     };
   }
 
-  await connectToDB();
+  try {
+    await connectToDB();
 
-  const now = new Date();
-  const limit = RATE_LIMITS[feature];
-
-  // Find or create rate limit record
-  let rateLimit = await RateLimit.findOne({ userId, feature });
-
-  if (!rateLimit) {
-    // Create new rate limit record
+    const now = new Date();
+    const limit = RATE_LIMITS[feature];
     const resetAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-    rateLimit = await RateLimit.create({
-      userId,
-      feature,
-      count: 1,
-      resetAt,
-    });
-  } else {
-    // Check if reset time has passed
-    if (now >= rateLimit.resetAt) {
-      rateLimit.count = 1;
-      rateLimit.resetAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+    // First, check if record exists and if it needs reset
+    let rateLimit = await RateLimit.findOne({ userId, feature }).lean();
+
+    if (!rateLimit) {
+      // Create new record with count 1 (this is the first use)
+      rateLimit = await RateLimit.create({
+        userId,
+        feature,
+        count: 1,
+        resetAt,
+        createdAt: now,
+      });
+    } else if (now >= new Date(rateLimit.resetAt)) {
+      // Reset expired record - count starts at 1 (this use)
+      const updated = await RateLimit.findOneAndUpdate(
+        { userId, feature },
+        { count: 1, resetAt },
+        { new: true }
+      ).lean();
+      rateLimit = updated || rateLimit;
     } else {
-      rateLimit.count += 1;
+      // Increment existing valid record
+      const updated = await RateLimit.findOneAndUpdate(
+        { userId, feature },
+        { $inc: { count: 1 } },
+        { new: true }
+      ).lean();
+      rateLimit = updated || rateLimit;
     }
-    await rateLimit.save();
+
+    const currentCount = rateLimit?.count || 1;
+    const remaining = Math.max(0, limit - currentCount);
+
+    return {
+      allowed: currentCount <= limit,
+      remaining,
+      resetAt: rateLimit?.resetAt ? new Date(rateLimit.resetAt) : resetAt,
+      limit,
+    };
+  } catch (error) {
+    console.error("Increment rate limit error:", error);
+    // Don't throw - allow the operation to complete
+    return {
+      allowed: true,
+      remaining: RATE_LIMITS[feature],
+      resetAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      limit: RATE_LIMITS[feature],
+    };
   }
-
-  const remaining = Math.max(0, limit - rateLimit.count);
-
-  return {
-    allowed: rateLimit.count <= limit,
-    remaining,
-    resetAt: rateLimit.resetAt,
-    limit,
-  };
 }
 
 export async function getRateLimitStatus(

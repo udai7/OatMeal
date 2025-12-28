@@ -43,16 +43,23 @@ const FinalResumeView: React.FC<FinalResumeViewProps> = ({
   const handleDownloadPDF = () => {
     const element = document.getElementById("print-area");
     const opt = {
-      margin: 0,
+      margin: [0.5, 0.5, 0.5, 0.5], // Add small margins for better printing
       filename: `${sanitize(
         `${formData?.firstName ?? "User"}_${formData?.lastName ?? ""}_${
           formData?.jobTitle ?? ""
         }_Resume.pdf`
       )}`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: {
+        scale: 3, // Higher scale for better quality
+        useCORS: true,
+        logging: false,
+        letterRendering: true,
+        backgroundColor: "#ffffff", // Ensure white background
+      },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
       enableLinks: true,
+      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
     };
 
     if (element) {
