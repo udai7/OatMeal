@@ -5,7 +5,7 @@ import RateLimit from "../models/rateLimit.model";
 
 // Rate limits per feature (per 24 hours)
 const RATE_LIMITS = {
-  resume_ai: 3,
+  resume_ai: 5,
   cover_letter: 1,
   ats_check: 1,
 };
@@ -72,42 +72,45 @@ async function checkRateLimitInternal(
 
   const now = new Date();
   const limit = RATE_LIMITS[feature];
+  const defaultResetAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
-  // Find or create rate limit record using findOneAndUpdate for atomicity
+  // Find rate limit record
   let rateLimit = await RateLimit.findOne({ userId, feature }).lean();
 
   if (!rateLimit) {
-    // Create new rate limit record
-    const resetAt = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
-    rateLimit = await RateLimit.create({
-      userId,
-      feature,
-      count: 0,
-      resetAt,
-    });
+    // If no record exists, the user hasn't used the feature yet
+    return {
+      allowed: true,
+      remaining: limit,
+      resetAt: defaultResetAt,
+      limit,
+    };
   }
 
-  // Check if reset time has passed
-  if (now >= new Date(rateLimit.resetAt)) {
+  // Check if reset time has passed (with null safety)
+  if (rateLimit && now >= new Date(rateLimit.resetAt)) {
     // Reset the counter using atomic update
     const updated = await RateLimit.findOneAndUpdate(
       { userId, feature },
       {
         count: 0,
-        resetAt: new Date(now.getTime() + 24 * 60 * 60 * 1000),
+        resetAt: defaultResetAt,
       },
       { new: true }
     ).lean();
-    rateLimit = updated || rateLimit;
+    if (updated) {
+      rateLimit = updated;
+    }
   }
 
-  const remaining = Math.max(0, limit - rateLimit.count);
-  const allowed = rateLimit.count < limit;
+  const count = rateLimit?.count ?? 0;
+  const remaining = Math.max(0, limit - count);
+  const allowed = count < limit;
 
   return {
     allowed,
     remaining,
-    resetAt: new Date(rateLimit.resetAt),
+    resetAt: rateLimit?.resetAt ? new Date(rateLimit.resetAt) : defaultResetAt,
     limit,
   };
 }
