@@ -337,6 +337,12 @@
   }
 }
 
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @layer components {
   .gradient-button {
     @apply relative appearance-none cursor-pointer;

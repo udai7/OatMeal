@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
 import Providers from "@/components/common/ProgressBarProvider";
 import { ThemeProvider } from "next-themes";
+import { AITrialsProvider } from "@/lib/context/AITrialsContext";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -43,7 +44,9 @@ export default function RootLayout({
           className={`${inter.variable} ${nunito.variable} ${poppins.variable} font-inter`}
         >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            <Providers>{children}</Providers>
+            <AITrialsProvider>
+              <Providers>{children}</Providers>
+            </AITrialsProvider>
             <Toaster />
           </ThemeProvider>
         </body>

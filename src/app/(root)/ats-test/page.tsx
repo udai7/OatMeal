@@ -35,11 +35,13 @@ import {
   AlertCircle,
   FileCheck2,
   Briefcase,
+  Coins,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { EvervaultCard, Icon } from "@/components/ui/evervault-card";
 import { useToast } from "@/components/ui/use-toast";
+import { useAITrials } from "@/lib/context/AITrialsContext";
 
 const ATSTest = () => {
   const user = useUser();
@@ -52,6 +54,11 @@ const ATSTest = () => {
   const [uploadedResume, setUploadedResume] = useState<File | null>(null);
   const [resumeText, setResumeText] = useState<string>("");
   const { toast } = useToast();
+  const {
+    getTrialsRemaining,
+    useFeatureTrialIfAvailable,
+    isFeatureTrialExhausted,
+  } = useAITrials();
 
   const loadResumeData = async () => {
     try {
@@ -112,6 +119,29 @@ const ATSTest = () => {
       return;
     }
 
+    // Check if coins are available
+    if (isFeatureTrialExhausted("ats_check")) {
+      toast({
+        title: "No Coins Left",
+        description:
+          "You've used your daily ATS analysis coin. Come back tomorrow!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Deduct one coin
+    const coinUsed = useFeatureTrialIfAvailable("ats_check");
+    if (!coinUsed) {
+      toast({
+        title: "No Coins Left",
+        description:
+          "You've used your daily ATS analysis coin. Come back tomorrow!",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -160,13 +190,24 @@ const ATSTest = () => {
       <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-12">
         <div className="text-center mb-8 sm:mb-12">
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
-            <div className="p-2 sm:p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
-              <FileCheck2 className="h-5 w-5 sm:h-7 sm:w-7 text-primary-500" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
+                <FileCheck2 className="h-5 w-5 sm:h-7 sm:w-7 text-primary-500" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+                ATS Resume Checker
+              </h2>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-              ATS Resume Checker
-            </h2>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg">
+              <Coins className="h-4 w-4 text-blue-400" />
+              <span className="text-xs sm:text-sm font-medium text-white">
+                {getTrialsRemaining("ats_check")}{" "}
+                <span className="text-white/60">
+                  {getTrialsRemaining("ats_check") === 1 ? "coin" : "coins"}
+                </span>
+              </span>
+            </div>
           </div>
           <p className="text-base sm:text-lg text-neutral-400 max-w-2xl mx-auto px-4">
             Optimize your resume for Applicant Tracking Systems to increase your

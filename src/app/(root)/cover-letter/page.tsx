@@ -35,9 +35,11 @@ import {
   Briefcase,
   Pencil,
   Mail,
+  Coins,
 } from "lucide-react";
 import { EvervaultCard, Icon } from "@/components/ui/evervault-card";
 import { toast } from "@/components/ui/use-toast";
+import { useAITrials } from "@/lib/context/AITrialsContext";
 
 const CoverLetterPage = () => {
   const user = useUser();
@@ -53,6 +55,11 @@ const CoverLetterPage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
   const coverLetterRef = useRef<HTMLDivElement>(null);
+  const {
+    getTrialsRemaining,
+    useFeatureTrialIfAvailable,
+    isFeatureTrialExhausted,
+  } = useAITrials();
 
   const loadResumeData = async () => {
     try {
@@ -92,6 +99,29 @@ const CoverLetterPage = () => {
       toast({
         title: "No job description",
         description: "Please provide a job description.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check if coins are available
+    if (isFeatureTrialExhausted("cover_letter")) {
+      toast({
+        title: "No Coins Left",
+        description:
+          "You've used your daily cover letter coin. Come back tomorrow!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Deduct one coin
+    const coinUsed = useFeatureTrialIfAvailable("cover_letter");
+    if (!coinUsed) {
+      toast({
+        title: "No Coins Left",
+        description:
+          "You've used your daily cover letter coin. Come back tomorrow!",
         variant: "destructive",
       });
       return;
@@ -211,13 +241,24 @@ const CoverLetterPage = () => {
       <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-12">
         <div className="text-center mb-8 sm:mb-12">
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
-            <div className="p-2 sm:p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
-              <Mail className="h-5 w-5 sm:h-7 sm:w-7 text-primary-500" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-primary-700/20 border border-primary-700/30 rounded-xl">
+                <Mail className="h-5 w-5 sm:h-7 sm:w-7 text-primary-500" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+                Cover Letter Generator
+              </h2>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-              Cover Letter Generator
-            </h2>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg">
+              <Coins className="h-4 w-4 text-blue-400" />
+              <span className="text-xs sm:text-sm font-medium text-white">
+                {getTrialsRemaining("cover_letter")}{" "}
+                <span className="text-white/60">
+                  {getTrialsRemaining("cover_letter") === 1 ? "coin" : "coins"}
+                </span>
+              </span>
+            </div>
           </div>
           <p className="text-base sm:text-lg text-neutral-400 max-w-2xl mx-auto px-4">
             Create personalized, professional cover letters tailored to your

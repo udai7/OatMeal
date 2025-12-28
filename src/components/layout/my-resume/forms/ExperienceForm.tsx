@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { generateExperienceDescription } from "@/lib/actions/gemini.actions";
 import { addExperienceToResume } from "@/lib/actions/resume.actions";
 import { useFormContext } from "@/lib/context/FormProvider";
+import { useAITrials } from "@/lib/context/AITrialsContext";
 import { Brain, Loader2, Minus, Plus } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -35,6 +36,7 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
   const [currentAiIndex, setCurrentAiIndex] = useState(0);
   const { toast } = useToast();
   const { user } = useUser();
+  const { useTrialIfAvailable, isTrialExhausted } = useAITrials();
 
   const form = useForm<z.infer<typeof ExperienceValidationSchema>>({
     resolver: zodResolver(ExperienceValidationSchema),
@@ -132,6 +134,31 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
           "Please enter the position title and company name to generate summary.",
         variant: "destructive",
         className: "bg-white border-2",
+      });
+      return;
+    }
+
+    // Check if coins are available
+    if (isTrialExhausted) {
+      toast({
+        title: "No Coins Left",
+        description:
+          "You've used all your daily AI coins. Come back tomorrow for more!",
+        variant: "destructive",
+        className: "bg-white",
+      });
+      return;
+    }
+
+    // Deduct one coin
+    const coinUsed = useTrialIfAvailable();
+    if (!coinUsed) {
+      toast({
+        title: "No Coins Left",
+        description:
+          "You've used all your daily AI coins. Come back tomorrow for more!",
+        variant: "destructive",
+        className: "bg-white",
       });
       return;
     }

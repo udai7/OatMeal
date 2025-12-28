@@ -47,10 +47,31 @@ const ResumeCard = ({
 }) => {
   if (!resume) {
     return (
-      <div className="!bg-slate-200/30 relative w-full h-[280px] sm:h-[300px] lg:w-[240px] lg:h-[340px] rounded-lg shadow-lg flex flex-col hover:scale-105 transition-all skeleton">
-        <div className="flex-1"></div>
-        <div className="border-0 p-3 flex justify-between bg-white/40 rounded-b-lg">
-          ‎{" "}
+      <div className="relative w-full h-[280px] sm:h-[300px] lg:w-[240px] lg:h-[340px] rounded-xl overflow-hidden bg-neutral-900 border border-white/10">
+        {/* Skeleton content */}
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-800/50 via-neutral-900 to-neutral-800/50">
+          {/* Animated shimmer effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+        </div>
+        {/* Document lines skeleton */}
+        <div className="p-6 space-y-3">
+          <div className="h-3 bg-white/10 rounded w-3/4" />
+          <div className="h-3 bg-white/10 rounded w-full" />
+          <div className="h-3 bg-white/10 rounded w-5/6" />
+          <div className="h-3 bg-white/10 rounded w-2/3" />
+          <div className="mt-6 space-y-2">
+            <div className="h-2 bg-white/5 rounded w-full" />
+            <div className="h-2 bg-white/5 rounded w-full" />
+            <div className="h-2 bg-white/5 rounded w-4/5" />
+          </div>
+          <div className="mt-4 space-y-2">
+            <div className="h-2 bg-white/5 rounded w-full" />
+            <div className="h-2 bg-white/5 rounded w-3/4" />
+          </div>
+        </div>
+        {/* Bottom bar */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/40 backdrop-blur-sm border-t border-white/5">
+          <div className="h-4 bg-white/10 rounded w-1/2" />
         </div>
       </div>
     );

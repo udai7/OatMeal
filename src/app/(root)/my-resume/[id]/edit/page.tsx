@@ -6,6 +6,7 @@ import { checkResumeOwnership } from "@/lib/actions/resume.actions";
 import { redirect } from "next/navigation";
 import ResumeEditor from "@/components/layout/my-resume/ResumeEditor";
 import { FileEdit } from "lucide-react";
+import AITrialsCounter from "@/components/common/AITrialsCounter";
 
 const EditResume = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
@@ -19,13 +20,16 @@ const EditResume = async ({ params }: { params: { id: string } }) => {
     <PageWrapper>
       <Header />
       <div className="mt-16 sm:mt-20 mb-4 sm:mb-8 mx-4 sm:mx-10 md:mx-20 lg:mx-36">
-        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
-          <div className="p-2 sm:p-2.5 bg-primary-700/20 border border-primary-700/30 rounded-xl">
-            <FileEdit className="h-5 w-5 sm:h-6 sm:w-6 text-primary-500" />
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-2">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-2 sm:p-2.5 bg-primary-700/20 border border-primary-700/30 rounded-xl">
+              <FileEdit className="h-5 w-5 sm:h-6 sm:w-6 text-primary-500" />
+            </div>
+            <h2 className="text-center text-xl sm:text-2xl font-bold text-white">
+              Edit Your Resume
+            </h2>
           </div>
-          <h2 className="text-center text-xl sm:text-2xl font-bold text-white">
-            Edit Your Resume
-          </h2>
+          <AITrialsCounter feature="resume_ai" />
         </div>
         <p className="text-center text-sm sm:text-base text-neutral-400">
           Please provide the necessary information for your resume.
