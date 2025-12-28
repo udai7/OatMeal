@@ -38,7 +38,9 @@ const Dashboard = () => {
         {/* Mobile - marquee */}
         <div className="sm:hidden overflow-hidden whitespace-nowrap">
           <p className="inline-block animate-marquee text-sm font-semibold text-white">
-            🎉 All premium features are temporarily free! 🎉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🎉 All premium features are temporarily free! 🎉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            🎉 All premium features are temporarily free! 🎉
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🎉 All premium features are
+            temporarily free! 🎉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </p>
         </div>
       </div>

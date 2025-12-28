@@ -87,7 +87,7 @@ export function MinimalFooter() {
     <footer className="relative font-poppins">
       <div className="bg-[radial-gradient(35%_80%_at_30%_0%,hsl(var(--foreground)/.1),transparent)] mx-auto max-w-6xl md:border-x border-neutral-800">
         <div className="bg-neutral-800 absolute inset-x-0 h-px w-full" />
-        
+
         {/* Mobile Footer - Simple */}
         <div className="md:hidden py-6 px-4">
           <div className="flex flex-col items-center gap-4">
