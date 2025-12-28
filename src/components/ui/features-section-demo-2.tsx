@@ -55,7 +55,8 @@ export default function FeaturesSectionDemo() {
     },
     {
       title: "Cover Letter Generator",
-      description: "Generate tailored cover letters using AI based on job descriptions.",
+      description:
+        "Generate tailored cover letters using AI based on job descriptions.",
       icon: <IconRefresh />,
     },
   ];

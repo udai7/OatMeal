@@ -151,11 +151,7 @@ export default function PricingSection4() {
 
       <div className="grid md:grid-cols-3 max-w-5xl gap-4 py-6 mx-auto px-4">
         {plans.map((plan, index) => (
-          <PricingCard
-            key={plan.name}
-            plan={plan}
-            isYearly={isYearly}
-          />
+          <PricingCard key={plan.name} plan={plan} isYearly={isYearly} />
         ))}
       </div>
     </div>
@@ -178,8 +174,9 @@ const PricingCard = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`relative h-full rounded-2xl ${plan.popular ? "border border-neutral-800 p-2" : ""
-          }`}
+        className={`relative h-full rounded-2xl ${
+          plan.popular ? "border border-neutral-800 p-2" : ""
+        }`}
       >
         {plan.popular && (
           <GlowingEffect
@@ -194,10 +191,11 @@ const PricingCard = ({
           />
         )}
         <Card
-          className={`relative text-white border-neutral-800 flex flex-col ${plan.popular
-            ? "bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 z-20 min-h-[640px]"
-            : "bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 z-10 min-h-[580px]"
-            }`}
+          className={`relative text-white border-neutral-800 flex flex-col ${
+            plan.popular
+              ? "bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 z-20 min-h-[640px]"
+              : "bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 z-10 min-h-[580px]"
+          }`}
         >
           <CardHeader className="text-left ">
             <div className="flex justify-between">
@@ -223,9 +221,7 @@ const PricingCard = ({
                 /{isYearly ? "year" : "month"}
               </span>
             </div>
-            <p className="text-sm text-gray-300 mb-4">
-              {plan.description}
-            </p>
+            <p className="text-sm text-gray-300 mb-4">{plan.description}</p>
           </CardHeader>
 
           <CardContent className="pt-0 flex-1 flex flex-col">
@@ -237,19 +233,12 @@ const PricingCard = ({
             </GradientButton>
 
             <div className="space-y-3 pt-4 border-t border-neutral-700">
-              <h4 className="font-medium text-base mb-3">
-                {plan.includes[0]}
-              </h4>
+              <h4 className="font-medium text-base mb-3">{plan.includes[0]}</h4>
               <ul className="space-y-2">
                 {plan.includes.slice(1).map((feature, featureIndex) => (
-                  <li
-                    key={featureIndex}
-                    className="flex items-center gap-2"
-                  >
+                  <li key={featureIndex} className="flex items-center gap-2">
                     <span className="h-2.5 w-2.5 bg-neutral-500 rounded-full grid place-content-center"></span>
-                    <span className="text-sm text-gray-300">
-                      {feature}
-                    </span>
+                    <span className="text-sm text-gray-300">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -260,4 +249,3 @@ const PricingCard = ({
     </div>
   );
 };
-
