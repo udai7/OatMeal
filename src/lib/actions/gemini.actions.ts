@@ -1,6 +1,7 @@
 "use server";
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { checkRateLimit, incrementRateLimit } from "./rateLimit.actions";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
@@ -28,7 +29,15 @@ async function askGemini(prompt: string) {
   return result.response.text();
 }
 
-export async function generateSummary(jobTitle: string) {
+export async function generateSummary(jobTitle: string, userId: string) {
+  // Check rate limit
+  const rateLimitCheck = await checkRateLimit(userId, "resume_ai");
+  if (!rateLimitCheck.allowed) {
+    throw new Error(
+      `RATE_LIMIT_EXCEEDED:You have exhausted your free daily quota for AI resume features. Resets at ${rateLimitCheck.resetAt.toLocaleString()}`
+    );
+  }
+
   const prompt =
     jobTitle && jobTitle !== ""
       ? `Given the job title '${jobTitle}', provide a summary for three experience levels: Senior, Mid Level, and Fresher. Each summary should be 3-4 lines long and include the experience level and the corresponding summary in JSON format. The output should be an array of objects, each containing 'experience_level' and 'summary' fields. Ensure the summaries are tailored to each experience level.`
@@ -36,21 +45,52 @@ export async function generateSummary(jobTitle: string) {
 
   const result = await askGemini(prompt);
 
+  // Increment rate limit after successful generation
+  await incrementRateLimit(userId, "resume_ai");
+
   return JSON.parse(result);
 }
 
-export async function generateEducationDescription(educationInfo: string) {
+export async function generateEducationDescription(
+  educationInfo: string,
+  userId: string
+) {
+  // Check rate limit
+  const rateLimitCheck = await checkRateLimit(userId, "resume_ai");
+  if (!rateLimitCheck.allowed) {
+    throw new Error(
+      `RATE_LIMIT_EXCEEDED:You have exhausted your free daily quota for AI resume features. Resets at ${rateLimitCheck.resetAt.toLocaleString()}`
+    );
+  }
+
   const prompt = `Based on my education at ${educationInfo}, provide personal descriptions for three levels of curriculum activities: High Activity, Medium Activity, and Low Activity. Each description should be 3-4 lines long and written from my perspective, reflecting on past experiences. The output should be an array of JSON objects, each containing 'activity_level' and 'description' fields. Please include a subtle hint about my good (but not the best) results.`;
 
   const result = await askGemini(prompt);
 
+  // Increment rate limit after successful generation
+  await incrementRateLimit(userId, "resume_ai");
+
   return JSON.parse(result);
 }
 
-export async function generateExperienceDescription(experienceInfo: string) {
+export async function generateExperienceDescription(
+  experienceInfo: string,
+  userId: string
+) {
+  // Check rate limit
+  const rateLimitCheck = await checkRateLimit(userId, "resume_ai");
+  if (!rateLimitCheck.allowed) {
+    throw new Error(
+      `RATE_LIMIT_EXCEEDED:You have exhausted your free daily quota for AI resume features. Resets at ${rateLimitCheck.resetAt.toLocaleString()}`
+    );
+  }
+
   const prompt = `Given that I have experience working as ${experienceInfo}, provide a summary of three levels of activities I performed in that position, preferably as a list: High Activity, Medium Activity, and Low Activity. Each summary should be 3-4 lines long and written from my perspective, reflecting on my past experiences in that workplace. The output should be an array of JSON objects, each containing 'activity_level' and 'description' fields. You can include <b>, <i>, <u>, <s>, <blockquote>, <ul>, <ol>, and <li> to further enhance the descriptions. Use example work samples if needed, but do not insert placeholders for me to fill in.`;
 
   const result = await askGemini(prompt);
+
+  // Increment rate limit after successful generation
+  await incrementRateLimit(userId, "resume_ai");
 
   return JSON.parse(result);
 }

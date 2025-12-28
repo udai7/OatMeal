@@ -39,6 +39,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { EvervaultCard, Icon } from "@/components/ui/evervault-card";
+import { useToast } from "@/components/ui/use-toast";
 
 const ATSTest = () => {
   const user = useUser();
@@ -50,6 +51,7 @@ const ATSTest = () => {
   const [result, setResult] = useState<any>(null);
   const [uploadedResume, setUploadedResume] = useState<File | null>(null);
   const [resumeText, setResumeText] = useState<string>("");
+  const { toast } = useToast();
 
   const loadResumeData = async () => {
     try {
@@ -82,15 +84,31 @@ const ATSTest = () => {
   };
 
   const handleSubmit = async () => {
+    if (!userId) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to use ATS checker.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!selectedResume && !uploadedResume) {
-      alert("Please provide a resume");
+      toast({
+        title: "Resume required",
+        description: "Please provide a resume.",
+        variant: "destructive",
+      });
       return;
     }
 
     if (!jobDescription || jobDescription.trim().length < 50) {
-      alert(
-        "Please paste the job description (at least 50 characters). LinkedIn and other job sites block automated access, so you need to copy and paste it manually."
-      );
+      toast({
+        title: "Job description required",
+        description:
+          "Please paste the job description (at least 50 characters).",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -111,14 +129,27 @@ const ATSTest = () => {
       const analysisResult = await analyzeATS({
         resumeData,
         jobDescription,
+        userId,
       });
 
       setResult(analysisResult);
     } catch (error: any) {
       console.error("Error analyzing resume:", error);
-      alert(
-        error.message || "An error occurred during analysis. Please try again."
-      );
+      if (error.message?.startsWith("RATE_LIMIT_EXCEEDED:")) {
+        toast({
+          title: "Daily Quota Exhausted",
+          description: error.message.replace("RATE_LIMIT_EXCEEDED:", ""),
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Analysis failed",
+          description:
+            error.message ||
+            "An error occurred during analysis. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }

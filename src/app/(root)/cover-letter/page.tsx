@@ -70,6 +70,15 @@ const CoverLetterPage = () => {
   }, [user?.isLoaded]);
 
   const handleGenerate = async () => {
+    if (!userId) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to generate cover letters.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!selectedResume) {
       toast({
         title: "No resume selected",
@@ -102,6 +111,7 @@ const CoverLetterPage = () => {
         additionalDetails,
         companyName,
         jobTitle,
+        userId,
       });
 
       if (result.success) {
@@ -114,11 +124,19 @@ const CoverLetterPage = () => {
       }
     } catch (error: any) {
       console.error("Error generating cover letter:", error);
-      toast({
-        title: "Generation failed",
-        description: error.message || "An error occurred. Please try again.",
-        variant: "destructive",
-      });
+      if (error.message?.startsWith("RATE_LIMIT_EXCEEDED:")) {
+        toast({
+          title: "Daily Quota Exhausted",
+          description: error.message.replace("RATE_LIMIT_EXCEEDED:", ""),
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Generation failed",
+          description: error.message || "An error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }

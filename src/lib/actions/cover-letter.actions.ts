@@ -2,6 +2,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { fetchResume } from "./resume.actions";
+import { checkRateLimit, incrementRateLimit } from "./rateLimit.actions";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
@@ -32,6 +33,7 @@ interface CoverLetterParams {
   additionalDetails?: string;
   companyName?: string;
   jobTitle?: string;
+  userId: string;
 }
 
 export async function generateCoverLetter({
@@ -40,8 +42,17 @@ export async function generateCoverLetter({
   additionalDetails,
   companyName,
   jobTitle,
+  userId,
 }: CoverLetterParams) {
   try {
+    // Check rate limit first
+    const rateLimitCheck = await checkRateLimit(userId, "cover_letter");
+    if (!rateLimitCheck.allowed) {
+      throw new Error(
+        `RATE_LIMIT_EXCEEDED:You have exhausted your free daily quota for cover letter generation. Resets at ${rateLimitCheck.resetAt.toLocaleString()}`
+      );
+    }
+
     // If we have a resumeId, fetch full resume data
     let fullResumeData = resumeData;
     if (resumeData.resumeId) {
@@ -153,6 +164,9 @@ Write the cover letter now:
     // Get the cover letter from Gemini
     const coverLetter = await askGemini(prompt);
 
+    // Increment rate limit after successful generation
+    await incrementRateLimit(userId, "cover_letter");
+
     return {
       success: true,
       coverLetter: coverLetter.trim(),
@@ -160,7 +174,12 @@ Write the cover letter now:
   } catch (error: any) {
     console.error(`Cover letter generation error: ${error.message}`);
 
-    // Check if it's a rate limit error
+    // Check if it's our custom rate limit error
+    if (error.message?.startsWith("RATE_LIMIT_EXCEEDED:")) {
+      throw error; // Pass through rate limit errors as-is
+    }
+
+    // Check if it's a rate limit error from API
     if (
       error.message?.includes("429") ||
       error.message?.includes("quota") ||

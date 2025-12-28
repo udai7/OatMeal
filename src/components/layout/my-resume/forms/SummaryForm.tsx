@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { SummaryValidationSchema } from "@/lib/validations/resume"; // Sesuaikan path
+import { useUser } from "@clerk/nextjs";
 
 const SummaryForm = ({ params }: { params: { id: string } }) => {
   const listRef = useRef<HTMLDivElement>(null);
@@ -31,6 +32,7 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
     []
   );
   const { toast } = useToast();
+  const { user } = useUser();
 
   const form = useForm<z.infer<typeof SummaryValidationSchema>>({
     resolver: zodResolver(SummaryValidationSchema),
@@ -56,17 +58,46 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
   };
 
   const generateSummaryFromAI = async () => {
-    setIsAiLoading(true);
-    const result = await generateSummary(formData?.jobTitle);
-    setAiGeneratedSummaryList(result);
-    setIsAiLoading(false);
-
-    setTimeout(() => {
-      listRef?.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+    if (!user?.id) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to use AI features.",
+        variant: "destructive",
+        className: "bg-white",
       });
-    }, 100);
+      return;
+    }
+
+    setIsAiLoading(true);
+    try {
+      const result = await generateSummary(formData?.jobTitle, user.id);
+      setAiGeneratedSummaryList(result);
+
+      setTimeout(() => {
+        listRef?.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    } catch (error: any) {
+      if (error.message?.startsWith("RATE_LIMIT_EXCEEDED:")) {
+        toast({
+          title: "Daily Quota Exhausted",
+          description: error.message.replace("RATE_LIMIT_EXCEEDED:", ""),
+          variant: "destructive",
+          className: "bg-white",
+        });
+      } else {
+        toast({
+          title: "Error generating summary",
+          description: error.message || "Please try again later.",
+          variant: "destructive",
+          className: "bg-white",
+        });
+      }
+    } finally {
+      setIsAiLoading(false);
+    }
   };
 
   const onSave = async (data: z.infer<typeof SummaryValidationSchema>) => {

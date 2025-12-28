@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { ExperienceValidationSchema } from "@/lib/validations/resume";
 import { experienceFields } from "@/lib/fields";
+import { useUser } from "@clerk/nextjs";
 
 const ExperienceForm = ({ params }: { params: { id: string } }) => {
   const listRef = useRef<HTMLDivElement>(null);
@@ -33,6 +34,7 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
   );
   const [currentAiIndex, setCurrentAiIndex] = useState(0);
   const { toast } = useToast();
+  const { user } = useUser();
 
   const form = useForm<z.infer<typeof ExperienceValidationSchema>>({
     resolver: zodResolver(ExperienceValidationSchema),
@@ -112,6 +114,16 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
   };
 
   const generateExperienceDescriptionFromAI = async (index: number) => {
+    if (!user?.id) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to use AI features.",
+        variant: "destructive",
+        className: "bg-white border-2",
+      });
+      return;
+    }
+
     const experience = form.getValues("experience")[index];
     if (!experience.title || !experience.companyName) {
       toast({
@@ -127,18 +139,38 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
     setCurrentAiIndex(index);
     setIsLoadingAi(true);
 
-    const result = await generateExperienceDescription(
-      `${experience.title} at ${experience.companyName}`
-    );
-    setAiGeneratedSummaryList(result);
-    setIsLoadingAi(false);
+    try {
+      const result = await generateExperienceDescription(
+        `${experience.title} at ${experience.companyName}`,
+        user.id
+      );
+      setAiGeneratedSummaryList(result);
 
-    setTimeout(() => {
-      listRef?.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
+      setTimeout(() => {
+        listRef?.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    } catch (error: any) {
+      if (error.message?.startsWith("RATE_LIMIT_EXCEEDED:")) {
+        toast({
+          title: "Daily Quota Exhausted",
+          description: error.message.replace("RATE_LIMIT_EXCEEDED:", ""),
+          variant: "destructive",
+          className: "bg-white",
+        });
+      } else {
+        toast({
+          title: "Error generating description",
+          description: error.message || "Please try again later.",
+          variant: "destructive",
+          className: "bg-white",
+        });
+      }
+    } finally {
+      setIsLoadingAi(false);
+    }
   };
 
   const onSave = async (data: z.infer<typeof ExperienceValidationSchema>) => {

@@ -2,6 +2,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { fetchResume } from "./resume.actions";
+import { checkRateLimit, incrementRateLimit } from "./rateLimit.actions";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
@@ -30,13 +31,23 @@ async function askGemini(prompt: string) {
 interface ATSAnalysisParams {
   resumeData: any;
   jobDescription?: string;
+  userId: string;
 }
 
 export async function analyzeATS({
   resumeData,
   jobDescription,
+  userId,
 }: ATSAnalysisParams) {
   try {
+    // Check rate limit first
+    const rateLimitCheck = await checkRateLimit(userId, "ats_check");
+    if (!rateLimitCheck.allowed) {
+      throw new Error(
+        `RATE_LIMIT_EXCEEDED:You have exhausted your free daily quota for ATS checks. Resets at ${rateLimitCheck.resetAt.toLocaleString()}`
+      );
+    }
+
     // If we have a resumeId, fetch full resume data
     let fullResumeData = resumeData;
     if (resumeData.resumeId) {
@@ -144,12 +155,20 @@ Keep your response STRICTLY in valid JSON format with no additional text.
     // Get the analysis from Gemini
     const analysisResult = await askGemini(prompt);
 
+    // Increment rate limit after successful analysis
+    await incrementRateLimit(userId, "ats_check");
+
     // Parse and return the JSON result
     return JSON.parse(analysisResult);
   } catch (error: any) {
     console.error(`ATS analysis error: ${error.message}`);
 
-    // Check if it's a rate limit error
+    // Check if it's a rate limit exceeded error (our custom error)
+    if (error.message?.startsWith("RATE_LIMIT_EXCEEDED:")) {
+      throw error; // Pass through rate limit errors as-is
+    }
+
+    // Check if it's a rate limit error from API
     if (
       error.message?.includes("429") ||
       error.message?.includes("quota") ||

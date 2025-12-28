@@ -22,6 +22,7 @@ import { Brain, Loader2, Minus, Plus } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
+import { useUser } from "@clerk/nextjs";
 
 const EducationForm = ({ params }: { params: { id: string } }) => {
   const listRef = useRef<HTMLDivElement>(null);
@@ -33,6 +34,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
   >([]);
   const [currentAiIndex, setCurrentAiIndex] = useState(0);
   const { toast } = useToast();
+  const { user } = useUser();
 
   const form = useForm<z.infer<typeof EducationValidationSchema>>({
     resolver: zodResolver(EducationValidationSchema),
@@ -110,6 +112,16 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
   };
 
   const generateEducationDescriptionFromAI = async (index: number) => {
+    if (!user?.id) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to use AI features.",
+        variant: "destructive",
+        className: "bg-white border-2",
+      });
+      return;
+    }
+
     const education = form.getValues("education")[index];
     if (!education.universityName || !education.degree || !education.major) {
       toast({
@@ -125,19 +137,39 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
     setCurrentAiIndex(index);
     setIsAiLoading(true);
 
-    const result = await generateEducationDescription(
-      `${education.universityName} on ${education.degree} in ${education.major}`
-    );
+    try {
+      const result = await generateEducationDescription(
+        `${education.universityName} on ${education.degree} in ${education.major}`,
+        user.id
+      );
 
-    setAiGeneratedDescriptionList(result);
-    setIsAiLoading(false);
+      setAiGeneratedDescriptionList(result);
 
-    setTimeout(function () {
-      listRef?.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
+      setTimeout(function () {
+        listRef?.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    } catch (error: any) {
+      if (error.message?.startsWith("RATE_LIMIT_EXCEEDED:")) {
+        toast({
+          title: "Daily Quota Exhausted",
+          description: error.message.replace("RATE_LIMIT_EXCEEDED:", ""),
+          variant: "destructive",
+          className: "bg-white",
+        });
+      } else {
+        toast({
+          title: "Error generating description",
+          description: error.message || "Please try again later.",
+          variant: "destructive",
+          className: "bg-white",
+        });
+      }
+    } finally {
+      setIsAiLoading(false);
+    }
   };
 
   const onSave = async (data: z.infer<typeof EducationValidationSchema>) => {
