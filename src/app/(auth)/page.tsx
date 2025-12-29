@@ -2,7 +2,16 @@
 
 import Header from "@/components/layout/Header";
 import { useUser } from "@clerk/nextjs";
-import { ArrowBigUp, AtomIcon, Edit, Share2 } from "lucide-react";
+import Image from "next/image";
+import {
+  ArrowBigUp,
+  ArrowRight,
+  AtomIcon,
+  Edit,
+  Share2,
+  Sparkles,
+  TrendingUp,
+} from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
@@ -22,49 +31,75 @@ const page = () => {
   return (
     <div className="bg-black min-h-screen font-poppins">
       <Header />
-      <section className="relative min-h-screen h-screen flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black pt-20 pb-10">
         <Spotlight />
-        <div className="relative z-10 py-8 px-4 sm:px-6 mx-auto max-w-5xl text-center lg:py-16 lg:px-12 md:px-10">
+        <div className="relative z-10 py-8 px-6 sm:px-8 mx-auto max-w-7xl text-center lg:py-16 lg:px-12 md:px-10">
           {/* Badge */}
-          <div className="inline-flex items-center px-3 sm:px-4 py-2 mb-6 text-xs sm:text-sm text-gray-300 bg-white/5 border border-white/10 rounded-full backdrop-blur-sm hover:border-primary-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 cursor-pointer group">
-            <span className="mr-2">🎉</span>
-            <span className="group-hover:text-white transition-colors">
-              Introducing AI-Powered Resume Builder
+          <div className="inline-flex items-center px-3 sm:px-4 py-2 mb-6 text-xs sm:text-sm text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-full backdrop-blur-sm hover:border-blue-500/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 cursor-pointer group">
+            <Sparkles className="w-4 h-4 mr-2 text-blue-400" />
+            <span className="group-hover:text-blue-300 transition-colors font-medium">
+              NEW: AI Resume Builder
             </span>
           </div>
 
           {/* Main Heading */}
-          <h1 className="mb-6 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-black dark:text-white">
-            AI Resume Builder for <br />
-            <span className="block">Modern Professionals</span>
+          <h1 className="mb-6 text-3xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-tight text-white max-w-5xl mx-auto">
+            Boost{" "}
+            <span className="gradient-button gradient-button-variant inline-flex items-center justify-center w-10 h-10 sm:w-14 sm:h-14 rounded-xl mx-2 align-middle shadow-lg shadow-blue-500/30 rotate-3">
+              <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+            </span>{" "}
+            Your Career <br className="hidden md:block" />
+            with AI-Powered Resumes
           </h1>
 
           {/* Subheading */}
-          <p className="mb-2 text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-gray-400">
-            150+ free and open-source resume templates and effects
-          </p>
-          <p className="mb-2 text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-gray-400">
-            built with{" "}
-            <span className="font-semibold text-white">
-              React, TypeScript, Tailwind CSS,
-            </span>{" "}
-            and <span className="font-semibold text-white">AI</span>.
-          </p>
-          <p className="mb-8 sm:mb-10 text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-gray-400">
-            Perfect companion for{" "}
-            <span className="font-semibold text-white">job seekers</span>.
+          <p className="mb-8 text-sm sm:text-base md:text-lg max-w-2xl mx-auto text-gray-400 leading-relaxed px-4">
+            Create professional resumes and cover letters in seconds. Our
+            AI-powered platform helps you land your dream job with ease.
           </p>
 
           {/* Buttons */}
-          <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-            <GradientButton variant="variant" asChild>
+          <div className="flex flex-col items-center space-y-4 w-full sm:w-auto px-4">
+            <GradientButton
+              variant="variant"
+              asChild
+              className="px-6 py-4 text-base sm:px-8 sm:py-6 sm:text-lg w-full sm:w-auto"
+            >
               <Link href={`${!user?.isSignedIn ? "/sign-up" : "/dashboard"}`}>
-                Get Started
+                Build Your Resume Free &rarr;
               </Link>
             </GradientButton>
-            <GradientButton variant="black" asChild>
-              <Link href="#learn-more">Learn more</Link>
-            </GradientButton>
+            <p className="text-sm text-gray-500 font-medium">
+              &#123; No credit card required &#125;
+            </p>
+          </div>
+
+          {/* Dashboard Preview Image */}
+          <div className="relative mt-20 mx-auto max-w-7xl w-full group">
+            {/* Static Logos Removed */}
+
+            {/* Glow effect */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-white/30 to-white/10 rounded-xl blur-2xl opacity-50 group-hover:opacity-75 transition duration-500"></div>
+
+            <div className="relative rounded-xl overflow-hidden border border-white/10 bg-black/50 backdrop-blur-sm shadow-2xl">
+              <Image
+                src="/image.png"
+                alt="Dashboard Preview"
+                width={1200}
+                height={800}
+                className="w-full h-auto object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
+              />
+
+              {/* Hover Overlay & Button */}
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-[1px]">
+                <Link href={!user?.isSignedIn ? "/sign-in" : "/dashboard"}>
+                  <button className="px-6 py-3 bg-zinc-900/90 hover:bg-zinc-800 text-white border border-zinc-700 rounded-xl font-medium transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-2xl backdrop-blur-md flex items-center gap-2">
+                    Make your First Resume
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

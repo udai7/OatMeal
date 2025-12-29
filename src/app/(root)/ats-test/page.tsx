@@ -337,7 +337,7 @@ const ATSTest = () => {
                 </CardContent>
               </Card>
             ) : result ? (
-              <Card className="shadow-sm border border-gray-200 dark:border-gray-800 flex flex-col h-auto lg:h-[840px]">
+              <Card className="shadow-sm border border-gray-200 dark:border-gray-800 flex flex-col h-auto lg:h-[757px]">
                 <CardHeader className="border-b border-gray-100 dark:border-gray-800 pb-4 shrink-0">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                     <div>

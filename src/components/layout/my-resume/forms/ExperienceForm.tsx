@@ -249,7 +249,7 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
             {fields.map((item, index) => (
               <div
                 key={item.id}
-                className="grid grid-cols-2 gap-3 border border-neutral-700 p-3 my-5 rounded-lg"
+                className="grid grid-cols-1 md:grid-cols-2 gap-3 border border-neutral-700 p-3 my-5 rounded-lg"
               >
                 {experienceFields.map((config) => (
                   <FormField
