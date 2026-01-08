@@ -41,7 +41,7 @@ export default function RootLayout({
     >
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${inter.variable} ${nunito.variable} ${poppins.variable} font-inter`}
+          className={`${inter.variable} ${nunito.variable} ${poppins.variable} font-inter overflow-x-hidden`}
         >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <AITrialsProvider>
