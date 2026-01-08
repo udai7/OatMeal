@@ -114,8 +114,17 @@ const ResumeCard = ({
     <>
       <motion.div
         whileHover="animate"
-        className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-full h-[280px] sm:h-[300px] lg:w-[240px] lg:h-[340px] rounded-xl p-4 sm:p-6 border flex-shrink-0 flex flex-col overflow-hidden"
+        className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-neutral-900 dark:border-white/[0.2] border-black/[0.1] w-full h-[280px] sm:h-[300px] lg:w-[240px] lg:h-[340px] rounded-xl p-4 sm:p-6 border flex-shrink-0 flex flex-col"
       >
+        <div className="absolute -inset-[1px] z-0 pointer-events-none">
+          <motion.div
+            variants={{
+              initial: { opacity: 0 },
+              animate: { opacity: 1 },
+            }}
+            className="absolute opacity-0 border border-dashed border-sky-400 inset-0 z-50 bg-transparent rounded-xl"
+          ></motion.div>
+        </div>
         <div className="relative z-10 flex flex-col h-full">
           <div className="flex items-start gap-3 mb-1">
             <div className="p-2 bg-primary-700/20 border border-primary-700/30 rounded-lg shrink-0">

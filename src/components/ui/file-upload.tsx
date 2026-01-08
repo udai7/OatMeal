@@ -63,8 +63,17 @@ export const FileUpload = ({
       <motion.div
         onClick={handleClick}
         whileHover="animate"
-        className="p-4 sm:p-6 group/file block rounded-xl cursor-pointer w-full h-full relative overflow-hidden bg-gray-50 dark:bg-neutral-900 border border-black/[0.1] dark:border-white/[0.2]"
+        className="p-4 sm:p-6 group/file block rounded-xl cursor-pointer w-full h-full relative bg-gray-50 dark:bg-neutral-900 border border-black/[0.1] dark:border-white/[0.2] dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1]"
       >
+        <div className="absolute -inset-[1px] z-0 pointer-events-none">
+          <motion.div
+            variants={{
+              initial: { opacity: 0 },
+              animate: { opacity: 1 },
+            }}
+            className="absolute opacity-0 border border-dashed border-sky-400 inset-0 z-50 bg-transparent rounded-xl"
+          ></motion.div>
+        </div>
         <input
           ref={fileInputRef}
           id="file-upload-handle"

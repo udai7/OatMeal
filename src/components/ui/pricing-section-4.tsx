@@ -23,10 +23,13 @@ const plans = [
     buttonVariant: "outline" as const,
     includes: [
       "Free includes:",
+      "5 Daily Coins (Reset at Midnight)",
       "Resume Builder",
-      "Basic AI Suggestions",
+      "AI Resume Enhancement (3 coins)",
+      "ATS Scanner (1 coin)",
+      "Cover Letter Generator (1 coin)",
       "PDF Export",
-      "ATS Scanner",
+      "Multiple Templates",
     ],
   },
   {

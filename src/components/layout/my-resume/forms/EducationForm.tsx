@@ -16,6 +16,7 @@ import { generateEducationDescription } from "@/lib/actions/gemini.actions";
 import { addEducationToResume } from "@/lib/actions/resume.actions";
 import { useFormContext } from "@/lib/context/FormProvider";
 import { useAITrials } from "@/lib/context/AITrialsContext";
+import { useCoinDeduction } from "@/lib/hooks/useCoinDeduction";
 import { educationFields } from "@/lib/fields";
 import { EducationValidationSchema } from "@/lib/validations/resume";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,7 +37,8 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
   const [currentAiIndex, setCurrentAiIndex] = useState(0);
   const { toast } = useToast();
   const { user } = useUser();
-  const { useTrialIfAvailable, isTrialExhausted } = useAITrials();
+  const { hasEnoughCoins } = useAITrials();
+  const { deductCoins } = useCoinDeduction();
 
   const form = useForm<z.infer<typeof EducationValidationSchema>>({
     resolver: zodResolver(EducationValidationSchema),
@@ -137,20 +139,7 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
     }
 
     // Check if coins are available
-    if (isTrialExhausted) {
-      toast({
-        title: "No Coins Left",
-        description:
-          "You've used all your daily AI coins. Come back tomorrow for more!",
-        variant: "destructive",
-        className: "bg-white",
-      });
-      return;
-    }
-
-    // Deduct one coin
-    const coinUsed = useTrialIfAvailable();
-    if (!coinUsed) {
+    if (!hasEnoughCoins("resume_ai")) {
       toast({
         title: "No Coins Left",
         description:
@@ -163,6 +152,18 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
 
     setCurrentAiIndex(index);
     setIsAiLoading(true);
+
+    // Deduct coins on server
+    const success = await deductCoins({
+      feature: "resume_ai",
+      onError: () => {
+        setIsAiLoading(false);
+      },
+    });
+
+    if (!success) {
+      return;
+    }
 
     try {
       const result = await generateEducationDescription(

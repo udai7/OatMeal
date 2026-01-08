@@ -40,6 +40,7 @@ import {
 import { EvervaultCard, Icon } from "@/components/ui/evervault-card";
 import { toast } from "@/components/ui/use-toast";
 import { useAITrials } from "@/lib/context/AITrialsContext";
+import { useCoinDeduction } from "@/lib/hooks/useCoinDeduction";
 
 const CoverLetterPage = () => {
   const user = useUser();
@@ -55,11 +56,8 @@ const CoverLetterPage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
   const coverLetterRef = useRef<HTMLDivElement>(null);
-  const {
-    getTrialsRemaining,
-    useFeatureTrialIfAvailable,
-    isFeatureTrialExhausted,
-  } = useAITrials();
+  const { hasEnoughCoins, coinBalance } = useAITrials();
+  const { deductCoins } = useCoinDeduction();
 
   const loadResumeData = async () => {
     try {
@@ -105,19 +103,7 @@ const CoverLetterPage = () => {
     }
 
     // Check if coins are available
-    if (isFeatureTrialExhausted("cover_letter")) {
-      toast({
-        title: "No Coins Left",
-        description:
-          "You've used your daily cover letter coin. Come back tomorrow!",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Deduct one coin
-    const coinUsed = useFeatureTrialIfAvailable("cover_letter");
-    if (!coinUsed) {
+    if (!hasEnoughCoins("cover_letter")) {
       toast({
         title: "No Coins Left",
         description:
@@ -129,6 +115,19 @@ const CoverLetterPage = () => {
 
     setIsLoading(true);
     setCoverLetter("");
+
+    // Deduct coins on server
+    const success = await deductCoins({
+      feature: "cover_letter",
+      onError: () => {
+        setIsLoading(false);
+        setCoverLetter("");
+      },
+    });
+
+    if (!success) {
+      return;
+    }
 
     try {
       const selectedResumeObj = resumeList.find(
@@ -253,9 +252,9 @@ const CoverLetterPage = () => {
             <div className="flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg">
               <Coins className="h-4 w-4 text-blue-400" />
               <span className="text-xs sm:text-sm font-medium text-white">
-                {getTrialsRemaining("cover_letter")}{" "}
+                {coinBalance}{" "}
                 <span className="text-white/60">
-                  {getTrialsRemaining("cover_letter") === 1 ? "coin" : "coins"}
+                  {coinBalance === 1 ? "coin" : "coins"}
                 </span>
               </span>
             </div>

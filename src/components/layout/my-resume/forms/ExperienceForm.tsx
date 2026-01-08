@@ -8,6 +8,7 @@ import { generateExperienceDescription } from "@/lib/actions/gemini.actions";
 import { addExperienceToResume } from "@/lib/actions/resume.actions";
 import { useFormContext } from "@/lib/context/FormProvider";
 import { useAITrials } from "@/lib/context/AITrialsContext";
+import { useCoinDeduction } from "@/lib/hooks/useCoinDeduction";
 import { Brain, Loader2, Minus, Plus } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -36,7 +37,8 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
   const [currentAiIndex, setCurrentAiIndex] = useState(0);
   const { toast } = useToast();
   const { user } = useUser();
-  const { useTrialIfAvailable, isTrialExhausted } = useAITrials();
+  const { hasEnoughCoins } = useAITrials();
+  const { deductCoins } = useCoinDeduction();
 
   const form = useForm<z.infer<typeof ExperienceValidationSchema>>({
     resolver: zodResolver(ExperienceValidationSchema),
@@ -139,20 +141,7 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
     }
 
     // Check if coins are available
-    if (isTrialExhausted) {
-      toast({
-        title: "No Coins Left",
-        description:
-          "You've used all your daily AI coins. Come back tomorrow for more!",
-        variant: "destructive",
-        className: "bg-white",
-      });
-      return;
-    }
-
-    // Deduct one coin
-    const coinUsed = useTrialIfAvailable();
-    if (!coinUsed) {
+    if (!hasEnoughCoins("resume_ai")) {
       toast({
         title: "No Coins Left",
         description:
@@ -165,6 +154,18 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
 
     setCurrentAiIndex(index);
     setIsLoadingAi(true);
+
+    // Deduct coins on server
+    const success = await deductCoins({
+      feature: "resume_ai",
+      onError: () => {
+        setIsLoadingAi(false);
+      },
+    });
+
+    if (!success) {
+      return;
+    }
 
     try {
       const result = await generateExperienceDescription(
