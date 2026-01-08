@@ -57,7 +57,7 @@ OatMeal is a modern, AI-powered resume builder that helps you create professiona
    ```
 
 3. **Set up environment variables**
-   Create a `.env.local` file in the root directory with the following variables:
+   Create a `.env.local` file in the root directory with the following variabless:
    ```env
    MONGODB_URI=your_mongodb_uri
    GOOGLE_GEMINI_API_KEY=your_gemini_api_key
