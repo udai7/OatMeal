@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import PageWrapper from "@/components/common/PageWrapper";
 import Header from "@/components/layout/Header";
@@ -42,6 +42,7 @@ import { Badge } from "@/components/ui/badge";
 import { EvervaultCard, Icon } from "@/components/ui/evervault-card";
 import { useToast } from "@/components/ui/use-toast";
 import { useAITrials } from "@/lib/context/AITrialsContext";
+import { useCoinDeduction } from "@/lib/hooks/useCoinDeduction";
 
 const ATSTest = () => {
   const user = useUser();
@@ -54,11 +55,8 @@ const ATSTest = () => {
   const [uploadedResume, setUploadedResume] = useState<File | null>(null);
   const [resumeText, setResumeText] = useState<string>("");
   const { toast } = useToast();
-  const {
-    getTrialsRemaining,
-    useFeatureTrialIfAvailable,
-    isFeatureTrialExhausted,
-  } = useAITrials();
+  const { hasEnoughCoins, coinBalance } = useAITrials();
+  const { deductCoins } = useCoinDeduction();
 
   const loadResumeData = async () => {
     try {
@@ -120,19 +118,7 @@ const ATSTest = () => {
     }
 
     // Check if coins are available
-    if (isFeatureTrialExhausted("ats_check")) {
-      toast({
-        title: "No Coins Left",
-        description:
-          "You've used your daily ATS analysis coin. Come back tomorrow!",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Deduct one coin
-    const coinUsed = useFeatureTrialIfAvailable("ats_check");
-    if (!coinUsed) {
+    if (!hasEnoughCoins("ats_check")) {
       toast({
         title: "No Coins Left",
         description:
@@ -143,6 +129,18 @@ const ATSTest = () => {
     }
 
     setIsLoading(true);
+
+    // Deduct coins on server
+    const success = await deductCoins({
+      feature: "ats_check",
+      onError: () => {
+        setIsLoading(false);
+      },
+    });
+
+    if (!success) {
+      return;
+    }
 
     try {
       let resumeData;
@@ -202,9 +200,9 @@ const ATSTest = () => {
             <div className="flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg">
               <Coins className="h-4 w-4 text-blue-400" />
               <span className="text-xs sm:text-sm font-medium text-white">
-                {getTrialsRemaining("ats_check")}{" "}
+                {coinBalance}{" "}
                 <span className="text-white/60">
-                  {getTrialsRemaining("ats_check") === 1 ? "coin" : "coins"}
+                  {coinBalance === 1 ? "coin" : "coins"}
                 </span>
               </span>
             </div>

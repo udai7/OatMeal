@@ -63,7 +63,7 @@ const page = () => {
             <GradientButton
               variant="variant"
               asChild
-              className="px-6 py-4 text-base sm:px-8 sm:py-6 sm:text-lg w-full sm:w-auto"
+              className="px-6 py-3 text-base sm:px-8 sm:py-4 sm:text-lg w-full sm:w-auto"
             >
               <Link href={`${!user?.isSignedIn ? "/sign-up" : "/dashboard"}`}>
                 Build Your Resume Free &rarr;

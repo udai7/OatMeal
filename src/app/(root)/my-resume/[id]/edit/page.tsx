@@ -29,7 +29,7 @@ const EditResume = async ({ params }: { params: { id: string } }) => {
               Edit Your Resume
             </h2>
           </div>
-          <AITrialsCounter feature="resume_ai" />
+          <AITrialsCounter />
         </div>
         <p className="text-center text-sm sm:text-base text-neutral-400">
           Please provide the necessary information for your resume.
