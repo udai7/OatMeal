@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { deductCoins } from "@/lib/actions/coin.actions";
 import { COIN_COSTS, type CoinFeature } from "@/lib/constants/coins";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {

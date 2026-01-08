@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { getCoinBalance } from "@/lib/actions/coin.actions";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
