@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, {
   createContext,
@@ -6,190 +6,141 @@ import React, {
   useState,
   useEffect,
   useCallback,
-  useRef,
 } from "react";
+import { useUser } from "@clerk/nextjs";
+import { COIN_COSTS, type CoinFeature } from "@/lib/constants/coins";
 
-// Feature types for trials
-export type TrialFeature = "resume_ai" | "ats_check" | "cover_letter";
-
-// Daily limits for each feature
-const DAILY_LIMITS: Record<TrialFeature, number> = {
-  resume_ai: 3,
-  ats_check: 1,
-  cover_letter: 1,
-};
+// Feature types for trials (aligned with coin system)
+export type TrialFeature = CoinFeature;
 
 interface AITrialsContextType {
-  // Resume AI trials (for backward compatibility)
+  // Coin balance
+  coinBalance: number;
+  isLoading: boolean;
+  // Check if user has enough coins for a feature
+  hasEnoughCoins: (feature: CoinFeature) => boolean;
+  // Deduct coins (should be called from server-side, this is for optimistic UI updates)
+  deductCoinsOptimistic: (feature: CoinFeature) => void;
+  // Refresh balance from server
+  refreshBalance: () => Promise<void>;
+  // Legacy API (for backward compatibility)
   trialsRemaining: number;
   useTrialIfAvailable: () => boolean;
   isTrialExhausted: boolean;
-  // Generic feature trials
-  getTrialsRemaining: (feature: TrialFeature) => number;
-  useFeatureTrialIfAvailable: (feature: TrialFeature) => boolean;
-  isFeatureTrialExhausted: (feature: TrialFeature) => boolean;
+  getTrialsRemaining: (feature: CoinFeature) => number;
+  useFeatureTrialIfAvailable: (feature: CoinFeature) => boolean;
+  isFeatureTrialExhausted: (feature: CoinFeature) => boolean;
 }
 
 const AITrialsContext = createContext<AITrialsContextType | undefined>(
   undefined
 );
 
-const STORAGE_KEY = "ai_trials_data_v2";
-
-interface TrialData {
-  date: string;
-  trialsUsed: Record<TrialFeature, number>;
-}
-
-function getTodayDateString(): string {
-  return new Date().toISOString().split("T")[0];
-}
-
-function getDefaultTrialsUsed(): Record<TrialFeature, number> {
-  return {
-    resume_ai: 0,
-    ats_check: 0,
-    cover_letter: 0,
-  };
-}
-
-// Initialize from localStorage synchronously to prevent flash of wrong data
-function getInitialTrialsUsed(): Record<TrialFeature, number> {
-  if (typeof window === "undefined") return getDefaultTrialsUsed();
-
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) return getDefaultTrialsUsed();
-
-  try {
-    const data = JSON.parse(stored) as TrialData;
-    const today = getTodayDateString();
-
-    // Only use stored data if it's from today
-    if (data.date === today) {
-      return {
-        ...getDefaultTrialsUsed(),
-        ...data.trialsUsed,
-      };
-    }
-    // If it's a new day, return defaults (will be saved in useEffect)
-    return getDefaultTrialsUsed();
-  } catch {
-    return getDefaultTrialsUsed();
-  }
-}
-
-function getStoredTrialData(): TrialData | null {
-  if (typeof window === "undefined") return null;
-
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) return null;
-
-  try {
-    return JSON.parse(stored) as TrialData;
-  } catch {
-    return null;
-  }
-}
-
-function setStoredTrialData(data: TrialData): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
 export function AITrialsProvider({ children }: { children: React.ReactNode }) {
-  // Initialize state from localStorage immediately to prevent reset
-  const [trialsUsed, setTrialsUsed] = useState<Record<TrialFeature, number>>(
-    () => getInitialTrialsUsed()
-  );
-  const [isInitialized, setIsInitialized] = useState(false);
-  const trialsUsedRef = useRef(trialsUsed);
+  const { user, isLoaded } = useUser();
+  const [coinBalance, setCoinBalance] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Keep ref in sync with state
-  useEffect(() => {
-    trialsUsedRef.current = trialsUsed;
-  }, [trialsUsed]);
-
-  // Handle new day reset and ensure localStorage is in sync
-  useEffect(() => {
-    const storedData = getStoredTrialData();
-    const today = getTodayDateString();
-
-    if (storedData && storedData.date === today) {
-      // Data is from today - ensure state matches localStorage
-      const mergedTrialsUsed = {
-        ...getDefaultTrialsUsed(),
-        ...storedData.trialsUsed,
-      };
-      setTrialsUsed(mergedTrialsUsed);
-      trialsUsedRef.current = mergedTrialsUsed;
-    } else {
-      // It's a new day or no data - reset and save
-      const defaultTrials = getDefaultTrialsUsed();
-      setStoredTrialData({ date: today, trialsUsed: defaultTrials });
-      setTrialsUsed(defaultTrials);
-      trialsUsedRef.current = defaultTrials;
+  // Fetch coin balance from server
+  const fetchBalance = useCallback(async () => {
+    if (!user?.id) {
+      setCoinBalance(0);
+      setIsLoading(false);
+      return;
     }
-    setIsInitialized(true);
+
+    try {
+      const response = await fetch("/api/coins/balance");
+      if (response.ok) {
+        const data = await response.json();
+        setCoinBalance(data.balance || 0);
+      } else {
+        console.error("Failed to fetch coin balance");
+        setCoinBalance(0);
+      }
+    } catch (error) {
+      console.error("Error fetching coin balance:", error);
+      setCoinBalance(0);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user?.id]);
+
+  // Fetch balance when user loads or changes
+  useEffect(() => {
+    if (isLoaded) {
+      // Clean up old localStorage coin system
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("ai_trials_data_v2");
+      }
+      fetchBalance();
+    }
+  }, [isLoaded, fetchBalance]);
+
+  // Refresh balance (can be called manually)
+  const refreshBalance = useCallback(async () => {
+    setIsLoading(true);
+    await fetchBalance();
+  }, [fetchBalance]);
+
+  // Check if user has enough coins for a feature
+  const hasEnoughCoins = useCallback(
+    (feature: CoinFeature): boolean => {
+      return coinBalance >= COIN_COSTS[feature];
+    },
+    [coinBalance]
+  );
+
+  // Optimistic UI update (actual deduction happens server-side)
+  const deductCoinsOptimistic = useCallback((feature: CoinFeature) => {
+    setCoinBalance((prev) => Math.max(0, prev - COIN_COSTS[feature]));
   }, []);
 
-  // Generic function to get remaining trials for a feature
+  // Legacy API for backward compatibility
   const getTrialsRemaining = useCallback(
-    (feature: TrialFeature): number => {
-      return DAILY_LIMITS[feature] - (trialsUsed[feature] || 0);
+    (feature: CoinFeature): number => {
+      // Calculate how many times this feature can be used with current balance
+      return Math.floor(coinBalance / COIN_COSTS[feature]);
     },
-    [trialsUsed]
+    [coinBalance]
   );
 
-  // Generic function to check if feature trials are exhausted
   const isFeatureTrialExhausted = useCallback(
-    (feature: TrialFeature): boolean => {
-      return getTrialsRemaining(feature) <= 0;
+    (feature: CoinFeature): boolean => {
+      return !hasEnoughCoins(feature);
     },
-    [getTrialsRemaining]
+    [hasEnoughCoins]
   );
 
-  // Generic function to use a trial for any feature
   const useFeatureTrialIfAvailable = useCallback(
-    (feature: TrialFeature): boolean => {
-      const currentTrialsUsed = trialsUsedRef.current;
-      const currentUsed = currentTrialsUsed[feature] || 0;
-      const remaining = DAILY_LIMITS[feature] - currentUsed;
-
-      if (remaining <= 0) {
+    (feature: CoinFeature): boolean => {
+      if (!hasEnoughCoins(feature)) {
         return false;
       }
-
-      const newTrialsUsed = {
-        ...currentTrialsUsed,
-        [feature]: currentUsed + 1,
-      };
-      const today = getTodayDateString();
-
-      trialsUsedRef.current = newTrialsUsed;
-      setTrialsUsed(newTrialsUsed);
-      setStoredTrialData({ date: today, trialsUsed: newTrialsUsed });
-
+      // Optimistically update UI
+      deductCoinsOptimistic(feature);
       return true;
     },
-    []
+    [hasEnoughCoins, deductCoinsOptimistic]
   );
 
-  // Backward compatibility for resume_ai
-  const trialsRemaining = DAILY_LIMITS.resume_ai - (trialsUsed.resume_ai || 0);
-  const isTrialExhausted = trialsRemaining <= 0;
+  // Resume AI specific (backward compatibility)
+  const trialsRemaining = getTrialsRemaining("resume_ai");
+  const isTrialExhausted = isFeatureTrialExhausted("resume_ai");
   const useTrialIfAvailable = useCallback(
     () => useFeatureTrialIfAvailable("resume_ai"),
     [useFeatureTrialIfAvailable]
   );
 
-  // Don't render children until we've checked localStorage
-  if (!isInitialized) {
-    return null;
-  }
-
   return (
     <AITrialsContext.Provider
       value={{
+        coinBalance,
+        isLoading,
+        hasEnoughCoins,
+        deductCoinsOptimistic,
+        refreshBalance,
+        // Legacy API
         trialsRemaining,
         useTrialIfAvailable,
         isTrialExhausted,

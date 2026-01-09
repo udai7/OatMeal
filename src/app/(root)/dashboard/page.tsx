@@ -47,7 +47,7 @@ const Dashboard = () => {
       <div
         className={`${
           showBanner ? "pt-32" : "pt-24"
-        } px-4 md:px-8 lg:px-12 min-h-screen pb-20 transition-all duration-300`}
+        } px-4 md:px-8 lg:px-12 pb-8 transition-all duration-300`}
       >
         <div className="flex flex-col gap-8">
           <section>

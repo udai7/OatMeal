@@ -84,7 +84,7 @@ export function MinimalFooter() {
     },
   ];
   return (
-    <footer className="relative font-poppins">
+    <footer className="relative font-poppins mb-0">
       <div className="bg-[radial-gradient(35%_80%_at_30%_0%,hsl(var(--foreground)/.1),transparent)] mx-auto max-w-6xl md:border-x border-neutral-800">
         <div className="bg-neutral-800 absolute inset-x-0 h-px w-full" />
 
